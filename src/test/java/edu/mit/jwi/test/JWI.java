@@ -56,6 +56,8 @@ public class JWI
 			if (idx != null)
 			{
 				// index
+				System.out.println();
+				System.out.println("================================================================================");
 				System.out.println("■ pos = " + pos.name());
 				// System.out.println("lemma = " + idx.getLemma());
 				Set<IPointer> pointers = idx.getPointers();
@@ -68,19 +70,19 @@ public class JWI
 				final List<IWordID> senseids = idx.getWordIDs();
 				for (final IWordID senseid : senseids) // synset id, sense number, and lemma
 				{
-					System.out.println("----------");
+					System.out.println("--------------------------------------------------------------------------------");
 					//System.out.println("senseid = " + senseid.toString());
 
 					// sense=(senseid, lexid, sensekey, synset)
 					IWord sense = this.dict.getWord(senseid);
-					System.out.println("●\nsense = " + sense.toString() + " lexid=" + sense.getLexicalID() + " sensekey=" + sense.getSenseKey());
+					System.out.println("● sense = " + sense.toString() + " lexid=" + sense.getLexicalID() + " sensekey=" + sense.getSenseKey());
 
 					// synset
 					final ISynsetID synsetid = senseid.getSynsetID();
 					final ISynset synset = this.dict.getSynset(synsetid);
-					System.out.println("synset = " + toString(synset));
+					System.out.println("● synset = " + toString(synset));
 
-					walk(synset, 0);
+					walk(synset, 1);
 				}
 			}
 		}
