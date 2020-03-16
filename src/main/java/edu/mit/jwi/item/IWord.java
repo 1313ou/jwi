@@ -1,10 +1,10 @@
-/********************************************************************************
+/* ******************************************************************************
  * Java Wordnet Interface Library (JWI) v2.4.0
  * Copyright (c) 2007-2015 Mark A. Finlayson
  *
- * JWI is distributed under the terms of the Creative Commons Attribution 4.0 
- * International Public License, which means it may be freely used for all 
- * purposes, as long as proper acknowledgment is made.  See the license file 
+ * JWI is distributed under the terms of the Creative Commons Attribution 4.0
+ * International Public License, which means it may be freely used for all
+ * purposes, as long as proper acknowledgment is made.  See the license file
  * included with this distribution for more details.
  *******************************************************************************/
 
@@ -15,16 +15,17 @@ import java.util.Map;
 
 /**
  * A word, which in Wordnet is an index word paired with a synset.
- * 
+ *
  * @author Mark A. Finlayson
  * @version 2.4.0
  * @since JWI 1.0
  */
-public interface IWord extends IHasPOS, IItem<IWordID> {
+public interface IWord extends IHasPOS, IItem<IWordID>
+{
 
 	/**
 	 * Returns the root form of this word, never <code>null</code> or empty.
-	 * 
+	 *
 	 * @return the non-<code>null</code>, non-empty root form of this word
 	 * @since JWI 1.0
 	 */
@@ -33,7 +34,7 @@ public interface IWord extends IHasPOS, IItem<IWordID> {
 	/**
 	 * Returns the synset uniquely identified by this word. The returned synset
 	 * will never be <code>null</code>.
-	 * 
+	 *
 	 * @return the non-<code>null</code> synset identified by this word.
 	 * @since JWI 2.1.0
 	 */
@@ -44,10 +45,10 @@ public interface IWord extends IHasPOS, IItem<IWordID> {
 	 * however, the sense key that is returned <em>may</em> not yet have it's
 	 * head lemma and head lexical id set yet, and so may throw an exception on
 	 * some calls.
-	 * 
+	 *
+	 * @return the sense key for this word, never <code>null</code>
 	 * @see ISenseKey#needsHeadSet()
 	 * @see ISenseKey#setHead(String, int)
-	 * @return the sense key for this word, never <code>null</code>
 	 * @since JWI 2.1.0
 	 */
 	ISenseKey getSenseKey();
@@ -61,9 +62,9 @@ public interface IWord extends IHasPOS, IItem<IWordID> {
 	 * is the default, and therefore is not present in lexicographer files. In
 	 * the wordnet data files the lexical id is represented as a one digit
 	 * hexadecimal integer.
-	 * 
+	 *
 	 * @return the lexical id of the word, an integer between 0 and 15,
-	 *         inclusive
+	 * inclusive
 	 * @since JWI 1.0
 	 */
 	int getLexicalID();
@@ -73,7 +74,7 @@ public interface IWord extends IHasPOS, IItem<IWordID> {
 	 * this only returns IWords related by lexical pointers (i.e., not semantic
 	 * pointers). To retrieve items related by semantic pointers, call
 	 * {@link ISynset#getRelatedMap()} on the appropriate object.
-	 * 
+	 *
 	 * @return an immutable map from lexical pointers to words
 	 * @since JWI 2.0.0
 	 */
@@ -86,11 +87,10 @@ public interface IWord extends IHasPOS, IItem<IWordID> {
 	 * by semantic pointers, call {@link ISynset#getRelatedSynsets()}. If this
 	 * word has no targets for the for the specified pointer, this method
 	 * returns an empty list. This method never returns {@code null}.
-	 * 
-	 * @param ptr
-	 *            the pointer for which related words are requested
+	 *
+	 * @param ptr the pointer for which related words are requested
 	 * @return the list of words related by the specified pointer, or an empty
-	 *         list if none.
+	 * list if none.
 	 * @since JWI 2.0.0
 	 */
 	List<IWordID> getRelatedWords(IPointer ptr);
@@ -102,7 +102,7 @@ public interface IWord extends IHasPOS, IItem<IWordID> {
 	 * synsets related to the synset for this word by semantic pointers, call
 	 * {@link ISynset#getRelatedSynsets()} on the <code>ISynset</code> for this
 	 * word.
-	 * 
+	 *
 	 * @return an immutable list of all lexically-related words
 	 * @since JWI 2.0.0
 	 */
@@ -111,9 +111,9 @@ public interface IWord extends IHasPOS, IItem<IWordID> {
 	/**
 	 * Returns an immutable list of all verb frames associated with this word.
 	 * If there are no such frames, returns the empty list.
-	 * 
+	 *
 	 * @return an immutable list of all the verb frames associated with this
-	 *         word, or the empty list if none.
+	 * word, or the empty list if none.
 	 * @since JWI 2.0.0
 	 */
 	List<IVerbFrame> getVerbFrames();
@@ -121,7 +121,7 @@ public interface IWord extends IHasPOS, IItem<IWordID> {
 	/**
 	 * Returns the adjective marker of this word. If this word has no adjective
 	 * marker, returns {@code null}
-	 * 
+	 *
 	 * @return the adjective marker for this word, or <code>null</code> if none.
 	 * @since JWI 2.1.0
 	 */

@@ -30,7 +30,7 @@ public class JWI
 		run(wnHome);
 	}
 
-	public static boolean run(final String wnhome) throws IOException
+	@SuppressWarnings("SameReturnValue") public static boolean run(final String wnhome) throws IOException
 	{
 		final JWI jwi = new JWI(wnhome);
 		jwi.walk("spread");

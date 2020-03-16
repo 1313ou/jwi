@@ -1,10 +1,10 @@
-/********************************************************************************
+/* ******************************************************************************
  * Java Wordnet Interface Library (JWI) v2.4.0
  * Copyright (c) 2007-2015 Mark A. Finlayson
  *
- * JWI is distributed under the terms of the Creative Commons Attribution 4.0 
- * International Public License, which means it may be freely used for all 
- * purposes, as long as proper acknowledgment is made.  See the license file 
+ * JWI is distributed under the terms of the Creative Commons Attribution 4.0
+ * International Public License, which means it may be freely used for all
+ * purposes, as long as proper acknowledgment is made.  See the license file
  * included with this distribution for more details.
  *******************************************************************************/
 
@@ -15,16 +15,17 @@ import java.util.Map;
 
 /**
  * Represents a synset.
- * 
+ *
  * @author Mark A. Finlayson
  * @version 2.4.0, Nov. 16, 2007
  * @since JWI 1.0
  */
-public interface ISynset extends IHasPOS, IItem<ISynsetID> {
+public interface ISynset extends IHasPOS, IItem<ISynsetID>
+{
 
 	/**
 	 * Returns the data file byte offset of this synset.
-	 * 
+	 *
 	 * @return int the offset in the associated data source
 	 * @since JWI 1.0
 	 */
@@ -34,9 +35,9 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID> {
 	 * Returns a description of the lexical file. In wordnet data files, the
 	 * lexical file number is a two digit decimal integer representing the name
 	 * of the lexicographer file containing the synset for the sense.
-	 * 
+	 *
 	 * @return the lexical file object that describes the lexical file in which
-	 *         this synset is stored
+	 * this synset is stored
 	 * @since JWI 2.1.0
 	 */
 	ILexFile getLexicalFile();
@@ -44,7 +45,7 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID> {
 	/**
 	 * Returns the type of the synset, encoded as follows: 1=Noun, 2=Verb,
 	 * 3=Adjective, 4=Adverb, 5=Adjective Satellite.
-	 * 
+	 *
 	 * @return the type of the synset, an integer between 1 and 5, inclusive
 	 * @since JWI 1.0
 	 */
@@ -52,7 +53,7 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID> {
 
 	/**
 	 * Returns the gloss (brief, plain-English description) of this synset.
-	 * 
+	 *
 	 * @return String Returns the non-<code>null</code>, non-empty gloss.
 	 * @since JWI 1.0
 	 */
@@ -61,32 +62,30 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID> {
 	/**
 	 * Returns an immutable list of the word objects (synset, index word pairs)
 	 * associated with this synset.
-	 * 
+	 *
 	 * @return a non-<code>null</code>, immutable list of words for this synset
 	 * @since JWI 2.0.0
 	 */
 	List<IWord> getWords();
-	
+
 	/**
 	 * Returns the word with the specified word number. Words are numbered
 	 * sequentially from 1 up to, and including, 255.
-	 * 
-	 * @param wordNumber
-	 *            the number of the word to be retrieved
+	 *
+	 * @param wordNumber the number of the word to be retrieved
 	 * @return the word with the specified word number
-	 * @throws IndexOutOfBoundsException
-	 *             if the word number is not an appropriate word number for this
-	 *             synset.
+	 * @throws IndexOutOfBoundsException if the word number is not an appropriate word number for this
+	 *                                   synset.
 	 * @since JWI 2.1.2
 	 */
 	IWord getWord(int wordNumber);
-	
+
 	/**
 	 * Returns <code>true</code> if this synset is an adjective head;
 	 * <code>false</code> otherwise.
-	 * 
+	 *
 	 * @return <code>true</code> if this synset represents an adjective head;
-	 *         <code>false</code> otherwise.
+	 * <code>false</code> otherwise.
 	 * @since JWI 1.0
 	 */
 	boolean isAdjectiveHead();
@@ -94,9 +93,9 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID> {
 	/**
 	 * Returns <code>true</code> if this synset is an adjective satellite;
 	 * <code>false</code> otherwise.
-	 * 
+	 *
 	 * @return <code>true</code> if this synset represents an adjective satellite;
-	 *         <code>false</code> otherwise.
+	 * <code>false</code> otherwise.
 	 * @since JWI 1.0
 	 */
 	boolean isAdjectiveSatellite();
@@ -106,9 +105,9 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID> {
 	 * synsets. Note that this only returns synsets related by semantic pointers
 	 * (i.e., non-lexical pointers). To obtain lexical pointers, call
 	 * {@link IWord#getRelatedMap()} on the appropriate word.
-	 * 
+	 *
 	 * @return a non-<code>null</code>, unmodifiable map from pointers to
-	 *         synsets
+	 * synsets
 	 * @since JWI 2.0.0
 	 */
 	Map<IPointer, List<ISynsetID>> getRelatedMap();
@@ -121,11 +120,10 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID> {
 	 * appropriate object.
 	 * <p>
 	 * If there are no such synsets, this method returns the empty list.
-	 * 
-	 * @param ptr
-	 *            the pointer for which related synsets are to be retrieved.
+	 *
+	 * @param ptr the pointer for which related synsets are to be retrieved.
 	 * @return the list of synsets related by the specified pointer; if there
-	 *         are no such synsets, returns the empty list
+	 * are no such synsets, returns the empty list
 	 * @since JWI 2.0.0
 	 */
 	List<ISynsetID> getRelatedSynsets(IPointer ptr);
@@ -137,7 +135,7 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID> {
 	 * lexical pointers, which are relationships between
 	 * {@link IWord} objects.
 	 *
-	 * @return a list of all synsets semantically related to the current synset 
+	 * @return a list of all synsets semantically related to the current synset
 	 * @since JWI 2.0.0
 	 */
 	List<ISynsetID> getRelatedSynsets();

@@ -1,42 +1,38 @@
-/********************************************************************************
+/* ******************************************************************************
  * Java Wordnet Interface Library (JWI) v2.4.0
  * Copyright (c) 2007-2015 Mark A. Finlayson
  *
- * JWI is distributed under the terms of the Creative Commons Attribution 4.0 
- * International Public License, which means it may be freely used for all 
- * purposes, as long as proper acknowledgment is made.  See the license file 
+ * JWI is distributed under the terms of the Creative Commons Attribution 4.0
+ * International Public License, which means it may be freely used for all
+ * purposes, as long as proper acknowledgment is made.  See the license file
  * included with this distribution for more details.
  *******************************************************************************/
 
 package edu.mit.jwi.item;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Default, hard-coded, implementation of {@code IVerbFrame} that does not read
  * from the actual file. This is not implemented as an {@code Enum} so that
  * clients can instantiate their own custom verb frame objects.
- * 
+ *
  * @version 2.4.0
  * @since JWI 2.1.0
  */
-public class VerbFrame implements IVerbFrame {
-	
+public class VerbFrame implements IVerbFrame
+{
+
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the VerbFrame class are compatible with this
 	 * implementation.
-	 * 
+	 *
 	 * @since JWI 2.4.0
 	 */
 	private static final long serialVersionUID = 240;
-	
+
 	// standard verb frames
 	public static final VerbFrame NUM_01 = new VerbFrame(1, "Something ----s");
 	public static final VerbFrame NUM_02 = new VerbFrame(2, "Somebody ----s");
@@ -77,59 +73,65 @@ public class VerbFrame implements IVerbFrame {
 	// final instance fields
 	private final int num;
 	private final String template;
-	
-	/** 
+
+	/**
 	 * Constructs a new verb frame.
-	 * 
-	 * @param num the verb frame number
+	 *
+	 * @param num      the verb frame number
 	 * @param template the template representing the verb frame
 	 * @since JWI 2.1.0
 	 */
-	public VerbFrame(int num, String template){
+	public VerbFrame(int num, String template)
+	{
 		this.num = num;
-		this.template = template; 
+		this.template = template;
 	}
-	
-	/* 
-	 * (non-Javadoc) 
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see edu.mit.jwi.item.IVerbFrame#getNumber()
 	 */
-	public int getNumber(){
+	public int getNumber()
+	{
 		return num;
 	}
-	
-	/* 
-	 * (non-Javadoc) 
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see edu.mit.jwi.item.IVerbFrame#getTemplate()
 	 */
-	public String getTemplate(){
+	public String getTemplate()
+	{
 		return template;
 	}
-	
-	/* 
-	 * (non-Javadoc) 
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see edu.mit.jwi.item.IVerbFrame#instantiateTemplate(java.lang.String)
 	 */
-	public String instantiateTemplate(String verb){
-		if(verb == null)
+	public String instantiateTemplate(String verb)
+	{
+		if (verb == null)
 			throw new NullPointerException();
 		int index = template.indexOf("----");
-		if (index == -1) return "";
-		return template.substring(0, index) + verb + template.substring(index + 5, template.length());
+		if (index == -1)
+			return "";
+		return template.substring(0, index) + verb + template.substring(index + 5);
 	}
-	
-	/* 
-	 * (non-Javadoc) 
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString(){
+	public String toString()
+	{
 		return "[" + num + " : " + template + " ]";
 	}
-	
+
 	/**
 	 * This utility method implements the appropriate deserialization for this
 	 * object.
@@ -137,36 +139,40 @@ public class VerbFrame implements IVerbFrame {
 	 * @return the appropriate deserialized object.
 	 * @since JWI 2.4.0
 	 */
-	protected Object readResolve(){
+	protected Object readResolve()
+	{
 		VerbFrame staticFrame = getFrame(num);
-		return (staticFrame == null) ?
-				this : 
-					staticFrame;
+		return (staticFrame == null) ? this : staticFrame;
 	}
-	
+
 	// verb frame cache
 	private static final Map<Integer, VerbFrame> verbFrameMap;
-	
-	static {
-		
+
+	static
+	{
+
 		// get the instance fields
 		Field[] fields = VerbFrame.class.getFields();
-		List<Field> instanceFields = new ArrayList<Field>();
-		for(Field field : fields)
-			if(field.getGenericType() == VerbFrame.class)
+		List<Field> instanceFields = new ArrayList<>();
+		for (Field field : fields)
+			if (field.getGenericType() == VerbFrame.class)
 				instanceFields.add(field);
-		
+
 		// this is our backing collection
-		Map<Integer, VerbFrame> hidden = new LinkedHashMap<Integer, VerbFrame>(instanceFields.size());
+		Map<Integer, VerbFrame> hidden = new LinkedHashMap<>(instanceFields.size());
 
 		// get the instances
 		VerbFrame frame;
-		for(Field field : instanceFields){
-			try{
-				frame = (VerbFrame)field.get(null);
-				if(frame != null)
+		for (Field field : instanceFields)
+		{
+			try
+			{
+				frame = (VerbFrame) field.get(null);
+				if (frame != null)
 					hidden.put(frame.getNumber(), frame);
-			} catch(IllegalAccessException e){
+			}
+			catch (IllegalAccessException e)
+			{
 				// Ignore
 			}
 		}
@@ -179,28 +185,27 @@ public class VerbFrame implements IVerbFrame {
 	 * This emulates the Enum.values() method, in that it returns an
 	 * unmodifiable collection of all the static instances declared in this
 	 * class, in the order they were declared.
-	 * 
+	 *
 	 * @return an unmodifiable collection of verb frames defined in this class
 	 * @since JWI 2.1.0
 	 */
-	public static Collection<VerbFrame> values(){
+	public static Collection<VerbFrame> values()
+	{
 		return verbFrameMap.values();
 	}
 
 	/**
 	 * Returns the frame indexed by the specified number defined in this class,
 	 * or <code>null</code> if there is
-	 * 
-	 * @param number
-	 *            the verb frame number
+	 *
+	 * @param number the verb frame number
 	 * @return the verb frame with the specified number, or <code>null</code> if
-	 *         none
+	 * none
 	 * @since JWI 2.1.0
 	 */
-    public static VerbFrame getFrame(int number) {
-    	return verbFrameMap.get(number);
-    }
-    
-    
+	public static VerbFrame getFrame(int number)
+	{
+		return verbFrameMap.get(number);
+	}
 
 }

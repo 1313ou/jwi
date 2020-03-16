@@ -1,10 +1,10 @@
-/********************************************************************************
+/* ******************************************************************************
  * Java Wordnet Interface Library (JWI) v2.4.0
  * Copyright (c) 2007-2015 Mark A. Finlayson
  *
- * JWI is distributed under the terms of the Creative Commons Attribution 4.0 
- * International Public License, which means it may be freely used for all 
- * purposes, as long as proper acknowledgment is made.  See the license file 
+ * JWI is distributed under the terms of the Creative Commons Attribution 4.0
+ * International Public License, which means it may be freely used for all
+ * purposes, as long as proper acknowledgment is made.  See the license file
  * included with this distribution for more details.
  *******************************************************************************/
 
@@ -13,18 +13,19 @@ package edu.mit.jwi.data;
 /**
  * An object that can be loaded. What 'loading' means may be implementation
  * dependent, but usually it will mean 'loaded into memory'.
- * 
+ *
  * @author Mark A. Finlayson
  * @version 2.4.0
  * @since JWI 2.2.0
  */
-public interface ILoadable {
+public interface ILoadable
+{
 
 	/**
 	 * Starts a simple, non-blocking load. If the object is already loaded, the
 	 * method returns immediately and has no effect. If the object is in the
 	 * process of loading, the method also returns immediately.
-	 * 
+	 *
 	 * @since JWI 2.2.0
 	 */
 	void load();
@@ -38,14 +39,12 @@ public interface ILoadable {
 	 * the method blocks until loading is complete, even if that call of the
 	 * method did not initiate the loading process. Some implementors of this
 	 * interface may not support the immediate-return functionality.
-	 * 
-	 * @param block
-	 *            if <code>true</code>, the method returns only when the loading
-	 *            process is complete; if <code>false</code>, the method returns
-	 *            immediately.
-	 * @throws InterruptedException
-	 *             if the method is blocking, and is interrupted while waiting
-	 *             for loading to complete
+	 *
+	 * @param block if <code>true</code>, the method returns only when the loading
+	 *              process is complete; if <code>false</code>, the method returns
+	 *              immediately.
+	 * @throws InterruptedException if the method is blocking, and is interrupted while waiting
+	 *                              for loading to complete
 	 * @since JWI 2.2.0
 	 */
 	void load(boolean block) throws InterruptedException;
@@ -55,11 +54,11 @@ public interface ILoadable {
 	 * <code>true</code> only if the loading process has completed and the
 	 * object is actually loaded; if the object is still in the process of
 	 * loading, or failed to load, the method should return <code>false</code>.
-	 * 
+	 *
 	 * @return <code>true</code> if the method has completed loading;
-	 *         <code>false</code> otherwise
+	 * <code>false</code> otherwise
 	 * @since JWI 2.2.0
 	 */
-	boolean isLoaded();
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted") boolean isLoaded();
 
 }
