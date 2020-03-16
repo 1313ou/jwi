@@ -476,7 +476,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 		}
 
 		// get sub view containing only the bytes of interest
-		buf = buf.duplicate().position(start).limit(end);
+		// cast is necessary (jdk9 #114)
+		buf = (ByteBuffer) buf.duplicate().position(start).limit(end);
 
 		// decode the buffer using the provided character set
 		return cs.decode(buf).toString();
