@@ -16,12 +16,11 @@ import edu.mit.jwi.item.SenseEntry;
 
 /**
  * Parser for Wordnet sense index files (e.g., <code>index.sense</code> or
- * <code>sense.index</code>). It produces an {@code ISenseEntry} object. </p>
+ * <code>sense.index</code>). It produces an {@code ISenseEntry} object.
  * <p>
  * This class follows a singleton design pattern, and is not intended to be
  * instantiated directly; rather, call the {@link #getInstance()} method to get
  * the singleton instance.
- * <p>
  *
  * @author Mark A. Finlayson
  * @version 2.4.0

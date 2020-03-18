@@ -55,6 +55,7 @@ public class UnknownLexFile extends LexFile
 	/**
 	 * Allows retrieval of an unknown lexical file object given the number.
 	 *
+	 * @param num the number of the lexical file
 	 * @return UnknownLexFile the unknown lexical file object corresponding to
 	 * the specified number
 	 * @throws IllegalArgumentException if the specified integer is not a valid lexical file number

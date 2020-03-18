@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
  * http://wordnet.princeton.edu/man/morphy.7WN.html</a> It also attempts to
  * strip "ful" endings. It does not search Wordnet to see if stems actually
  * exist. In particular, quoting from that man page:
- * <p>
  * <h3>Rules of Detachment</h3>
  * <p>
  * The following table shows the rules of detachment used by Morphy. If a word
@@ -53,7 +52,6 @@ import java.util.regex.Pattern;
  * <li>ADJ "er" "e"
  * <li>ADJ "est" "e"
  * </ul>
- * <p>
  * <h3>Special Processing for nouns ending with 'ful'</h3>
  * <p>
  * Morphy contains code that searches for nouns ending with ful and performs a

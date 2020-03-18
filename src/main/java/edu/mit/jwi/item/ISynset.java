@@ -116,7 +116,7 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * Returns an immutable list of the ids of all synsets that are related to
 	 * this synset by the specified pointer type. Note that this only returns a
 	 * non-empty result for semantic pointers (i.e., non-lexical pointers). To
-	 * obtain lexical pointers, call {@link IWord#getRelatedWords()()} on the
+	 * obtain lexical pointers, call {@link IWord#getRelatedWords()} on the
 	 * appropriate object.
 	 * <p>
 	 * If there are no such synsets, this method returns the empty list.

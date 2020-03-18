@@ -27,7 +27,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * <p>
  * Default implementation of the <code>IRAMDictionary</code> interface. This
  * implementation is designed to wrap an arbitrary dictionary object; however,
  * convenience constructors are provided for the most common use cases:
@@ -35,12 +34,10 @@ import java.util.zip.GZIPOutputStream;
  * <li>Wordnet files located on the local file system</li>
  * <li>Wordnet data to be loaded into memory from an exported stream</li>
  * </ul>
- * </p>
  * <p>
  * <b>Note:</b> If you receive an {@link OutOfMemoryError} while using this
  * object (this can occur on 32 bit JVMs), try increasing your heap size, for
  * example, by using the <code>-Xmx</code> switch.
- * </p>
  *
  * @author Mark A. Finlayson
  * @version 2.4.0
@@ -1050,13 +1047,16 @@ public class RAMDictionary implements IRAMDictionary
 	public static class DataLoader implements Callable<DictionaryData>
 	{
 
-		// the source of the dictionary data
+		/**
+		 * the source of the dictionary data
+		 */
 		private final IDictionary source;
 
 		/**
 		 * Constructs a new data loader object, that uses the specified
 		 * dictionary to load its data.
 		 *
+		 * @param source source dictionary
 		 * @throws NullPointerException if the specified dictionary is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
@@ -1279,6 +1279,8 @@ public class RAMDictionary implements IRAMDictionary
 		 * Compacts a part-of-speech map
 		 *
 		 * @param map the part-of-speech keyed map to be compacted
+		 * @param <K> key type
+		 * @param <V> value type
 		 * @since JWI 2.2.0
 		 */
 		protected <K, V> void compactPOSMap(Map<POS, Map<K, V>> map)
@@ -1293,6 +1295,8 @@ public class RAMDictionary implements IRAMDictionary
 		 * Compacts a regular map.
 		 *
 		 * @param map the map to be compacted, may not be <code>null</code>.
+		 * @param <K> key type
+		 * @param <V> value type
 		 * @return the new, compacted map
 		 * @throws NullPointerException if the specified map is <code>null</code>
 		 * @since JWI 2.2.0

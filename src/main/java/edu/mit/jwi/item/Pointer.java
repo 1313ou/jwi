@@ -226,6 +226,7 @@ public class Pointer implements IPointer
 	 * @param symbol the symbol to look up
 	 * @param pos    the part of speech for the symbol; may be <code>null</code>
 	 *               except for ambiguous symbols
+	 * @return pointer
 	 * @throws IllegalArgumentException if the symbol does not correspond to a known pointer.
 	 * @since JWI 2.1.0
 	 */

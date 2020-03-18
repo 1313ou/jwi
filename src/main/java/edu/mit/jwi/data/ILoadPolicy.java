@@ -29,7 +29,7 @@ public interface ILoadPolicy
 	 * Loading behavior where the object does not load itself when instantiated,
 	 * initialized, or opened. Loading can be initiated through other means (e.g., a
 	 * call to the {@link ILoadable#load(boolean)} method, if the object
-	 * supports it). Value is 1 << 1.
+	 * supports it). Value is 1 &lt;&lt; 1.
 	 *
 	 * @since JWI 2.2.0
 	 */
@@ -37,7 +37,7 @@ public interface ILoadPolicy
 
 	/**
 	 * Loading behavior where the object loads itself in the background when
-	 * instantiated, initialized, or opened. Value is 1 << 2.
+	 * instantiated, initialized, or opened. Value is 1 &lt;&lt; 2.
 	 *
 	 * @since JWI 2.2.0
 	 */
@@ -45,7 +45,7 @@ public interface ILoadPolicy
 
 	/**
 	 * Loading behavior where the object loads itself when instantiated,
-	 * initialized, or opened, blocking the method. Value is 1 << 3.
+	 * initialized, or opened, blocking the method. Value is 1 &lt;&lt; 3.
 	 *
 	 * @since JWI 2.2.0
 	 */

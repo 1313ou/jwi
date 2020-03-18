@@ -86,6 +86,7 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 *            content type
 	 * @param pos the part of speech, possibly <code>null</code>, of the desired
 	 *            content type
+	 * @param <T> type
 	 * @return the first content type that matches the specified data type and
 	 * part of speech.
 	 * @since JWI 2.3.4

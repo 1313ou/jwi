@@ -784,6 +784,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * must be in a UTF-8 compatible format as specified in
 	 * {@link URLDecoder}.
 	 *
+	 * @param url url
 	 * @return a file pointing to the same place as the url
 	 * @throws NullPointerException     if the url is <code>null</code>
 	 * @throws IllegalArgumentException if the url does not use the 'file' protocol

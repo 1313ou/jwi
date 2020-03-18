@@ -39,6 +39,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	/**
 	 * Constructs a dictionary with a caller-specified {@code IDataProvider}.
 	 *
+	 * @param provider data provider
 	 * @throws NullPointerException if the specified data provider is <code>null</code>
 	 */
 	public DataSourceDictionary(IDataProvider provider)
@@ -286,8 +287,10 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	/**
 	 * This method sets the head word on the specified synset by searching in
 	 * the dictionary to find the head of its cluster. We will assume the head
-	 * is the first adjective head synset related by an '&' pointer (SIMILAR_TO)
+	 * is the first adjective head synset related by an '&amp;' pointer (SIMILAR_TO)
 	 * to this synset.
+	 *
+	 * @param synset synset
 	 */
 	protected void setHeadWord(ISynset synset)
 	{
@@ -492,6 +495,9 @@ public class DataSourceDictionary implements IDataSourceDictionary
 
 		/**
 		 * Parses the line using a parser provided at construction time
+		 *
+		 * @param line line
+		 * @return parsed object
 		 */
 		public abstract N parseLine(String line);
 	}
@@ -509,6 +515,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		/**
 		 * Constructs a new file iterator with the specified content type.
 		 *
+		 * @param content content type
 		 * @since JWI 2.1.5
 		 */
 		public FileIterator2(IContentType<T> content)
@@ -519,6 +526,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		/**
 		 * Constructs a new file iterator with the specified content type and start key.
 		 *
+		 * @param content  content type
+		 * @param startKey start key
 		 * @since JWI 2.1.5
 		 */
 		public FileIterator2(IContentType<T> content, String startKey)

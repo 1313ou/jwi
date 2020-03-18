@@ -60,6 +60,7 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 		 * Returns a new input stream from this factory.
 		 *
 		 * @return a new, unused input stream from this factory.
+		 * @throws IOException io exception
 		 * @since JWI 2.4.0
 		 */
 		InputStream makeInputStream() throws IOException;
