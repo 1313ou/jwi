@@ -7,6 +7,7 @@ import edu.mit.jwi.item.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,13 +28,14 @@ public class JWI
 	public static void main(final String[] args) throws IOException
 	{
 		final String wnHome = args[0];
-		run(wnHome);
+		final String lemma = args[1];
+		run(wnHome, lemma);
 	}
 
-	@SuppressWarnings("SameReturnValue") public static boolean run(final String wnhome) throws IOException
+	@SuppressWarnings("SameReturnValue") public static boolean run(final String wnhome, final String lemma) throws IOException
 	{
 		final JWI jwi = new JWI(wnhome);
-		jwi.walk("spread");
+		jwi.walk(lemma);
 		return true;
 	}
 
@@ -44,6 +46,7 @@ public class JWI
 
 		// construct the dictionary object and open it
 		this.dict = new Dictionary(url);
+		this.dict.setCharset(StandardCharsets.UTF_8);
 		this.dict.open();
 	}
 
