@@ -346,7 +346,6 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 */
 	public boolean open() throws IOException
 	{
-
 		try
 		{
 			lifecycleLock.lock();
@@ -366,6 +365,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			List<File> files = new ArrayList<>(Arrays.asList(fileArray));
 			if (files.isEmpty())
 				throw new IOException("No files found in " + directory);
+			files.sort(Comparator.comparing(File::getName));
 
 			// make the source map
 			Map<IContentType<?>, ILoadableDataSource<?>> hiddenMap = createSourceMap(files, policy);
@@ -448,7 +448,6 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 		{
 			loadingLock.lock();
 		}
-
 	}
 
 	/*
