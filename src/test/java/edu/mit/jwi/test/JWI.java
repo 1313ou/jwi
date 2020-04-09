@@ -79,6 +79,10 @@ public class JWI
 					// sense=(senseid, lexid, sensekey, synset)
 					IWord sense = this.dict.getWord(senseid);
 					System.out.println("● sense = " + sense.toString() + " lexid=" + sense.getLexicalID() + " sensekey=" + sense.getSenseKey());
+					ISenseEntry senseEntry = this.dict.getSenseEntry(sense.getSenseKey());
+					if (senseEntry == null)
+						throw new IllegalArgumentException(sense.getSenseKey().toString());
+					System.out.println("  sensenum = " + senseEntry.getSenseNumber() + " tagcnt=" + senseEntry.getTagCount());
 
 					// synset
 					final ISynsetID synsetid = senseid.getSynsetID();

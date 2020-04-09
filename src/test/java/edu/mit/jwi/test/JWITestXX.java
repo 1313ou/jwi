@@ -14,4 +14,11 @@ public class JWITestXX
 		boolean result = JWI.run(wnHome, "spread");
 		assertTrue(result);
 	}
+
+	@Test public void mainTestXX2() throws IOException
+	{
+		String wnHome = System.getenv("WNHOMEXX" /* + File.separator + "dict" */);
+		boolean result = JWI.run(wnHome, "small");
+		assertTrue(result);
+	}
 }
