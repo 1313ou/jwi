@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-public class JWITestXX_contrib
+public class JWITestXX_nonascii
 {
 	@Test public void mainTestXX_contrib() throws IOException
 	{

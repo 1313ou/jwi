@@ -143,7 +143,6 @@ public class DataType<T> implements IDataType<T>
 	{
 		if (dataTypes == null)
 		{
-
 			// get all the fields containing ContentType
 			Field[] fields = DataType.class.getFields();
 			List<Field> instanceFields = new ArrayList<>();
@@ -193,7 +192,6 @@ public class DataType<T> implements IDataType<T>
 	 */
 	public static File find(IDataType<?> type, POS pos, Collection<? extends File> files)
 	{
-
 		Set<String> typePatterns = type.getResourceNameHints();
 		Set<String> posPatterns = (pos == null) ? Collections.emptySet() : pos.getResourceNameHints();
 
