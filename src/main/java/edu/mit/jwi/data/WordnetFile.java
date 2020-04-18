@@ -408,7 +408,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 					int cur = buf.position();
 					c = (char) buf.get();
 					if (c != '\n')
-						buf.position(cur);
+						((Buffer)buf).position(cur);
 					break;
 				default:
 					input.append(c);
@@ -465,7 +465,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 					int cur = buf.position();
 					b = buf.get();
 					if (b != 0x0A) // check for following newline
-						buf.position(cur);
+						((Buffer)buf).position(cur);
 					break;
 				default:
 					end++;
@@ -518,7 +518,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 		}
 
 		// set the buffer to the beginning of the line
-		buf.position(i);
+		((Buffer)buf).position(i);
 	}
 
 	/**
@@ -613,7 +613,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 				int pos = itrBuffer.position();
 				ByteBuffer newBuf = buffer.asReadOnlyBuffer();
 				((Buffer) newBuf).clear();
-				newBuf.position(pos);
+				((Buffer)newBuf).position(pos);
 				itrBuffer = newBuf;
 			}
 

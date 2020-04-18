@@ -15,6 +15,7 @@ import edu.mit.jwi.data.WordnetFile;
 import edu.mit.jwi.data.compare.ICommentDetector;
 
 import java.lang.reflect.Field;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -495,7 +496,7 @@ public class Version implements IVersion
 				break;
 			}
 		}
-		buffer.position(origPos);
+		((Buffer)buffer).position(origPos);
 		return parseVersionProtected(line);
 	}
 

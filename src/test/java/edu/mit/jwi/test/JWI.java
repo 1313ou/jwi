@@ -79,15 +79,15 @@ public class JWI
 					// sense=(senseid, lexid, sensekey, synset)
 					IWord sense = this.dict.getWord(senseid);
 					System.out.println("● sense = " + sense.toString() + " lexid=" + sense.getLexicalID() + " sensekey=" + sense.getSenseKey());
-					Map<IPointer, List<IWordID>> relatedmap = sense.getRelatedMap();
-					if(relatedmap != null)
+					Map<IPointer, List<IWordID>> relatedMap = sense.getRelatedMap();
+					if(relatedMap != null)
 					{
-						for (Map.Entry<IPointer, List<IWordID>> entry : relatedmap.entrySet())
+						for (Map.Entry<IPointer, List<IWordID>> entry : relatedMap.entrySet())
 						{
 							IPointer pointer = entry.getKey();
-							for (IWordID relatedid : entry.getValue())
+							for (IWordID relatedId : entry.getValue())
 							{
-								IWord related = this.dict.getWord(relatedid);
+								IWord related = this.dict.getWord(relatedId);
 								System.out.println("  related "+ pointer + " = " + related.getLemma() + " synset=" + related.getSynset().toString());
 							}
 						}
@@ -100,12 +100,12 @@ public class JWI
 					if(verbFrames != null)
 					{
 						for(IVerbFrame verbFrame : verbFrames)
-							System.out.println("  verbframe = " + verbFrame.getTemplate() + " : "+ verbFrame.instantiateTemplate(lemma));
+							System.out.println("  verb frame = " + verbFrame.getTemplate() + " : "+ verbFrame.instantiateTemplate(lemma));
 					}
 					ISenseEntry senseEntry = this.dict.getSenseEntry(sense.getSenseKey());
 					if (senseEntry == null)
 						throw new IllegalArgumentException(sense.getSenseKey().toString() + " at offset "+ sense.getSynset().getOffset() + " with pos " + sense.getPOS().toString());
-					System.out.println("  sensenum = " + senseEntry.getSenseNumber() + " tagcnt=" + senseEntry.getTagCount());
+					System.out.println("  sensenum = " + senseEntry.getSenseNumber() + " tag cnt=" + senseEntry.getTagCount());
 
 					// synset
 					final ISynsetID synsetid = senseid.getSynsetID();
