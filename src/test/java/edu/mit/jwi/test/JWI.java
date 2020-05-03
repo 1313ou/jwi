@@ -50,6 +50,11 @@ public class JWI
 		this.dict.open();
 	}
 
+	public IDictionary getDict()
+	{
+		return dict;
+	}
+
 	public void walk(final String lemma)
 	{
 		for (final POS pos : POS.values())
@@ -80,7 +85,7 @@ public class JWI
 					IWord sense = this.dict.getWord(senseid);
 					System.out.println("● sense = " + sense.toString() + " lexid=" + sense.getLexicalID() + " sensekey=" + sense.getSenseKey());
 					Map<IPointer, List<IWordID>> relatedMap = sense.getRelatedMap();
-					if(relatedMap != null)
+					if (relatedMap != null)
 					{
 						for (Map.Entry<IPointer, List<IWordID>> entry : relatedMap.entrySet())
 						{
@@ -88,23 +93,25 @@ public class JWI
 							for (IWordID relatedId : entry.getValue())
 							{
 								IWord related = this.dict.getWord(relatedId);
-								System.out.println("  related "+ pointer + " = " + related.getLemma() + " synset=" + related.getSynset().toString());
+								System.out.println("  related " + pointer + " = " + related.getLemma() + " synset=" + related.getSynset().toString());
 							}
 						}
 					}
 
 					AdjMarker marker = sense.getAdjectiveMarker();
-					if(marker != null)
+					if (marker != null)
 						System.out.println("  marker = " + marker);
 					List<IVerbFrame> verbFrames = sense.getVerbFrames();
-					if(verbFrames != null)
+					if (verbFrames != null)
 					{
-						for(IVerbFrame verbFrame : verbFrames)
-							System.out.println("  verb frame = " + verbFrame.getTemplate() + " : "+ verbFrame.instantiateTemplate(lemma));
+						for (IVerbFrame verbFrame : verbFrames)
+							System.out.println("  verb frame = " + verbFrame.getTemplate() + " : " + verbFrame.instantiateTemplate(lemma));
 					}
-					ISenseEntry senseEntry = this.dict.getSenseEntry(sense.getSenseKey());
+					ISenseKey senseKey = sense.getSenseKey();
+					ISenseEntry senseEntry = this.dict.getSenseEntry(senseKey);
 					if (senseEntry == null)
-						throw new IllegalArgumentException(sense.getSenseKey().toString() + " at offset "+ sense.getSynset().getOffset() + " with pos " + sense.getPOS().toString());
+						throw new IllegalArgumentException(
+								senseKey.toString() + " at offset " + sense.getSynset().getOffset() + " with pos " + sense.getPOS().toString());
 					System.out.println("  sensenum = " + senseEntry.getSenseNumber() + " tag cnt=" + senseEntry.getTagCount());
 
 					// synset
