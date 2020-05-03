@@ -17,7 +17,6 @@ import edu.mit.jwi.item.Version;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -241,7 +240,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 			loadingLock.lock();
 			int len = (int) file.length();
 			ByteBuffer buf = buffer.asReadOnlyBuffer();
-			((Buffer) buf).clear();
+			buf.clear();
 			byte[] data = new byte[len];
 			buf.get(data, 0, len);
 
@@ -408,7 +407,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 					int cur = buf.position();
 					c = (char) buf.get();
 					if (c != '\n')
-						((Buffer)buf).position(cur);
+						buf.position(cur);
 					break;
 				default:
 					input.append(c);
@@ -465,7 +464,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 					int cur = buf.position();
 					b = buf.get();
 					if (b != 0x0A) // check for following newline
-						((Buffer)buf).position(cur);
+						buf.position(cur);
 					break;
 				default:
 					end++;
@@ -518,7 +517,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 		}
 
 		// set the buffer to the beginning of the line
-		((Buffer)buf).position(i);
+		buf.position(i);
 	}
 
 	/**
@@ -551,7 +550,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 		{
 			parentBuffer = buffer;
 			itrBuffer = buffer.asReadOnlyBuffer();
-			((Buffer) itrBuffer).clear();
+			itrBuffer.clear();
 			key = (key == null) ? null : key.trim();
 			if (key == null || key.length() == 0)
 			{
@@ -612,8 +611,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 			{
 				int pos = itrBuffer.position();
 				ByteBuffer newBuf = buffer.asReadOnlyBuffer();
-				((Buffer) newBuf).clear();
-				((Buffer)newBuf).position(pos);
+				newBuf.clear();
+				newBuf.position(pos);
 				itrBuffer = newBuf;
 			}
 
