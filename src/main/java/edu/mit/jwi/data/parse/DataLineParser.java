@@ -163,8 +163,7 @@ public class DataLineParser implements ILineParser<ISynset>
 				// get source/target numbers
 				source_target_num = Integer.parseInt(tokenizer.nextToken(), 16);
 
-				// this is a semantic pointer if the source/target numbers are
-				// zero
+				// this is a semantic pointer if the source/target numbers are zero
 				if (source_target_num == 0)
 				{
 					if (synsetPointerMap == null)
@@ -188,26 +187,31 @@ public class DataLineParser implements ILineParser<ISynset>
 					list.trimToSize();
 
 			// parse verb frames
+			// do not make the field compulsory for verbs with a '00' when no frame is present
 			if (synset_pos == POS.VERB)
 			{
-				int frame_num, word_num;
-				int verbFrameCount = Integer.parseInt(tokenizer.nextToken());
-				IVerbFrame frame;
-				for (int i = 0; i < verbFrameCount; i++)
+				String peekTok = tokenizer.nextToken();
+				if (!peekTok.startsWith("|"))
 				{
-					// Consume '+'
-					tokenizer.nextToken();
-					// Get frame number
-					frame_num = Integer.parseInt(tokenizer.nextToken());
-					frame = resolveVerbFrame(frame_num);
-					// Get word number
-					word_num = Integer.parseInt(tokenizer.nextToken(), 16);
-					if (word_num > 0)
-						wordProxies[word_num - 1].addVerbFrame(frame);
-					else
+					int frame_num, word_num;
+					int verbFrameCount = Integer.parseInt(peekTok);
+					IVerbFrame frame;
+					for (int i = 0; i < verbFrameCount; i++)
 					{
-						for (IWordBuilder proxy : wordProxies)
-							proxy.addVerbFrame(frame);
+						// Consume '+'
+						tokenizer.nextToken();
+						// Get frame number
+						frame_num = Integer.parseInt(tokenizer.nextToken());
+						frame = resolveVerbFrame(frame_num);
+						// Get word number
+						word_num = Integer.parseInt(tokenizer.nextToken(), 16);
+						if (word_num > 0)
+							wordProxies[word_num - 1].addVerbFrame(frame);
+						else
+						{
+							for (IWordBuilder proxy : wordProxies)
+								proxy.addVerbFrame(frame);
+						}
 					}
 				}
 			}

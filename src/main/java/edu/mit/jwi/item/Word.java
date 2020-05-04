@@ -325,8 +325,8 @@ public class Word implements IWord
 	 */
 	public static void checkLexicalID(int id)
 	{
-		if (isIllegalLexicalID(id))
-			throw new IllegalArgumentException("'" + id + " is an illegal lexical id: lexical ids are in the closed range [0,15]");
+		//if (isIllegalLexicalID(id))
+		//	throw new IllegalArgumentException("'" + id + " is an illegal lexical id: lexical ids are in the closed range [0,15]");
 	}
 
 	/**
