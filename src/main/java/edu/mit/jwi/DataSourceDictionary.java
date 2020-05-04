@@ -14,6 +14,7 @@ import edu.mit.jwi.data.DataType;
 import edu.mit.jwi.data.IContentType;
 import edu.mit.jwi.data.IDataProvider;
 import edu.mit.jwi.data.IDataSource;
+import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.data.parse.ILineParser;
 import edu.mit.jwi.item.*;
 
@@ -131,6 +132,16 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	public void setCharset(Charset charset)
 	{
 		provider.setCharset(charset);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
+	 */
+	public void setComparator(IContentType<?> contentType, ILineComparator comparator)
+	{
+		provider.setComparator(contentType, comparator);
 	}
 
 	/*

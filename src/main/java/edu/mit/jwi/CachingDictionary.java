@@ -10,6 +10,8 @@
 
 package edu.mit.jwi;
 
+import edu.mit.jwi.data.IContentType;
+import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.item.*;
 
 import java.io.IOException;
@@ -135,6 +137,16 @@ public class CachingDictionary implements ICachingDictionary
 	public Charset getCharset()
 	{
 		return backing.getCharset();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
+	 */
+	public void setComparator(IContentType<?> contentType, ILineComparator comparator)
+	{
+		backing.setComparator(contentType, comparator);
 	}
 
 	/*

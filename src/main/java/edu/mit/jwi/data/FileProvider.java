@@ -11,6 +11,7 @@
 package edu.mit.jwi.data;
 
 import edu.mit.jwi.RAMDictionary;
+import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.data.parse.ILineParser;
 import edu.mit.jwi.item.ISynset;
 import edu.mit.jwi.item.IVersion;
@@ -57,7 +58,6 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 {
-
 	// final instance fields
 	private final Lock lifecycleLock = new ReentrantLock();
 	private final Lock loadingLock = new ReentrantLock();
@@ -315,6 +315,35 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 				// a new set of types using the new charset
 				for (Entry<IContentType<?>, IContentType<?>> e : prototypeMap.entrySet())
 					e.setValue(new ContentType(e.getKey().getDataType(), e.getKey().getPOS(), e.getKey().getLineComparator(), charset));
+			}
+		}
+		finally
+		{
+			lifecycleLock.unlock();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IDataProvider#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" }) public void setComparator(IContentType<?> contentType, ILineComparator comparator)
+	{
+		try
+		{
+			lifecycleLock.lock();
+			if (isOpen())
+				throw new IllegalStateException("provider currently open");
+			if (comparator == null)
+			{
+				// if we get a null comparator, reset to the prototype
+				prototypeMap.put(contentType, contentType);
+			}
+			else
+			{
+				// if we get a non-null comparator, generate a new type using the new comparator
+				prototypeMap.put(contentType, new ContentType(contentType.getDataType(), contentType.getPOS(), comparator, contentType.getCharset()));
 			}
 		}
 		finally

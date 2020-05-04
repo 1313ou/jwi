@@ -11,7 +11,9 @@
 package edu.mit.jwi;
 
 import edu.mit.jwi.data.FileProvider;
+import edu.mit.jwi.data.IContentType;
 import edu.mit.jwi.data.ILoadPolicy;
+import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.item.*;
 import edu.mit.jwi.item.Synset.IWordBuilder;
 
@@ -238,6 +240,18 @@ public class RAMDictionary implements IRAMDictionary
 	public Charset getCharset()
 	{
 		return (backing == null) ? null : backing.getCharset();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
+	 */
+	public void setComparator(IContentType<?> contentType, ILineComparator comparator)
+	{
+		if (isOpen())
+			throw new ObjectOpenException();
+		backing.setComparator(contentType, comparator);
 	}
 
 	/*

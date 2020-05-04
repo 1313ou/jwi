@@ -10,6 +10,7 @@
 
 package edu.mit.jwi.data;
 
+import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.item.IHasVersion;
 import edu.mit.jwi.item.POS;
 
@@ -64,6 +65,19 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @since JWI 2.3.4
 	 */
 	void setCharset(Charset charset);
+
+	/**
+	 * Sets the comparator associated with this content type in this dictionary.
+	 * The comparator may be <code>null</code> in which case it is reset.
+	 *
+	 * @param contentType the <code>non-null</code> content type for which
+	 *                    the comparator is to be set.
+	 * @param comparator  the possibly <code>null</code> comparator to use when
+	 *                    decoding files.
+	 * @throws IllegalStateException if the provider is currently open
+	 * @since JWI 2.4.1
+	 */
+	void setComparator(IContentType<?> contentType, ILineComparator comparator);
 
 	/**
 	 * Returns a set containing all the content types this provider looks for at
