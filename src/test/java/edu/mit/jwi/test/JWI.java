@@ -52,7 +52,9 @@ public class JWI
 		return dict;
 	}
 
-	public <R> void forallSenses(final Function<IWord, R> f)
+	// M A I N   I T E R A T I O N S
+
+	public <R> void forAllSenses(final Function<IWord, R> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -67,75 +69,56 @@ public class JWI
 					if (sense == null)
 					{
 						System.err.println("⚠ senseid = " + senseid.toString() + " ➜ null sense");
-						IWord sense2 = this.dict.getWord(senseid);
+						//IWord sense2 = this.dict.getWord(senseid);
 						continue;
 					}
 					if (f != null)
 					{
-						R r = f.apply(sense);
+						/*R r =*/
+						f.apply(sense);
 					}
 				}
 			}
 		}
 	}
 
-	public <R> void forallSensekeys(final Function<ISenseKey, R> f)
+	public <R> void tryForAllSenses(final Function<IWord, R> f)
 	{
 		for (final POS pos : POS.values())
 		{
 			Iterator<IIndexWord> it = this.dict.getIndexWordIterator(pos);
 			while (it.hasNext())
 			{
-				IIndexWord idx = it.next();
-				final List<IWordID> senseids = idx.getWordIDs();
-				for (final IWordID senseid : senseids) // synset id, sense number, and lemma
+				try
 				{
-					IWord sense = this.dict.getWord(senseid);
-					if (sense == null)
+					IIndexWord idx = it.next();
+					final List<IWordID> senseids = idx.getWordIDs();
+					for (final IWordID senseid : senseids) // synset id, sense number, and lemma
 					{
-						System.err.println("⚠ senseid = " + senseid.toString() + " ➜ null sense");
-						IWord sense2 = this.dict.getWord(senseid);
-						continue;
-					}
-					ISenseKey sensekey = sense.getSenseKey();
-					if (f != null)
-					{
-						R r = f.apply(sensekey);
+						IWord sense = this.dict.getWord(senseid);
+						if (sense == null)
+						{
+							System.err.println("⚠ senseid = " + senseid.toString() + " ➜ null sense");
+							//IWord sense2 = this.dict.getWord(senseid);
+							continue;
+						}
+						if (f != null)
+						{
+							/*R r =*/
+							f.apply(sense);
+						}
 					}
 				}
+				catch (Exception e)
+				{
+					System.err.println(e.getMessage());
+				}
+
 			}
 		}
 	}
 
-	public <R> void forallLemmas(final Function<String, R> f)
-	{
-		for (final POS pos : POS.values())
-		{
-			Iterator<IIndexWord> it = this.dict.getIndexWordIterator(pos);
-			while (it.hasNext())
-			{
-				IIndexWord idx = it.next();
-				final List<IWordID> senseids = idx.getWordIDs();
-				for (final IWordID senseid : senseids) // synset id, sense number, and lemma
-				{
-					IWord sense = this.dict.getWord(senseid);
-					if (sense == null)
-					{
-						System.err.println("⚠ senseid = " + senseid.toString() + " ➜ null sense");
-						IWord sense2 = this.dict.getWord(senseid);
-						continue;
-					}
-					String lemma = sense.getLemma();
-					if (f != null)
-					{
-						R r = f.apply(lemma);
-					}
-				}
-			}
-		}
-	}
-
-	public <R> void forallSynsets(final Function<ISynset, R> f)
+	public <R> void forAllSynsets(final Function<ISynset, R> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -145,13 +128,38 @@ public class JWI
 				ISynset synset = it.next();
 				if (f != null)
 				{
-					R r = f.apply(synset);
+					/*R r =*/
+					f.apply(synset);
 				}
 			}
 		}
 	}
 
-	public <R> void forallSenseEntries(final Function<ISenseEntry, R> f)
+	public <R> void tryForAllSynsets(final Function<ISynset, R> f)
+	{
+		for (final POS pos : POS.values())
+		{
+			Iterator<ISynset> it = this.dict.getSynsetIterator(pos);
+			while (it.hasNext())
+			{
+				try
+				{
+					ISynset synset = it.next();
+					if (f != null)
+					{
+						/*R r =*/
+						f.apply(synset);
+					}
+				}
+				catch (Exception e)
+				{
+					System.err.println(e.getMessage());
+				}
+			}
+		}
+	}
+
+	public <R> void forAllSenseEntries(final Function<ISenseEntry, R> f)
 	{
 		Iterator<ISenseEntry> it = this.dict.getSenseEntryIterator();
 		while (it.hasNext())
@@ -159,12 +167,36 @@ public class JWI
 			ISenseEntry entry = it.next();
 			if (f != null)
 			{
-				R r = f.apply(entry);
+				/*R r =*/
+				f.apply(entry);
 			}
 		}
 	}
 
-	public <R> void forallSenseRelations(final Function<IWord, R> f)
+	public <R> void tryForAllSenseEntries(final Function<ISenseEntry, R> f)
+	{
+		Iterator<ISenseEntry> it = this.dict.getSenseEntryIterator();
+		while (it.hasNext())
+		{
+			try
+			{
+				ISenseEntry entry = it.next();
+				if (f != null)
+				{
+					/*R r =*/
+					f.apply(entry);
+				}
+			}
+			catch (Exception e)
+			{
+				System.err.println(e.getMessage());
+			}
+		}
+	}
+
+	// S P E C I F I C   I T E R A T I O N S
+
+	public <R> void forAllLemmas(final Function<String, R> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -179,24 +211,50 @@ public class JWI
 					if (sense == null)
 					{
 						System.err.println("⚠ senseid = " + senseid.toString() + " ➜ null sense");
-						IWord sense2 = this.dict.getWord(senseid);
+						// IWord sense2 = this.dict.getWord(senseid);
 						continue;
 					}
-					List<IWordID> relatedIds = sense.getRelatedWords();
-					for (IWordID relatedId : relatedIds)
+					String lemma = sense.getLemma();
+					if (f != null)
 					{
-						IWord related = this.dict.getWord(relatedId);
-						if (f != null)
-						{
-							R r = f.apply(related);
-						}
+						/* R r =*/
+						f.apply(lemma);
 					}
 				}
 			}
 		}
 	}
 
-	public <R> void forallSynsetRelations(final Function<ISynset, R> f)
+	public <R> void forAllSensekeys(final Function<ISenseKey, R> f)
+	{
+		for (final POS pos : POS.values())
+		{
+			Iterator<IIndexWord> it = this.dict.getIndexWordIterator(pos);
+			while (it.hasNext())
+			{
+				IIndexWord idx = it.next();
+				final List<IWordID> senseids = idx.getWordIDs();
+				for (final IWordID senseid : senseids) // synset id, sense number, and lemma
+				{
+					IWord sense = this.dict.getWord(senseid);
+					if (sense == null)
+					{
+						System.err.println("⚠ senseid = " + senseid.toString() + " ➜ null sense");
+						//IWord sense2 = this.dict.getWord(senseid);
+						continue;
+					}
+					ISenseKey sensekey = sense.getSenseKey();
+					if (f != null)
+					{
+						/*R r =*/
+						f.apply(sensekey);
+					}
+				}
+			}
+		}
+	}
+
+	public <R> void forAllSynsetRelations(final Function<ISynset, R> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -210,12 +268,48 @@ public class JWI
 					ISynset related = this.dict.getSynset(relatedId);
 					if (f != null)
 					{
-						R r = f.apply(related);
+						/*R r =*/
+						f.apply(related);
 					}
 				}
 			}
 		}
 	}
+
+	public <R> void forAllSenseRelations(final Function<IWord, R> f)
+	{
+		for (final POS pos : POS.values())
+		{
+			Iterator<IIndexWord> it = this.dict.getIndexWordIterator(pos);
+			while (it.hasNext())
+			{
+				IIndexWord idx = it.next();
+				final List<IWordID> senseids = idx.getWordIDs();
+				for (final IWordID senseid : senseids) // synset id, sense number, and lemma
+				{
+					IWord sense = this.dict.getWord(senseid);
+					if (sense == null)
+					{
+						System.err.println("⚠ senseid = " + senseid.toString() + " ➜ null sense");
+						//IWord sense2 = this.dict.getWord(senseid);
+						continue;
+					}
+					List<IWordID> relatedIds = sense.getRelatedWords();
+					for (IWordID relatedId : relatedIds)
+					{
+						IWord related = this.dict.getWord(relatedId);
+						if (f != null)
+						{
+							/*R r =*/
+							f.apply(related);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// T R E E   E X P L O R A T I O N S
 
 	public void walk(final String lemma)
 	{
@@ -242,7 +336,6 @@ public class JWI
 
 	public void walk(final IIndexWord idx)
 	{
-		String lemma = idx.getLemma();
 		Set<IPointer> pointers = idx.getPointers();
 		for (IPointer ptr : pointers)
 		{
@@ -361,6 +454,8 @@ public class JWI
 				walk(synset2, p, level + 1);
 		}
 	}
+
+	// H E L P E R S
 
 	public static String toString(final ISynset synset)
 	{

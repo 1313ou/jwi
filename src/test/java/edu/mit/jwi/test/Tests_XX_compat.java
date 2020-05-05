@@ -10,15 +10,15 @@ import java.io.IOException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-public class Tests_2020
+public class Tests_XX_compat
 {
 	private static JWI jwi;
 
 	@BeforeClass public static void init() throws IOException
 	{
-		String wnHome = System.getenv("WNHOME2020" /* + File.separator + "dict" */);
+		String wnHome = System.getenv("WNHOMEXX_compat" /* + File.separator + "dict" */);
 		System.out.printf("FROM %s%n", wnHome);
-		Word.setCheckLexicalId(true);
+		Word.setCheckLexicalId(false);
 		jwi = new JWI(wnHome);
 	}
 

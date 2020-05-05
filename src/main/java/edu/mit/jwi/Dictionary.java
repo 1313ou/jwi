@@ -26,7 +26,6 @@ import java.net.URL;
  */
 public class Dictionary extends CachingDictionary
 {
-
 	/**
 	 * Constructs a new dictionary that uses the Wordnet files located in a
 	 * directory pointed to by the specified url

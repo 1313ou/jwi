@@ -19,7 +19,7 @@ public class Test_sensekey_XX
 		jwi = new JWI(wnHome);
 	}
 
-	@Test public void sensekey() throws IOException
+	@Test public void sensekey()
 	{
 		String skStr = "galore%5:00:02:many:00";
 		TestLib.sensekey(jwi, skStr);
@@ -28,7 +28,7 @@ public class Test_sensekey_XX
 	//find:   hot%5:00:03:warm:03
 	//exists: hot%5:00:19:warm:03				19->3
 
-	@Test public void find_sensekey_non_compat_lexid() throws IOException
+	@Test public void find_sensekey_non_compat_lexid()
 	{
 		String skStr = "hot%5:00:19:warm:03";
 		ISynset synset = TestLib.sensekey(jwi, skStr);
@@ -39,7 +39,7 @@ public class Test_sensekey_XX
 		}
 	}
 
-	@Test public void parse_non_compat_lexid() throws IOException
+	@Test public void parse_non_compat_lexid()
 	{
 		String line = "02504828 00 s 01 hot 13 001 & 02504619 a 0000 | (color) bold and intense; \"hot pink\"";
 		              //"02504839 00 s 01 hot 13 001 & 02504630 a 0000 | (color) bold and intense; \"hot pink\"";"
@@ -52,7 +52,7 @@ public class Test_sensekey_XX
 		}
 	}
 
-	@Test public void sensekeys() throws IOException
+	@Test public void sensekeys()
 	{
 		TestLib.sensekeys(jwi);
 	}

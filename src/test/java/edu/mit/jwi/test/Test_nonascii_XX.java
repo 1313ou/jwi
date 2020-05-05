@@ -1,15 +1,10 @@
 package edu.mit.jwi.test;
 
-import edu.mit.jwi.Dictionary;
-import edu.mit.jwi.IDictionary;
 import edu.mit.jwi.item.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -25,7 +20,7 @@ public class Test_nonascii_XX
 		jwi = new JWI(wnHome);
 	}
 
-	@Test public void nonascii() throws IOException
+	@Test public void nonascii()
 	{
 		final IIndexWord idx = jwi.getDict().getIndexWord("Wałęsa", POS.NOUN);
 		final List<IWordID> senseids = idx.getWordIDs();

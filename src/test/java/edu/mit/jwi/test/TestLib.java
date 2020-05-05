@@ -6,22 +6,21 @@ import edu.mit.jwi.item.ISenseKey;
 import edu.mit.jwi.item.ISynset;
 import edu.mit.jwi.item.SynsetID;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
 
 public class TestLib
 {
-	public static ISynset sensekey(JWI jwi, String skstr) throws IOException
+	public static ISynset sensekey(JWI jwi, String skStr)
 	{
-		ISenseKey sk = SenseKeyParser.getInstance().parseLine(skstr);
-		assertEquals(sk.toString(), skstr);
+		ISenseKey sk = SenseKeyParser.getInstance().parseLine(skStr);
+		assertEquals(sk.toString(), skStr);
 
 		return sensekey(jwi, sk);
 	}
 
-	public static ISynset sensekey(JWI jwi, ISenseKey sk) throws IOException
+	public static ISynset sensekey(JWI jwi, ISenseKey sk)
 	{
 		System.out.println("● sensekey=" + sk);
 		ISenseEntry senseEntry = jwi.getDict().getSenseEntry(sk);
@@ -32,10 +31,10 @@ public class TestLib
 		return jwi.getDict().getSynset(sid);
 	}
 
-	public static void sensekeys(JWI jwi) throws IOException
+	public static void sensekeys(JWI jwi)
 	{
 		AtomicInteger errorCount = new AtomicInteger();
-		jwi.forallSenses((sense) -> {
+		jwi.forAllSenses((sense) -> {
 			ISenseKey sk = sense.getSenseKey();
 			ISenseEntry senseEntry = jwi.getDict().getSenseEntry(sk);
 			if (senseEntry == null)

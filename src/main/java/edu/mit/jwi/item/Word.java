@@ -316,6 +316,31 @@ public class Word implements IWord
 	}
 
 	/**
+	 * Determines if lexical IDs are checked to be in the closed range [0,15]
+	 */
+	static private boolean checkLexicalID = false;
+
+	/**
+	 * Get flag to check lexical IDs.
+	 *
+	 * @return whether lexical IDs are checked to be in the closed range [0,15].
+	 */
+	public static boolean getCheckLexicalId()
+	{
+		return checkLexicalID;
+	}
+
+	/**
+	 * Set flag to check lexical IDs.
+	 *
+	 * @param flag whether lexical IDs are checked to be in the closed range [0,15].
+	 */
+	public static void setCheckLexicalId(boolean flag)
+	{
+		checkLexicalID = flag;
+	}
+
+	/**
 	 * Checks the specified lexical id, and throws an
 	 * {@link IllegalArgumentException} if it is not legal.
 	 *
@@ -325,8 +350,8 @@ public class Word implements IWord
 	 */
 	public static void checkLexicalID(int id)
 	{
-		//if (isIllegalLexicalID(id))
-		//	throw new IllegalArgumentException("'" + id + " is an illegal lexical id: lexical ids are in the closed range [0,15]");
+		if (checkLexicalID && isIllegalLexicalID(id))
+			throw new IllegalArgumentException("'" + id + " is an illegal lexical id: lexical ids are in the closed range [0,15]");
 	}
 
 	/**

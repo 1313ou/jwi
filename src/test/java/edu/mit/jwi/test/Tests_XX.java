@@ -1,6 +1,7 @@
 package edu.mit.jwi.test;
 
 import edu.mit.jwi.item.POS;
+import edu.mit.jwi.item.Word;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -17,106 +18,108 @@ public class Tests_XX
 	{
 		String wnHome = System.getenv("WNHOMEXX" /* + File.separator + "dict" */);
 		System.out.printf("FROM %s%n", wnHome);
+		Word.setCheckLexicalId(false);
 		jwi = new JWI(wnHome);
 	}
 
-	@Test public void allSenses() throws IOException
+	@Test public void allSenses()
 	{
-		jwi.forallSenses(null);
-	}
-	@Test public void allSynsets() throws IOException
-	{
-		jwi.forallSynsets(null);
+		jwi.forAllSenses(null);
 	}
 
-	@Test public void allSenseEntries() throws IOException
+	@Test public void allSensesNonNull()
 	{
-		jwi.forallSenseEntries(null);
-	}
-
-	@Test public void allSensesNonNull() throws IOException
-	{
-		jwi.forallSenses((s) -> {
+		jwi.forAllSenses((s) -> {
 			assertNotNull(s);
 			return null;
 		});
 	}
 
-	@Test public void allSensekeysNonNull() throws IOException
+	@Test public void allSynsets()
 	{
-		jwi.forallSensekeys((s) -> {
+		jwi.forAllSynsets(null);
+	}
+
+	@Test public void allSynsetsNonNull()
+	{
+		jwi.forAllSynsets((s) -> {
 			assertNotNull(s);
 			return null;
 		});
 	}
 
-	@Test public void allLemmasNonNull() throws IOException
+	@Test public void allSenseEntries()
 	{
-		jwi.forallLemmas((s) -> {
+		jwi.forAllSenseEntries(null);
+	}
+
+	@Test public void allSenseEntriesNonNull()
+	{
+		jwi.forAllSenseEntries((s) -> {
+			assertNotNull(s);
+			return null;
+		});
+	}
+
+	@Test public void allLemmasNonNull()
+	{
+		jwi.forAllLemmas((s) -> {
 			assertNotNull(s);
 			assertFalse(s.isEmpty());
 			return null;
 		});
 	}
 
-	@Test public void allSynsetsNonNull() throws IOException
+	@Test public void allSensekeysNonNull()
 	{
-		jwi.forallSynsets((s) -> {
+		jwi.forAllSensekeys((s) -> {
 			assertNotNull(s);
 			return null;
 		});
 	}
 
-	@Test public void allSenseEntriesNonNull() throws IOException
+	@Test public void allSynsetRelationsNonNull()
 	{
-		jwi.forallSenseEntries((s) -> {
+		jwi.forAllSynsetRelations((s) -> {
 			assertNotNull(s);
 			return null;
 		});
 	}
 
-	@Test public void allSenseRelationsNonNull() throws IOException
+	@Test public void allSenseRelationsNonNull()
 	{
-		jwi.forallSenseRelations((s) -> {
-			assertNotNull(s);
-			return null;
-		});
-	}
-
-	@Test public void allSynsetRelationsNonNull() throws IOException
-	{
-		jwi.forallSynsetRelations((s) -> {
+		jwi.forAllSenseRelations((s) -> {
 			assertNotNull(s);
 			return null;
 		});
 	}
 
 	// the test involves new is_caused_by
-	@Test public void extraRelations() throws IOException
+	@Test public void extraRelations()
 	{
 		jwi.walk("spread");
 	}
 
 	// the test involves Young (n) and adj
-	@Test public void cased() throws IOException
+	@Test public void cased()
 	{
 		jwi.walk("young");
 	}
 
 	// the test involves adj
-	@Test public void adjSat() throws IOException
+	@Test public void adjSat()
 	{
 		jwi.walk("small");
 	}
 
 	// the test involves galore (a)
-	@Test public void adjMarker() throws IOException
+	@Test public void adjMarker()
 	{
 		jwi.walk("galore");
 	}
 
 	// the test involves a frameless entry
-	@Test public void frameless() throws IOException
+	@Test public void frameless()
 	{
 		jwi.getDict().getIndexWord("fangirl", POS.VERB);
 		jwi.walk("fangirl", POS.VERB);
