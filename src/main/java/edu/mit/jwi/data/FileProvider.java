@@ -303,18 +303,20 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			lifecycleLock.lock();
 			if (isOpen())
 				throw new IllegalStateException("provider currently open");
-			if (charset == null)
+			for (Entry<IContentType<?>, IContentType<?>> e : prototypeMap.entrySet())
 			{
-				// if we get a null charset, reset to the prototypes
-				for (Entry<IContentType<?>, IContentType<?>> e : prototypeMap.entrySet())
-					e.setValue(e.getKey());
-			}
-			else
-			{
-				// if we get a non-null charset, generate
-				// a new set of types using the new charset
-				for (Entry<IContentType<?>, IContentType<?>> e : prototypeMap.entrySet())
-					e.setValue(new ContentType(e.getKey().getDataType(), e.getKey().getPOS(), e.getKey().getLineComparator(), charset));
+				IContentType<?> k = e.getKey();
+				IContentType<?> v = e.getValue();
+				if (charset == null)
+				{
+					// if we get a null charset, reset to the prototype value but preserve line comparator
+					e.setValue(new ContentType(k.getDataType(), k.getPOS(), v.getLineComparator(), k.getCharset()));
+				}
+				else
+				{
+					// if we get a non-null charset, generate new  type using the new charset but preserve line comparator
+					e.setValue(new ContentType(k.getDataType(), k.getPOS(), v.getLineComparator(), charset));
+				}
 			}
 		}
 		finally
@@ -335,15 +337,17 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			lifecycleLock.lock();
 			if (isOpen())
 				throw new IllegalStateException("provider currently open");
+			IContentType<?> k = contentType;
+			IContentType<?> v = prototypeMap.get(k);
 			if (comparator == null)
 			{
-				// if we get a null comparator, reset to the prototype
-				prototypeMap.put(contentType, contentType);
+				// if we get a null comparator, reset to the prototype but preserve charset
+				prototypeMap.put(k, new ContentType(k.getDataType(), k.getPOS(), k.getLineComparator(), v.getCharset()));
 			}
 			else
 			{
-				// if we get a non-null comparator, generate a new type using the new comparator
-				prototypeMap.put(contentType, new ContentType(contentType.getDataType(), contentType.getPOS(), comparator, contentType.getCharset()));
+				// if we get a non-null comparator, generate a new type using the new comparator but preserve charset
+				prototypeMap.put(k, new ContentType(k.getDataType(), k.getPOS(), comparator, v.getCharset()));
 			}
 		}
 		finally
