@@ -69,4 +69,13 @@ public interface IDataType<T>
 	 * @since JWI 2.0.0
 	 */
 	Set<String> getResourceNameHints();
+
+	/**
+	 * Set strings that can be used as keywords to identify resources that
+	 * are of this type.
+	 *
+	 * @param hints a set of resource name fragments
+	 * @since JWI 2.4.1
+	 */
+	 void setResourceNameHints(Set<String> hints);
 }

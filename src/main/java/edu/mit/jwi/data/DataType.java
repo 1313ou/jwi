@@ -30,7 +30,6 @@ import java.util.*;
  */
 public class DataType<T> implements IDataType<T>
 {
-
 	public static final DataType<IIndexWord> INDEX = new DataType<>("Index", true, IndexLineParser.getInstance(), "index", "idx");
 	public static final DataType<ISynset> DATA = new DataType<>("Data", true, DataLineParser.getInstance(), "data", "dat");
 	public static final DataType<IExceptionEntryProxy> EXCEPTION = new DataType<>("Exception", false, ExceptionLineParser.getInstance(), "exception", "exc");
@@ -38,7 +37,7 @@ public class DataType<T> implements IDataType<T>
 
 	// fields set on construction
 	private final String name;
-	private final Set<String> hints;
+	private Set<String> hints;
 	private final boolean hasVersion;
 	private final ILineParser<T> parser;
 
@@ -107,6 +106,16 @@ public class DataType<T> implements IDataType<T>
 	public Set<String> getResourceNameHints()
 	{
 		return hints;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IDataType#setResourceNameHints(java.util.Set)
+	 */
+	public void setResourceNameHints(Set<String>hints)
+	{
+		this.hints = hints;
 	}
 
 	/*
