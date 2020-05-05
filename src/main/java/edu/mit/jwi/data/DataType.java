@@ -113,7 +113,7 @@ public class DataType<T> implements IDataType<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataType#setResourceNameHints(java.util.Set)
 	 */
-	public void setResourceNameHints(Set<String>hints)
+	public void setResourceNameHints(Set<String> hints)
 	{
 		this.hints = hints;
 	}
@@ -186,7 +186,7 @@ public class DataType<T> implements IDataType<T>
 
 	/**
 	 * Finds the first file that satisfies the naming constraints of both
-	 * the data type and part of speech.
+	 * the data type and part of speech. Behaviour modified.
 	 *
 	 * @param type  the data type whose resource name hints should be used, may
 	 *              not be <code>null</code>
@@ -202,14 +202,23 @@ public class DataType<T> implements IDataType<T>
 	{
 		Set<String> typePatterns = type.getResourceNameHints();
 		Set<String> posPatterns = (pos == null) ? Collections.emptySet() : pos.getResourceNameHints();
-
-		String name;
-		for (File file : files)
-		{
-			name = file.getName().toLowerCase(); // added toLowerCase() as fix for Bug 017
-			if (containsOneOf(name, typePatterns) && containsOneOf(name, posPatterns))
-				return file;
-		}
+		if (typePatterns == null || typePatterns.isEmpty())
+			for (File file : files)
+			{
+				String name = file.getName().toLowerCase(); // added toLowerCase() as fix for Bug 017
+				if (containsOneOf(name, posPatterns))
+					return file;
+			}
+		else
+			for (String typePattern : typePatterns)
+			{
+				for (File file : files)
+				{
+					String name = file.getName().toLowerCase(); // added toLowerCase() as fix for Bug 017
+					if (name.contains(typePattern) && containsOneOf(name, posPatterns))
+						return file;
+				}
+			}
 		return null;
 	}
 
