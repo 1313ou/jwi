@@ -102,9 +102,23 @@ public class IndexLineComparator implements ILineComparator
 		if (i2 == -1)
 			i2 = s2.length();
 
-		String sub1 = s1.substring(0, i1).toLowerCase();
-		String sub2 = s2.substring(0, i2).toLowerCase();
-		return sub1.compareTo(sub2);
+		String sub1 = s1.substring(0, i1);
+		String sub2 = s2.substring(0, i2);
+		return compareLemmas(sub1, sub2);
+	}
+
+	/**
+	 * Compare lemmas (overridable if non-standard compare is needed)
+	 *
+	 * @param lemma1 lemma 1
+	 * @param lemma2 lemma 1
+	 * @return compare code
+	 */
+	protected int compareLemmas(String lemma1, String lemma2)
+	{
+		lemma1 = lemma1.toLowerCase();
+		lemma2 = lemma2.toLowerCase();
+		return lemma1.compareTo(lemma2);
 	}
 
 	/*

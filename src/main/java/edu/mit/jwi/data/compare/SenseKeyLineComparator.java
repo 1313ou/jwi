@@ -70,7 +70,19 @@ public class SenseKeyLineComparator implements ILineComparator
 		int i2 = line2.indexOf(' ');
 		line1 = (i1 == -1) ? line1 : line1.substring(0, i1);
 		line2 = (i2 == -1) ? line2 : line2.substring(0, i2);
-		return line1.compareTo(line2);
+		return compareSenseKeys(line1, line2);
+	}
+
+	/**
+	 * Compare sensekeys (overridable if non-standard compare is needed)
+	 *
+	 * @param senseKey1 sense key 1
+	 * @param senseKey2 sense key 1
+	 * @return compare code
+	 */
+	protected int compareSenseKeys(String senseKey1, String senseKey2)
+	{
+		return senseKey1.compareTo(senseKey2);
 	}
 
 	/*
