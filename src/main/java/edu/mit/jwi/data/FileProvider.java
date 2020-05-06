@@ -518,17 +518,44 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	protected Map<IContentType<?>, ILoadableDataSource<?>> createSourceMap(List<File> files, int policy) throws IOException
 	{
 		Map<IContentType<?>, ILoadableDataSource<?>> result = new HashMap<>();
-		File file;
 		for (IContentType<?> type : prototypeMap.values())
 		{
-			file = DataType.find(type.getDataType(), type.getPOS(), files);
+			File file = null;
+
+			// give first chance to matcher
+			if (sourceMatcher != null && sourceMatcher.containsKey(type))
+			{
+				file = match(sourceMatcher.get(type), files);
+			}
+
+			// if it failed fall back on data types
+			if (file == null)
+			{
+				file = DataType.find(type.getDataType(), type.getPOS(), files);
+			}
+
+			// if it failed continue
 			if (file == null)
 				continue;
+
 			files.remove(file);
 			result.put(type, createDataSource(file, type, policy));
 		}
 		return result;
 	}
+
+	private File match(String pattern, List<File> files)
+	{
+		for (File file : files)
+		{
+			String name = file.getName();
+			if (name.matches(pattern))
+				return file;
+		}
+		return null;
+	}
+
+	private Map<IContentType<?>, String> sourceMatcher;
 
 	/**
 	 * Creates the actual data source implementations.
