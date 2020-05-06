@@ -12,7 +12,6 @@ package edu.mit.jwi;
 
 import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.FileProvider;
-import edu.mit.jwi.data.IContentType;
 import edu.mit.jwi.data.ILoadPolicy;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.item.*;

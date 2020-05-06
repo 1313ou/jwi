@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Basic implementation of the {@code IDictionary} interface. A path to the

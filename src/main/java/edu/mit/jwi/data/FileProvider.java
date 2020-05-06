@@ -192,6 +192,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			if (type.getKey().equals(key))
 				return type;
 		}
+		// this should no happen
 		return null;
 	}
 
@@ -323,7 +324,9 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 				if (charset == null)
 				{
 					// if we get a null charset, reset to the prototype value but preserve line comparator
-					e.setValue(new ContentType(key, value.getLineComparator(), getDefault(key).getCharset()));
+					IContentType<?> defaultContentType = getDefault(key);
+					assert defaultContentType != null;
+					e.setValue(new ContentType(key, value.getLineComparator(), defaultContentType.getCharset()));
 				}
 				else
 				{
@@ -355,7 +358,9 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			if (comparator == null)
 			{
 				// if we get a null comparator, reset to the prototype but preserve charset
-				prototypeMap.put(key, new ContentType(key, getDefault(key).getLineComparator(), v.getCharset()));
+				IContentType<?> defaultContentType = getDefault(key);
+				assert defaultContentType != null;
+				prototypeMap.put(key, new ContentType(key, defaultContentType.getLineComparator(), v.getCharset()));
 			}
 			else
 			{
@@ -764,7 +769,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 		checkOpen();
 
 		// assume at first this the prototype
-		IContentType<?> actualType = prototypeMap.get(type);
+		IContentType<?> actualType = prototypeMap.get(type.getKey());
 
 		// if this does not map to an adjusted type, we will check under it directly
 		if (actualType == null)

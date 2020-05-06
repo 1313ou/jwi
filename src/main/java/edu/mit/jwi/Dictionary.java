@@ -10,9 +10,7 @@
 
 package edu.mit.jwi;
 
-import edu.mit.jwi.data.ContentType;
 import edu.mit.jwi.data.ContentTypeKey;
-import edu.mit.jwi.data.DataType;
 import edu.mit.jwi.data.FileProvider;
 import edu.mit.jwi.item.Word;
 

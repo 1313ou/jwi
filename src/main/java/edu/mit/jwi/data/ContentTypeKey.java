@@ -39,7 +39,7 @@ public enum ContentTypeKey
 
 	private final POS fPOS;
 
-	private ContentTypeKey(IDataType<?> fType, POS fPOS)
+	ContentTypeKey(IDataType<?> fType, POS fPOS)
 	{
 		this.fType = fType;
 		this.fPOS = fPOS;
