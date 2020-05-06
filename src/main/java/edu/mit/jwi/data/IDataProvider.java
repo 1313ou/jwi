@@ -16,7 +16,6 @@ import edu.mit.jwi.item.POS;
 
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -80,15 +79,17 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	void setComparator(ContentTypeKey contentTypeKey, ILineComparator comparator);
 
 	/**
-	 * Set map of patterns indexed by content type key, that source files have to
-	 * match to be selected. Not all keys have to be present.
+	 * Sets pattern attached to content type key, that source files have to
+	 * match to be selected.
 	 * This gives selection a first opportunity before falling back on standard data
 	 * type selection.
 	 *
-	 * @param sourceMatcher map of patterns indexed by Content type keys
+	 * @param contentTypeKey the <code>non-null</code> content type key for which
+	 *                       the matcher is to be set.
+	 * @param pattern        regexpr pattern
 	 * @since JWI 2.4.1
 	 */
-	void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher);
+	void setSourceMatcher(ContentTypeKey contentTypeKey, String pattern);
 
 	/**
 	 * Returns a set containing all the content types this provider looks for at

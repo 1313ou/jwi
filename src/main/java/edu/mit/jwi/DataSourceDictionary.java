@@ -144,11 +144,11 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see edu.mit.jwi.data.IDictionary#setSourceMatcher(java.util.Map)
+	 * @see edu.mit.jwi.data.IDictionary#setSourceMatcher(edu.mit.data ContentTypeKey, java.lang.String)
 	 */
-	public void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher)
+	public void setSourceMatcher(ContentTypeKey contentTypeKey, String pattern)
 	{
-		provider.setSourceMatcher(sourceMatcher);
+		provider.setSourceMatcher(contentTypeKey, pattern);
 	}
 
 	/*

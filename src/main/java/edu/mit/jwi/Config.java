@@ -8,7 +8,8 @@ import java.util.Set;
 public class Config
 {
 	public Boolean checkLexicalId;
-	public Set<String> senseNameHints;
+
+	public String indexSensePattern;
 	public ILineComparator indexNounComparator;
 	public ILineComparator indexVerbComparator;
 	public ILineComparator indexAdjectiveComparator;

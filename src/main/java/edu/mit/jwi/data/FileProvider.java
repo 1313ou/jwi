@@ -72,7 +72,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 
 	private final Collection<? extends IContentType<?>> defaultTypes;
 	private Charset charset = null;
-	private Map<ContentTypeKey, String> sourceMatcher;
+	private final Map<ContentTypeKey, String> sourceMatcher = new HashMap<>();
 
 	/**
 	 * Constructs the file provider pointing to the resource indicated by the
@@ -301,7 +301,6 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 */
 	public Charset getCharset()
 	{
-		//noinspection ConstantConditions
 		return charset;
 	}
 
@@ -310,7 +309,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#setCharset(java.nio.charset.Charset)
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" }) public void setCharset(Charset charset)
+	@SuppressWarnings("rawtypes") public void setCharset(Charset charset)
 	{
 		try
 		{
@@ -332,6 +331,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 					e.setValue(new ContentType(key, value.getLineComparator(), charset));
 				}
 			}
+			this.charset = charset;
 		}
 		finally
 		{
@@ -372,16 +372,19 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see edu.mit.jwi.data.IDataProvider#setSourceMatcher(java.util.Map)
+	 * @see edu.mit.jwi.data.IDataProvider#setSourceMatcher(edu.mit.data ContentTypeKey, java.lang.String)
 	 */
-	public void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher)
+	public void setSourceMatcher(ContentTypeKey contentTypeKey, String pattern)
 	{
 		try
 		{
 			lifecycleLock.lock();
 			if (isOpen())
 				throw new IllegalStateException("provider currently open");
-			this.sourceMatcher = sourceMatcher;
+			if (pattern == null)
+				this.sourceMatcher.remove(contentTypeKey);
+			else
+				this.sourceMatcher.put(contentTypeKey, pattern);
 		}
 		finally
 		{
@@ -557,7 +560,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			File file = null;
 
 			// give first chance to matcher
-			if (sourceMatcher != null && sourceMatcher.containsKey(type.getKey()))
+			if (sourceMatcher.containsKey(type.getKey()))
 			{
 				file = match(sourceMatcher.get(type.getKey()), files);
 			}

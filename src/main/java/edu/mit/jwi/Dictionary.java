@@ -96,8 +96,6 @@ public class Dictionary extends CachingDictionary
 		// global params
 		if (config.checkLexicalId != null)
 			Word.setCheckLexicalId(config.checkLexicalId);
-		if (config.senseNameHints != null)
-			DataType.SENSE.setResourceNameHints(config.senseNameHints);
 
 		// dictionary params
 		if (config.indexNounComparator != null)
@@ -109,6 +107,8 @@ public class Dictionary extends CachingDictionary
 		if (config.indexAdverbComparator != null)
 			setComparator(ContentTypeKey.INDEX_ADVERB, config.indexAdverbComparator);
 
+		if (config.indexSensePattern != null)
+			setSourceMatcher(ContentTypeKey.SENSE, config.indexSensePattern);
 		if (config.indexSensekeyComparator != null)
 			setComparator(ContentTypeKey.SENSE, config.indexSensekeyComparator);
 

@@ -19,7 +19,6 @@ import edu.mit.jwi.morph.IStemmer;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Objects that implement this interface are intended as the main entry point to
@@ -47,25 +46,27 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * Sets the comparator associated with this content type in this dictionary.
 	 * The comparator may be <code>null</code> in which case it is reset.
 	 *
-	 * @param contentType the <code>non-null</code> content type for which
-	 *                    the comparator is to be set.
-	 * @param comparator  the possibly <code>null</code> comparator set to use when
-	 *                    decoding files.
+	 * @param contentTypeKey the <code>non-null</code> content type for which
+	 *                       the comparator is to be set.
+	 * @param comparator     the possibly <code>null</code> comparator set to use when
+	 *                       decoding files.
 	 * @throws IllegalStateException if the provider is currently open
 	 * @since JWI 2.4.1
 	 */
-	void setComparator(ContentTypeKey contentType, ILineComparator comparator);
+	void setComparator(ContentTypeKey contentTypeKey, ILineComparator comparator);
 
 	/**
-	 * Set map of patterns indexed by content type key, that source files have to
-	 * match to be selected. Not all keys have to be present.
+	 * Sets pattern attached to content type key, that source files have to
+	 * match to be selected.
 	 * This gives selection a first opportunity before falling back on standard data
 	 * type selection.
 	 *
-	 * @param sourceMatcher map of patterns indexed by Content type keys
+	 * @param contentTypeKey the <code>non-null</code> content type key for which
+	 *                       the matcher is to be set.
+	 * @param pattern        regexpr pattern
 	 * @since JWI 2.4.1
 	 */
-	void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher);
+	void setSourceMatcher(ContentTypeKey contentTypeKey, String pattern);
 
 	/**
 	 * This method is identical to <code>getIndexWord(IIndexWordID)</code> and
