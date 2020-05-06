@@ -19,7 +19,6 @@ package edu.mit.jwi.item;
  */
 public class ExceptionEntryID implements IExceptionEntryID
 {
-
 	/**
 	 * Generated serial version id.
 	 *

@@ -24,7 +24,6 @@ import java.util.Set;
  */
 public enum POS
 {
-
 	/**
 	 * Object representing the Noun part of speech.
 	 *

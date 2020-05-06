@@ -19,7 +19,6 @@ package edu.mit.jwi.item;
  */
 public interface IHasVersion
 {
-
 	/**
 	 * Returns the associated version for this object. If this object is not
 	 * associated with any particular version, this method may return
@@ -29,5 +28,4 @@ public interface IHasVersion
 	 * @since JWI 2.1.0
 	 */
 	IVersion getVersion();
-
 }

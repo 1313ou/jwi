@@ -28,7 +28,6 @@ import edu.mit.jwi.item.SenseEntry;
  */
 public class SenseLineParser implements ILineParser<ISenseEntry>
 {
-
 	// singleton instance
 	private static SenseLineParser instance;
 

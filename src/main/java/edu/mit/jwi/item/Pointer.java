@@ -27,7 +27,6 @@ import java.util.*;
  */
 public class Pointer implements IPointer
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the Pointer class are compatible with this

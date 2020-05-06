@@ -23,7 +23,6 @@ import java.util.*;
  */
 public class VerbFrame implements IVerbFrame
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the VerbFrame class are compatible with this

@@ -19,7 +19,6 @@ package edu.mit.jwi.item;
  */
 public class WordID implements IWordID
 {
-
 	/**
 	 * Generated serial version id.
 	 *

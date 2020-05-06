@@ -20,7 +20,6 @@ package edu.mit.jwi.item;
  */
 public interface IWordID extends IHasPOS, IItemID<IWord>
 {
-
 	/**
 	 * Returns the synset id object associated with this word.
 	 *

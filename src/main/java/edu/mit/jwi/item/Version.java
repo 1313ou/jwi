@@ -34,7 +34,6 @@ import java.util.regex.Pattern;
  */
 public class Version implements IVersion
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the Version class are compatible with this

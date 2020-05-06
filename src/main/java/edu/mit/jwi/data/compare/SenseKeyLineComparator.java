@@ -28,7 +28,6 @@ package edu.mit.jwi.data.compare;
  */
 public class SenseKeyLineComparator implements ILineComparator
 {
-
 	// singleton instance
 	private static SenseKeyLineComparator instance;
 

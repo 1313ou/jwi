@@ -29,7 +29,6 @@ import java.io.Serializable;
  */
 public interface ISenseKey extends IHasPOS, Comparable<ISenseKey>, Serializable
 {
-
 	/**
 	 * The lemma (root form) of the word indicated by this key. The returned
 	 * lemma will not be <code>null</code>, empty, or all whitespace.

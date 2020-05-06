@@ -23,7 +23,6 @@ import java.util.Set;
  */
 public interface IStemmingRule extends IHasPOS
 {
-
 	/**
 	 * Returns the suffix for this rule. Will never return <code>null</code>,
 	 * empty, or all whitespace.
@@ -81,5 +80,4 @@ public interface IStemmingRule extends IHasPOS
 	 * @since JWI 2.3.1
 	 */
 	String apply(String word, String suffix);
-
 }

@@ -22,7 +22,6 @@ import java.util.Map;
  */
 public interface IWord extends IHasPOS, IItem<IWordID>
 {
-
 	/**
 	 * Returns the root form of this word, never <code>null</code> or empty.
 	 *
@@ -126,5 +125,4 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @since JWI 2.1.0
 	 */
 	AdjMarker getAdjectiveMarker();
-
 }

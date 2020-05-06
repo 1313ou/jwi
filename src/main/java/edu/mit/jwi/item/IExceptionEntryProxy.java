@@ -25,7 +25,6 @@ import java.util.List;
  */
 public interface IExceptionEntryProxy extends Serializable
 {
-
 	/**
 	 * Returns the surface form (i.e., not the root form) of the word for this
 	 * exception entry. Because all surface forms in the exception files are
@@ -44,5 +43,4 @@ public interface IExceptionEntryProxy extends Serializable
 	 * @since JWI 2.0.0
 	 */
 	List<String> getRootForms();
-
 }

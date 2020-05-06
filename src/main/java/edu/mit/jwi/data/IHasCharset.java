@@ -21,7 +21,6 @@ import java.nio.charset.Charset;
  */
 public interface IHasCharset
 {
-
 	/**
 	 * Returns the character set associated with this object.  May be <code>null</code>.
 	 *
@@ -29,5 +28,4 @@ public interface IHasCharset
 	 * @since JWI 2.3.4
 	 */
 	Charset getCharset();
-
 }

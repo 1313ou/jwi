@@ -32,7 +32,6 @@ import edu.mit.jwi.item.IHasPOS;
  */
 public interface IContentType<T> extends IHasPOS, IHasCharset
 {
-
 	/**
 	 * Returns the assigned resource type of this object. This method may not
 	 * return <code>null</code>
@@ -54,5 +53,4 @@ public interface IContentType<T> extends IHasPOS, IHasCharset
 	 * @since JWI 1.0
 	 */
 	ILineComparator getLineComparator();
-
 }

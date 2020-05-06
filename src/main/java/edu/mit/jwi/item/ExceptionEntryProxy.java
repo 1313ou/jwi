@@ -24,7 +24,6 @@ import java.util.List;
  */
 public class ExceptionEntryProxy implements IExceptionEntryProxy
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the ExceptionEntryProxy class are compatible with this

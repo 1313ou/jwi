@@ -23,7 +23,6 @@ import java.util.Comparator;
  */
 public interface ICommentDetector extends Comparator<String>
 {
-
 	/**
 	 * Returns <code>true</code> if the specified string is a comment line,
 	 * <code>false</code> otherwise.
@@ -35,5 +34,4 @@ public interface ICommentDetector extends Comparator<String>
 	 * @since JWI 1.0
 	 */
 	boolean isCommentLine(String line);
-
 }

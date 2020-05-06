@@ -22,7 +22,6 @@ import edu.mit.jwi.item.*;
  */
 public interface ICachingDictionary extends IDictionary
 {
-
 	/**
 	 * Returns the cache used by this dictionary, so that it may be configured
 	 * or manipulated directly.

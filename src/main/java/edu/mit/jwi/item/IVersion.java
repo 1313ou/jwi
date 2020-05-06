@@ -21,7 +21,6 @@ import java.io.Serializable;
  */
 public interface IVersion extends Serializable
 {
-
 	/**
 	 * Returns the major version number, i.e., the '1' in '1.7.2'.
 	 *

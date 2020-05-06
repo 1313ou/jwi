@@ -22,7 +22,6 @@ import edu.mit.jwi.data.IDataProvider;
  */
 public interface IDataSourceDictionary extends IDictionary
 {
-
 	/**
 	 * Returns the data provider for this dictionary. Should never return
 	 * <code>null</code>.
@@ -31,5 +30,4 @@ public interface IDataSourceDictionary extends IDictionary
 	 * @since JWI 2.0.0
 	 */
 	IDataProvider getDataProvider();
-
 }

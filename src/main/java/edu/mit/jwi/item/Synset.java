@@ -22,7 +22,6 @@ import java.util.Map.Entry;
  */
 public class Synset implements ISynset
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the Synset class are compatible with this

@@ -47,7 +47,6 @@ import java.util.zip.GZIPOutputStream;
  */
 public class RAMDictionary implements IRAMDictionary
 {
-
 	/**
 	 * The default load policy of a {@link RAMDictionary} is to load data in the
 	 * background when opened.

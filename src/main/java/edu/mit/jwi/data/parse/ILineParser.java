@@ -20,7 +20,6 @@ package edu.mit.jwi.data.parse;
  */
 public interface ILineParser<T>
 {
-
 	/**
 	 * Given the line of data, this method produces an object of class
 	 * <code>T</code>.

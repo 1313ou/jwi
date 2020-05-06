@@ -19,7 +19,6 @@ package edu.mit.jwi.item;
  */
 public class SenseEntry implements ISenseEntry
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the SenseEntry class are compatible with this

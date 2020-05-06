@@ -22,5 +22,4 @@ import java.io.Serializable;
  */
 public interface IItemID<T extends IItem<?>> extends Serializable
 {
-
 }

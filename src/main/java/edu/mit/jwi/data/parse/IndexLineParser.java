@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
  */
 public class IndexLineParser implements ILineParser<IIndexWord>
 {
-
 	// singleton instance
 	private static IndexLineParser instance;
 

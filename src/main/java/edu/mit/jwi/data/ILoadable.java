@@ -20,7 +20,6 @@ package edu.mit.jwi.data;
  */
 public interface ILoadable
 {
-
 	/**
 	 * Starts a simple, non-blocking load. If the object is already loaded, the
 	 * method returns immediately and has no effect. If the object is in the
@@ -60,5 +59,4 @@ public interface ILoadable
 	 * @since JWI 2.2.0
 	 */
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted") boolean isLoaded();
-
 }

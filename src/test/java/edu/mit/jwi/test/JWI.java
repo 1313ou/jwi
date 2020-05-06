@@ -113,7 +113,6 @@ public class JWI
 				{
 					System.err.println(e.getMessage());
 				}
-
 			}
 		}
 	}

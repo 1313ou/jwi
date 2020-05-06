@@ -34,7 +34,6 @@ import java.util.Iterator;
  */
 public class DataSourceDictionary implements IDataSourceDictionary
 {
-
 	private final IDataProvider provider;
 
 	/**

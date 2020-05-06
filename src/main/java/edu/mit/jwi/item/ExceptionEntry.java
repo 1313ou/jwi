@@ -19,7 +19,6 @@ package edu.mit.jwi.item;
  */
 public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEntry
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the ExceptionEntry class are compatible with this

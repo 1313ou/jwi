@@ -1,0 +1,18 @@
+package edu.mit.jwi;
+
+import edu.mit.jwi.data.compare.ILineComparator;
+
+import java.nio.charset.Charset;
+import java.util.Set;
+
+public class Config
+{
+	public Boolean checkLexicalId;
+	public Set<String> senseNameHints;
+	public ILineComparator indexNounComparator;
+	public ILineComparator indexVerbComparator;
+	public ILineComparator indexAdjectiveComparator;
+	public ILineComparator indexAdverbComparator;
+	public ILineComparator indexSensekeyComparator;
+	public Charset charSet;
+}

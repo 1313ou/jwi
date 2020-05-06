@@ -30,7 +30,6 @@ import java.util.*;
  */
 public class ContentType<T> implements IContentType<T>
 {
-
 	public static final ContentType<IIndexWord> INDEX_NOUN = new ContentType<>(DataType.INDEX, POS.NOUN, IndexLineComparator.getInstance());
 	public static final ContentType<IIndexWord> INDEX_VERB = new ContentType<>(DataType.INDEX, POS.VERB, IndexLineComparator.getInstance());
 	public static final ContentType<IIndexWord> INDEX_ADVERB = new ContentType<>(DataType.INDEX, POS.ADVERB, IndexLineComparator.getInstance());

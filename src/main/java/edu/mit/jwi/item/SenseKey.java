@@ -19,7 +19,6 @@ package edu.mit.jwi.item;
  */
 public class SenseKey implements ISenseKey
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the SenseKey class are compatible with this

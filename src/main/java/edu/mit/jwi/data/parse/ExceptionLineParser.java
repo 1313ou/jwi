@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
  */
 public class ExceptionLineParser implements ILineParser<IExceptionEntryProxy>
 {
-
 	// singleton instance
 	private static ExceptionLineParser instance;
 

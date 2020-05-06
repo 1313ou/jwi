@@ -29,7 +29,6 @@ import java.util.*;
  */
 public class WordnetStemmer extends SimpleStemmer
 {
-
 	private final IDictionary dict;
 
 	/**

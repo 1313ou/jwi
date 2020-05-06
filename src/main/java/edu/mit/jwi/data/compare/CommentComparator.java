@@ -31,7 +31,6 @@ import java.util.Comparator;
  */
 public class CommentComparator implements Comparator<String>, ICommentDetector
 {
-
 	// singleton instance
 	private static CommentComparator instance;
 

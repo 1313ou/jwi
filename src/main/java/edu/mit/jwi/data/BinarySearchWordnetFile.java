@@ -27,7 +27,6 @@ import java.util.Comparator;
  */
 public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 {
-
 	// the comparator
 	protected final Comparator<String> fComparator;
 

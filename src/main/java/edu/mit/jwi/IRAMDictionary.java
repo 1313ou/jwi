@@ -25,7 +25,6 @@ import java.net.URL;
  */
 public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 {
-
 	/**
 	 * Exports the in-memory contents of the to the specified output stream.
 	 * This method flushes and closes the output stream when it is done writing

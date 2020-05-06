@@ -20,7 +20,6 @@ package edu.mit.jwi.item;
  */
 public interface IExceptionEntryID extends IHasPOS, IItemID<IExceptionEntry>
 {
-
 	/**
 	 * Returns the surface form (i.e., not the root form) of the word for which
 	 * a morphological exception entry is desired. Because all surface forms in
@@ -32,5 +31,4 @@ public interface IExceptionEntryID extends IHasPOS, IItemID<IExceptionEntry>
 	 * @since JWI 1.0
 	 */
 	String getSurfaceForm();
-
 }

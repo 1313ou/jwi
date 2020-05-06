@@ -47,7 +47,6 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 {
-
 	// fields set on construction
 	private final String name;
 	private final IContentType<T> type;

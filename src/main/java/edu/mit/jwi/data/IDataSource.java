@@ -39,7 +39,6 @@ import java.util.Iterator;
  */
 public interface IDataSource<T> extends IHasVersion, Iterable<String>, IHasLifecycle
 {
-
 	/**
 	 * Returns a string representation of the name of this resource. For
 	 * file-based resources, this will usually be the filename.
@@ -87,5 +86,4 @@ public interface IDataSource<T> extends IHasVersion, Iterable<String>, IHasLifec
 	 * @since JWI 2.0.0
 	 */
 	Iterator<String> iterator(String key);
-
 }

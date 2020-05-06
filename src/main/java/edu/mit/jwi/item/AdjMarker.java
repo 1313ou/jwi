@@ -20,7 +20,6 @@ package edu.mit.jwi.item;
  */
 public enum AdjMarker
 {
-
 	PREDICATE("(p)", "predicate position"), PRENOMINAL("(a)", "prenominal (attributive) position"), POSTNOMINAL("(ip)", "immediately postnominal position");
 
 	// unmodifiable fields

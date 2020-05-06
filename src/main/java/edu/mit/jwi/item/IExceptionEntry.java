@@ -21,5 +21,4 @@ package edu.mit.jwi.item;
  */
 public interface IExceptionEntry extends IExceptionEntryProxy, IHasPOS, IItem<IExceptionEntryID>
 {
-
 }

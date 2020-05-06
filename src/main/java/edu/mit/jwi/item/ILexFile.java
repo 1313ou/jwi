@@ -23,7 +23,6 @@ import java.io.Serializable;
  */
 public interface ILexFile extends IHasPOS, Serializable
 {
-
 	/**
 	 * Returns the number of the lexicographer file. This is used in sense keys
 	 * and the data files. A lexical file number is always in the closed range
@@ -51,5 +50,4 @@ public interface ILexFile extends IHasPOS, Serializable
 	 * @since JWI 2.1.0
 	 */
 	String getDescription();
-
 }

@@ -212,5 +212,4 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @since JWI 1.0
 	 */
 	Iterator<IExceptionEntry> getExceptionEntryIterator(POS pos);
-
 }

@@ -24,7 +24,6 @@ import java.util.Comparator;
  */
 public interface ILineComparator extends Comparator<String>
 {
-
 	/**
 	 * Returns the comment detector instance associated with this line
 	 * comparator, or <code>null</code> if one does not exist.
@@ -34,5 +33,4 @@ public interface ILineComparator extends Comparator<String>
 	 * @since JWI 2.0.0
 	 */
 	ICommentDetector getCommentDetector();
-
 }

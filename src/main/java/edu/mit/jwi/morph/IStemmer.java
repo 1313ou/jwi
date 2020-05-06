@@ -24,7 +24,6 @@ import java.util.List;
  */
 public interface IStemmer
 {
-
 	/**
 	 * Takes the surface form of a word, as it appears in the text, and the
 	 * assigned Wordnet part of speech. The surface form may or may not contain
@@ -44,5 +43,4 @@ public interface IStemmer
 	 * @since JWI 2.1.2
 	 */
 	List<String> findStems(String surfaceForm, POS pos);
-
 }

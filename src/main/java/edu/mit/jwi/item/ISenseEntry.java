@@ -22,7 +22,6 @@ import java.io.Serializable;
  */
 public interface ISenseEntry extends IHasPOS, Serializable
 {
-
 	/**
 	 * Returns the sense key for this sense entry.  Will not return <code>null</code>.
 	 *
@@ -58,5 +57,4 @@ public interface ISenseEntry extends IHasPOS, Serializable
 	 * @since JWI 2.1.0
 	 */
 	int getTagCount();
-
 }

@@ -25,7 +25,6 @@ import java.io.IOException;
  */
 public interface IHasLifecycle extends IClosable
 {
-
 	/**
 	 * This opens the object by performing any required initialization steps. If
 	 * this method returns <code>false</code>, then subsequent calls to

@@ -26,7 +26,6 @@ import java.nio.ByteBuffer;
  */
 public class DirectAccessWordnetFile<T> extends WordnetFile<T>
 {
-
 	/**
 	 * Constructs a new direct access wordnet file, on the specified file with
 	 * the specified content type.

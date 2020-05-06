@@ -22,7 +22,6 @@ import java.util.Map.Entry;
  */
 public class Word implements IWord
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the Word class are compatible with this

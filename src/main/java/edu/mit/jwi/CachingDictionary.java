@@ -31,8 +31,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class CachingDictionary implements ICachingDictionary
 {
-
-	// final instance fields 
+	// final instance fields
 	private final IDictionary backing;
 	private final IItemCache cache;
 

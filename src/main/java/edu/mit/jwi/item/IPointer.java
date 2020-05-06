@@ -22,7 +22,6 @@ import java.io.Serializable;
  */
 public interface IPointer extends Serializable
 {
-
 	/**
 	 * The symbol in the Wordnet data files that is used to indicate this
 	 * pointer type. Will not be <code>null</code>, empty, or all whitespace.
@@ -40,5 +39,4 @@ public interface IPointer extends Serializable
 	 * @since JWI 2.0.0
 	 */
 	String getName();
-
 }

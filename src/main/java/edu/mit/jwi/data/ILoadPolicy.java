@@ -24,7 +24,6 @@ package edu.mit.jwi.data;
  */
 public interface ILoadPolicy
 {
-
 	/**
 	 * Loading behavior where the object does not load itself when instantiated,
 	 * initialized, or opened. Loading can be initiated through other means (e.g., a
@@ -70,5 +69,4 @@ public interface ILoadPolicy
 	 * @since JWI 2.2.0
 	 */
 	int getLoadPolicy();
-
 }

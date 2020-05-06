@@ -25,7 +25,6 @@ import java.util.Map;
  */
 public class UnknownLexFile extends LexFile
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the UnknownLexFile class are compatible with this

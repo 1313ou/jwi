@@ -19,7 +19,6 @@ package edu.mit.jwi.item;
  */
 public class SynsetID implements ISynsetID
 {
-
 	/**
 	 * Generated serial version id.
 	 *

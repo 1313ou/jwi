@@ -39,7 +39,6 @@ import java.util.Set;
  */
 public interface IDataType<T>
 {
-
 	/**
 	 * Returns the line parser that can be used to process lines of data
 	 * retrieved from an {@code IDataSource} file with this type.
@@ -77,5 +76,5 @@ public interface IDataType<T>
 	 * @param hints a set of resource name fragments
 	 * @since JWI 2.4.1
 	 */
-	 void setResourceNameHints(Set<String> hints);
+	void setResourceNameHints(Set<String> hints);
 }

@@ -22,7 +22,6 @@ import java.util.Map;
  */
 public interface ISynset extends IHasPOS, IItem<ISynsetID>
 {
-
 	/**
 	 * Returns the data file byte offset of this synset.
 	 *
@@ -139,5 +138,4 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * @since JWI 2.0.0
 	 */
 	List<ISynsetID> getRelatedSynsets();
-
 }

@@ -32,7 +32,6 @@ import java.util.regex.Pattern;
  */
 public class ExceptionLineComparator implements ILineComparator
 {
-
 	// singleton instance
 	private static ExceptionLineComparator instance;
 

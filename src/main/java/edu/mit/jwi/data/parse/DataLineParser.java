@@ -33,7 +33,6 @@ import java.util.*;
  */
 public class DataLineParser implements ILineParser<ISynset>
 {
-
 	// singleton instance
 	private static DataLineParser instance;
 

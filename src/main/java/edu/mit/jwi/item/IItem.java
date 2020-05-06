@@ -22,7 +22,6 @@ import java.io.Serializable;
  */
 public interface IItem<T extends IItemID<?>> extends Serializable
 {
-
 	/**
 	 * Returns the ID object for this item. Will not return <code>null</code>.
 	 *
@@ -30,5 +29,4 @@ public interface IItem<T extends IItemID<?>> extends Serializable
 	 * @since JWI 2.0.0
 	 */
 	T getID();
-
 }

@@ -23,7 +23,6 @@ import java.util.Set;
  */
 public interface IIndexWord extends IHasPOS, IItem<IIndexWordID>
 {
-
 	/**
 	 * Returns the lemma (word root) associated with this index word.
 	 *
@@ -64,5 +63,4 @@ public interface IIndexWord extends IHasPOS, IItem<IIndexWordID>
 	 * @since JWI 2.3.0
 	 */
 	Set<IPointer> getPointers();
-
 }

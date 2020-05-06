@@ -20,7 +20,6 @@ package edu.mit.jwi.data;
  */
 public interface IClosable
 {
-
 	/**
 	 * This closes the object by disposing of data backing objects or
 	 * connections. If the object is already closed, or in the process of
@@ -30,5 +29,4 @@ public interface IClosable
 	 * @since JWI 2.2.0
 	 */
 	void close();
-
 }

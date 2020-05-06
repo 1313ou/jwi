@@ -30,7 +30,6 @@ import java.util.Set;
  */
 public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 {
-
 	/**
 	 * This method is used to set the source URL from which the provider
 	 * accesses the data from which it instantiates data sources. The data at
@@ -120,5 +119,4 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @since JWI 2.0.0
 	 */
 	<T> IDataSource<T> getSource(IContentType<T> type);
-
 }

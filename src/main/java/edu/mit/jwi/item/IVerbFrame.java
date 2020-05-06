@@ -22,7 +22,6 @@ import java.io.Serializable;
  */
 public interface IVerbFrame extends Serializable
 {
-
 	/**
 	 * The id number of this verb frame. Should always return 1 or greater.
 	 *
@@ -52,5 +51,4 @@ public interface IVerbFrame extends Serializable
 	 * @since JWI 1.0
 	 */
 	String instantiateTemplate(String verb);
-
 }

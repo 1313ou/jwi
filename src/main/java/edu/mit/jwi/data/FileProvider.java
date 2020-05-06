@@ -330,24 +330,23 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" }) public void setComparator(IContentType<?> contentType, ILineComparator comparator)
+	@SuppressWarnings({ "rawtypes", "unchecked" }) public void setComparator(IContentType<?> key, ILineComparator comparator)
 	{
 		try
 		{
 			lifecycleLock.lock();
 			if (isOpen())
 				throw new IllegalStateException("provider currently open");
-			IContentType<?> k = contentType;
-			IContentType<?> v = prototypeMap.get(k);
+			IContentType<?> v = prototypeMap.get(key);
 			if (comparator == null)
 			{
 				// if we get a null comparator, reset to the prototype but preserve charset
-				prototypeMap.put(k, new ContentType(k.getDataType(), k.getPOS(), k.getLineComparator(), v.getCharset()));
+				prototypeMap.put(key, new ContentType(key.getDataType(), key.getPOS(), key.getLineComparator(), v.getCharset()));
 			}
 			else
 			{
 				// if we get a non-null comparator, generate a new type using the new comparator but preserve charset
-				prototypeMap.put(k, new ContentType(k.getDataType(), k.getPOS(), comparator, v.getCharset()));
+				prototypeMap.put(key, new ContentType(key.getDataType(), key.getPOS(), comparator, v.getCharset()));
 			}
 		}
 		finally

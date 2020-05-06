@@ -29,7 +29,6 @@ package edu.mit.jwi.data.compare;
  */
 public class DataLineComparator implements ILineComparator
 {
-
 	// singleton instance
 	private static DataLineComparator instance;
 

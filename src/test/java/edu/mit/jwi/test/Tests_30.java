@@ -1,6 +1,5 @@
 package edu.mit.jwi.test;
 
-import edu.mit.jwi.item.POS;
 import edu.mit.jwi.item.Word;
 import org.junit.BeforeClass;
 import org.junit.Test;

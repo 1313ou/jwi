@@ -29,7 +29,6 @@ import edu.mit.jwi.item.*;
  */
 public class SenseKeyParser implements ILineParser<ISenseKey>
 {
-
 	// singleton instance
 	private static SenseKeyParser instance;
 

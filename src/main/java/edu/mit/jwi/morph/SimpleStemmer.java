@@ -65,7 +65,6 @@ import java.util.regex.Pattern;
  */
 public class SimpleStemmer implements IStemmer
 {
-
 	public static final String underscore = "_";
 	final Pattern whitespace = Pattern.compile("\\s+");
 

@@ -25,7 +25,6 @@ import java.util.Set;
  */
 public class StemmingRule implements IStemmingRule
 {
-
 	private final POS pos;
 	private final String suffix;
 	private final String ending;

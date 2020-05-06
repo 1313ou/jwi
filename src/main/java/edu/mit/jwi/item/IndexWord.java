@@ -21,7 +21,6 @@ import java.util.*;
  */
 public class IndexWord implements IIndexWord
 {
-
 	/**
 	 * This serial version UID identifies the last version of JWI whose
 	 * serialized instances of the IndexWord class are compatible with this
