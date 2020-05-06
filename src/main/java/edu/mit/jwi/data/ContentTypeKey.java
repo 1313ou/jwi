@@ -13,16 +13,13 @@ package edu.mit.jwi.data;
 import edu.mit.jwi.item.POS;
 
 /**
- * A concrete implementation of the {@code IContentType} interface. This class
- * provides the content types necessary for Wordnet in the form of static
- * fields. It is not implemented as an {@code Enum} so that clients may add
- * their own content types by instantiating this class.
+ * Content type keys.
  *
- * @author Mark A. Finlayson
+ * @author Bernard Bou
  * @version 2.4.1
  * @since JWI 2.4.1
  */
-public enum ProtoContentType
+public enum ContentTypeKey
 {
 	INDEX_NOUN(DataType.INDEX, POS.NOUN), //
 	INDEX_VERB(DataType.INDEX, POS.VERB), //
@@ -36,13 +33,13 @@ public enum ProtoContentType
 	EXCEPTION_VERB(DataType.EXCEPTION, POS.VERB), //
 	EXCEPTION_ADVERB(DataType.EXCEPTION, POS.ADVERB), //
 	EXCEPTION_ADJECTIVE(DataType.EXCEPTION, POS.ADJECTIVE), //
-	SENSE(DataType.EXCEPTION, null);
+	SENSE(DataType.SENSE, null);
 
 	private final IDataType<?> fType;
 
 	private final POS fPOS;
 
-	private ProtoContentType(IDataType<?> fType, POS fPOS)
+	private ContentTypeKey(IDataType<?> fType, POS fPOS)
 	{
 		this.fType = fType;
 		this.fPOS = fPOS;

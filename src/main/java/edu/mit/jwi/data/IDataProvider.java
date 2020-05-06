@@ -16,6 +16,7 @@ import edu.mit.jwi.item.POS;
 
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -69,14 +70,25 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * Sets the comparator associated with this content type in this dictionary.
 	 * The comparator may be <code>null</code> in which case it is reset.
 	 *
-	 * @param contentType the <code>non-null</code> content type for which
-	 *                    the comparator is to be set.
-	 * @param comparator  the possibly <code>null</code> comparator to use when
-	 *                    decoding files.
+	 * @param contentTypeKey the <code>non-null</code> content type key for which
+	 *                       the comparator is to be set.
+	 * @param comparator     the possibly <code>null</code> comparator to use when
+	 *                       decoding files.
 	 * @throws IllegalStateException if the provider is currently open
 	 * @since JWI 2.4.1
 	 */
-	void setComparator(IContentType<?> contentType, ILineComparator comparator);
+	void setComparator(ContentTypeKey contentTypeKey, ILineComparator comparator);
+
+	/**
+	 * Set map of patterns indexed by content type key, that source files have to
+	 * match to be selected. Not all keys have to be present.
+	 * This gives selection a first opportunity before falling back on standard data
+	 * type selection.
+	 *
+	 * @param sourceMatcher map of patterns indexed by Content type keys
+	 * @since JWI 2.4.1
+	 */
+	void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher);
 
 	/**
 	 * Returns a set containing all the content types this provider looks for at

@@ -30,27 +30,29 @@ import java.util.*;
  */
 public class ContentType<T> implements IContentType<T>
 {
-	public static final ContentType<IIndexWord> INDEX_NOUN = new ContentType<>(DataType.INDEX, POS.NOUN, IndexLineComparator.getInstance());
-	public static final ContentType<IIndexWord> INDEX_VERB = new ContentType<>(DataType.INDEX, POS.VERB, IndexLineComparator.getInstance());
-	public static final ContentType<IIndexWord> INDEX_ADVERB = new ContentType<>(DataType.INDEX, POS.ADVERB, IndexLineComparator.getInstance());
-	public static final ContentType<IIndexWord> INDEX_ADJECTIVE = new ContentType<>(DataType.INDEX, POS.ADJECTIVE, IndexLineComparator.getInstance());
-	public static final ContentType<ISynset> DATA_NOUN = new ContentType<>(DataType.DATA, POS.NOUN, DataLineComparator.getInstance());
-	public static final ContentType<ISynset> DATA_VERB = new ContentType<>(DataType.DATA, POS.VERB, DataLineComparator.getInstance());
-	public static final ContentType<ISynset> DATA_ADVERB = new ContentType<>(DataType.DATA, POS.ADVERB, DataLineComparator.getInstance());
-	public static final ContentType<ISynset> DATA_ADJECTIVE = new ContentType<>(DataType.DATA, POS.ADJECTIVE, DataLineComparator.getInstance());
-	public static final ContentType<IExceptionEntryProxy> EXCEPTION_NOUN = new ContentType<>(DataType.EXCEPTION, POS.NOUN,
+	public static final ContentType<IIndexWord> INDEX_NOUN = new ContentType<>(ContentTypeKey.INDEX_NOUN, IndexLineComparator.getInstance());
+	public static final ContentType<IIndexWord> INDEX_VERB = new ContentType<>(ContentTypeKey.INDEX_VERB, IndexLineComparator.getInstance());
+	public static final ContentType<IIndexWord> INDEX_ADVERB = new ContentType<>(ContentTypeKey.INDEX_ADVERB, IndexLineComparator.getInstance());
+	public static final ContentType<IIndexWord> INDEX_ADJECTIVE = new ContentType<>(ContentTypeKey.INDEX_ADJECTIVE, IndexLineComparator.getInstance());
+
+	public static final ContentType<ISynset> DATA_NOUN = new ContentType<>(ContentTypeKey.DATA_NOUN, DataLineComparator.getInstance());
+	public static final ContentType<ISynset> DATA_VERB = new ContentType<>(ContentTypeKey.DATA_VERB, DataLineComparator.getInstance());
+	public static final ContentType<ISynset> DATA_ADVERB = new ContentType<>(ContentTypeKey.DATA_ADVERB, DataLineComparator.getInstance());
+	public static final ContentType<ISynset> DATA_ADJECTIVE = new ContentType<>(ContentTypeKey.DATA_ADJECTIVE, DataLineComparator.getInstance());
+
+	public static final ContentType<IExceptionEntryProxy> EXCEPTION_NOUN = new ContentType<>(ContentTypeKey.EXCEPTION_NOUN,
 			ExceptionLineComparator.getInstance());
-	public static final ContentType<IExceptionEntryProxy> EXCEPTION_VERB = new ContentType<>(DataType.EXCEPTION, POS.VERB,
+	public static final ContentType<IExceptionEntryProxy> EXCEPTION_VERB = new ContentType<>(ContentTypeKey.EXCEPTION_VERB,
 			ExceptionLineComparator.getInstance());
-	public static final ContentType<IExceptionEntryProxy> EXCEPTION_ADVERB = new ContentType<>(DataType.EXCEPTION, POS.ADVERB,
+	public static final ContentType<IExceptionEntryProxy> EXCEPTION_ADVERB = new ContentType<>(ContentTypeKey.EXCEPTION_ADVERB,
 			ExceptionLineComparator.getInstance());
-	public static final ContentType<IExceptionEntryProxy> EXCEPTION_ADJECTIVE = new ContentType<>(DataType.EXCEPTION, POS.ADJECTIVE,
+	public static final ContentType<IExceptionEntryProxy> EXCEPTION_ADJECTIVE = new ContentType<>(ContentTypeKey.EXCEPTION_ADJECTIVE,
 			ExceptionLineComparator.getInstance());
-	public static final ContentType<ISenseEntry> SENSE = new ContentType<>(DataType.SENSE, null, SenseKeyLineComparator.getInstance());
+
+	public static final ContentType<ISenseEntry> SENSE = new ContentType<>(ContentTypeKey.SENSE, SenseKeyLineComparator.getInstance());
 
 	// fields set on construction
-	private final IDataType<T> fType;
-	private final POS fPOS;
+	private final ContentTypeKey fKey;
 	private final ILineComparator fComparator;
 	private final String fString;
 	private final Charset fCharset;
@@ -58,51 +60,53 @@ public class ContentType<T> implements IContentType<T>
 	/**
 	 * Constructs a new ContentType
 	 *
-	 * @param type       the data type for this content type, may not be
-	 *                   <code>null</code>
-	 * @param pos        the part of speech for this content type; may be null if the
-	 *                   content type has no natural part of speech
+	 * @param proto      content proto type
 	 * @param comparator the line comparator for this content type; may be
 	 *                   <code>null</code> if the lines are not ordered
-	 * @since JWI 2.0.0
+	 * @since JWI 2.4.1
 	 */
-	public ContentType(IDataType<T> type, POS pos, ILineComparator comparator)
+	public ContentType(ContentTypeKey proto, ILineComparator comparator)
 	{
-		// for 2.4.0 we introduce a redirect for end-users of the original constructor
-		this(type, pos, comparator, null);
+		this(proto, comparator, null);
 	}
 
 	/**
 	 * Constructs a new ContentType
 	 *
-	 * @param type       the data type for this content type, may not be
-	 *                   <code>null</code>
-	 * @param pos        the part of speech for this content type; may be null if the
-	 *                   content type has no natural part of speech
+	 * @param key        content proto type
 	 * @param comparator the line comparator for this content type; may be
 	 *                   <code>null</code> if the lines are not ordered
 	 * @param charset    the character set for this content type, may be
 	 *                   <code>null</code>
-	 * @since JWI 2.3.4
+	 * @since JWI 2.4.1
 	 */
-	public ContentType(IDataType<T> type, POS pos, ILineComparator comparator, Charset charset)
+	public ContentType(ContentTypeKey key, ILineComparator comparator, Charset charset)
 	{
-		if (type == null)
+		if (key == null)
 			throw new NullPointerException();
 
-		fType = type;
-		fPOS = pos;
+		fKey = key;
 		fComparator = comparator;
 		fCharset = charset;
 
-		if (pos != null)
+		if (fKey.getPOS() != null)
 		{
-			fString = "[ContentType: " + fType.toString() + "/" + fPOS.toString() + "]";
+			fString = "[ContentType: " + fKey.getDataType().toString() + "/" + fKey.getPOS().toString() + "]";
 		}
 		else
 		{
-			fString = "[ContentType: " + fType.toString() + "]";
+			fString = "[ContentType: " + fKey.getDataType().toString() + "]";
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IContentType#getKey()
+	 */
+	public ContentTypeKey getKey()
+	{
+		return fKey;
 	}
 
 	/*
@@ -112,7 +116,8 @@ public class ContentType<T> implements IContentType<T>
 	 */
 	public IDataType<T> getDataType()
 	{
-		return fType;
+		//noinspection unchecked
+		return (IDataType<T>) fKey.getDataType();
 	}
 
 	/*
@@ -122,7 +127,7 @@ public class ContentType<T> implements IContentType<T>
 	 */
 	public POS getPOS()
 	{
-		return fPOS;
+		return fKey.getPOS();
 	}
 
 	/*

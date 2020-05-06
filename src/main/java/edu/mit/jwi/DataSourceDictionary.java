@@ -10,10 +10,7 @@
 
 package edu.mit.jwi;
 
-import edu.mit.jwi.data.DataType;
-import edu.mit.jwi.data.IContentType;
-import edu.mit.jwi.data.IDataProvider;
-import edu.mit.jwi.data.IDataSource;
+import edu.mit.jwi.data.*;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.data.parse.ILineParser;
 import edu.mit.jwi.item.*;
@@ -22,6 +19,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Basic implementation of the {@code IDictionary} interface. A path to the
@@ -136,11 +134,21 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
+	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.ContentTypeKey, edu.mit.jwi.data.compare.ILineComparator)
 	 */
-	public void setComparator(IContentType<?> contentType, ILineComparator comparator)
+	public void setComparator(ContentTypeKey contentTypeKey, ILineComparator comparator)
 	{
-		provider.setComparator(contentType, comparator);
+		provider.setComparator(contentTypeKey, comparator);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IDictionary#setSourceMatcher(java.util.Map)
+	 */
+	public void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher)
+	{
+		provider.setSourceMatcher(sourceMatcher);
 	}
 
 	/*

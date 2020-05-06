@@ -61,7 +61,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	// final instance fields
 	private final Lock lifecycleLock = new ReentrantLock();
 	private final Lock loadingLock = new ReentrantLock();
-	private final Map<IContentType<?>, IContentType<?>> prototypeMap;
+	private final Map<ContentTypeKey, IContentType<?>> prototypeMap;
 
 	// instance fields 
 	private URL url;
@@ -69,7 +69,10 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	private Map<IContentType<?>, ILoadableDataSource<?>> fileMap = null;
 	private int loadPolicy;
 	private transient JWIBackgroundLoader loader = null;
-	private final Charset charset = null;
+
+	private final Collection<? extends IContentType<?>> defaultTypes;
+	private Charset charset = null;
+	private Map<ContentTypeKey, String> sourceMatcher;
 
 	/**
 	 * Constructs the file provider pointing to the resource indicated by the
@@ -174,11 +177,22 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			throw new IllegalArgumentException();
 		this.url = url;
 		this.loadPolicy = loadPolicy;
+		this.defaultTypes = types;
 
-		Map<IContentType<?>, IContentType<?>> prototypeMap = new LinkedHashMap<>(types.size());
+		Map<ContentTypeKey, IContentType<?>> prototypeMap = new LinkedHashMap<>(types.size());
 		for (IContentType<?> type : types)
-			prototypeMap.put(type, type);
+			prototypeMap.put(type.getKey(), type);
 		this.prototypeMap = prototypeMap;
+	}
+
+	private IContentType<?> getDefault(ContentTypeKey key)
+	{
+		for (IContentType<?> type : this.defaultTypes)
+		{
+			if (type.getKey().equals(key))
+				return type;
+		}
+		return null;
 	}
 
 	/*
@@ -303,19 +317,19 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			lifecycleLock.lock();
 			if (isOpen())
 				throw new IllegalStateException("provider currently open");
-			for (Entry<IContentType<?>, IContentType<?>> e : prototypeMap.entrySet())
+			for (Entry<ContentTypeKey, IContentType<?>> e : prototypeMap.entrySet())
 			{
-				IContentType<?> k = e.getKey();
-				IContentType<?> v = e.getValue();
+				ContentTypeKey key = e.getKey();
+				IContentType<?> value = e.getValue();
 				if (charset == null)
 				{
 					// if we get a null charset, reset to the prototype value but preserve line comparator
-					e.setValue(new ContentType(k.getDataType(), k.getPOS(), v.getLineComparator(), k.getCharset()));
+					e.setValue(new ContentType(key, value.getLineComparator(), getDefault(key).getCharset()));
 				}
 				else
 				{
 					// if we get a non-null charset, generate new  type using the new charset but preserve line comparator
-					e.setValue(new ContentType(k.getDataType(), k.getPOS(), v.getLineComparator(), charset));
+					e.setValue(new ContentType(key, value.getLineComparator(), charset));
 				}
 			}
 		}
@@ -330,7 +344,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" }) public void setComparator(IContentType<?> key, ILineComparator comparator)
+	@SuppressWarnings("rawtypes") public void setComparator(ContentTypeKey key, ILineComparator comparator)
 	{
 		try
 		{
@@ -341,13 +355,33 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			if (comparator == null)
 			{
 				// if we get a null comparator, reset to the prototype but preserve charset
-				prototypeMap.put(key, new ContentType(key.getDataType(), key.getPOS(), key.getLineComparator(), v.getCharset()));
+				prototypeMap.put(key, new ContentType(key, getDefault(key).getLineComparator(), v.getCharset()));
 			}
 			else
 			{
 				// if we get a non-null comparator, generate a new type using the new comparator but preserve charset
-				prototypeMap.put(key, new ContentType(key.getDataType(), key.getPOS(), comparator, v.getCharset()));
+				prototypeMap.put(key, new ContentType(key, comparator, v.getCharset()));
 			}
+		}
+		finally
+		{
+			lifecycleLock.unlock();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IDataProvider#setSourceMatcher(java.util.Map)
+	 */
+	public void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher)
+	{
+		try
+		{
+			lifecycleLock.lock();
+			if (isOpen())
+				throw new IllegalStateException("provider currently open");
+			this.sourceMatcher = sourceMatcher;
 		}
 		finally
 		{
@@ -362,7 +396,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 */
 	@SuppressWarnings("unchecked") public <T> IContentType<T> resolveContentType(IDataType<T> dt, POS pos)
 	{
-		for (Entry<IContentType<?>, IContentType<?>> e : prototypeMap.entrySet())
+		for (Entry<ContentTypeKey, IContentType<?>> e : prototypeMap.entrySet())
 			if (e.getKey().getDataType().equals(dt) && e.getKey().getPOS() == pos)
 				return (IContentType<T>) e.getValue();
 		return null;
@@ -523,9 +557,9 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			File file = null;
 
 			// give first chance to matcher
-			if (sourceMatcher != null && sourceMatcher.containsKey(type))
+			if (sourceMatcher != null && sourceMatcher.containsKey(type.getKey()))
 			{
-				file = match(sourceMatcher.get(type), files);
+				file = match(sourceMatcher.get(type.getKey()), files);
 			}
 
 			// if it failed fall back on data types
@@ -554,8 +588,6 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 		}
 		return null;
 	}
-
-	private Map<IContentType<?>, String> sourceMatcher;
 
 	/**
 	 * Creates the actual data source implementations.

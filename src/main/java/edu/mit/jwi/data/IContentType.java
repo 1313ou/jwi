@@ -33,6 +33,15 @@ import edu.mit.jwi.item.IHasPOS;
 public interface IContentType<T> extends IHasPOS, IHasCharset
 {
 	/**
+	 * Returns the content type key. This method may not return <code>null</code>
+	 *
+	 * @return the content type key representing the resource type for this
+	 * content type
+	 * @since JWI 2.4.1
+	 */
+	ContentTypeKey getKey();
+
+	/**
 	 * Returns the assigned resource type of this object. This method may not
 	 * return <code>null</code>
 	 *

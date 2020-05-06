@@ -11,6 +11,7 @@
 package edu.mit.jwi;
 
 import edu.mit.jwi.data.ContentType;
+import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.DataType;
 import edu.mit.jwi.data.FileProvider;
 import edu.mit.jwi.item.Word;
@@ -100,16 +101,16 @@ public class Dictionary extends CachingDictionary
 
 		// dictionary params
 		if (config.indexNounComparator != null)
-			setComparator(ContentType.INDEX_NOUN, config.indexNounComparator);
+			setComparator(ContentTypeKey.INDEX_NOUN, config.indexNounComparator);
 		if (config.indexVerbComparator != null)
-			setComparator(ContentType.INDEX_VERB, config.indexVerbComparator);
+			setComparator(ContentTypeKey.INDEX_VERB, config.indexVerbComparator);
 		if (config.indexAdjectiveComparator != null)
-			setComparator(ContentType.INDEX_ADJECTIVE, config.indexAdjectiveComparator);
+			setComparator(ContentTypeKey.INDEX_ADJECTIVE, config.indexAdjectiveComparator);
 		if (config.indexAdverbComparator != null)
-			setComparator(ContentType.INDEX_ADVERB, config.indexAdverbComparator);
+			setComparator(ContentTypeKey.INDEX_ADVERB, config.indexAdverbComparator);
 
 		if (config.indexSensekeyComparator != null)
-			setComparator(ContentType.SENSE, config.indexSensekeyComparator);
+			setComparator(ContentTypeKey.SENSE, config.indexSensekeyComparator);
 
 		if (config.charSet != null)
 			setCharset(config.charSet);

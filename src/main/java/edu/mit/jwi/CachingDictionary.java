@@ -10,7 +10,7 @@
 
 package edu.mit.jwi;
 
-import edu.mit.jwi.data.IContentType;
+import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.item.*;
 
@@ -141,11 +141,21 @@ public class CachingDictionary implements ICachingDictionary
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
+	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.ContentTypeKey, edu.mit.jwi.data.compare.ILineComparator)
 	 */
-	public void setComparator(IContentType<?> contentType, ILineComparator comparator)
+	public void setComparator(ContentTypeKey contentType, ILineComparator comparator)
 	{
 		backing.setComparator(contentType, comparator);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IDictionary#setSourceMatcher(java.util.Map)
+	 */
+	public void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher)
+	{
+		backing.setSourceMatcher(sourceMatcher);
 	}
 
 	/*

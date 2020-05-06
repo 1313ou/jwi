@@ -10,6 +10,7 @@
 
 package edu.mit.jwi;
 
+import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.FileProvider;
 import edu.mit.jwi.data.IContentType;
 import edu.mit.jwi.data.ILoadPolicy;
@@ -244,13 +245,25 @@ public class RAMDictionary implements IRAMDictionary
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
+	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.ContentTypeKey, edu.mit.jwi.data.compare.ILineComparator)
 	 */
-	public void setComparator(IContentType<?> contentType, ILineComparator comparator)
+	public void setComparator(ContentTypeKey contentTypeKey, ILineComparator comparator)
 	{
 		if (isOpen())
 			throw new ObjectOpenException();
-		backing.setComparator(contentType, comparator);
+		backing.setComparator(contentTypeKey, comparator);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.data.IDictionary#setSourceMatcher(java.util.Map)
+	 */
+	public void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher)
+	{
+		if (isOpen())
+			throw new ObjectOpenException();
+		backing.setSourceMatcher(sourceMatcher);
 	}
 
 	/*

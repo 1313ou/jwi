@@ -10,7 +10,7 @@
 
 package edu.mit.jwi;
 
-import edu.mit.jwi.data.IContentType;
+import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.IHasCharset;
 import edu.mit.jwi.data.IHasLifecycle;
 import edu.mit.jwi.data.compare.ILineComparator;
@@ -19,6 +19,7 @@ import edu.mit.jwi.morph.IStemmer;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Objects that implement this interface are intended as the main entry point to
@@ -53,7 +54,18 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws IllegalStateException if the provider is currently open
 	 * @since JWI 2.4.1
 	 */
-	void setComparator(IContentType<?> contentType, ILineComparator comparator);
+	void setComparator(ContentTypeKey contentType, ILineComparator comparator);
+
+	/**
+	 * Set map of patterns indexed by content type key, that source files have to
+	 * match to be selected. Not all keys have to be present.
+	 * This gives selection a first opportunity before falling back on standard data
+	 * type selection.
+	 *
+	 * @param sourceMatcher map of patterns indexed by Content type keys
+	 * @since JWI 2.4.1
+	 */
+	void setSourceMatcher(Map<ContentTypeKey, String> sourceMatcher);
 
 	/**
 	 * This method is identical to <code>getIndexWord(IIndexWordID)</code> and
