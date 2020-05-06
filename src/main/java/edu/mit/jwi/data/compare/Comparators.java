@@ -7,6 +7,13 @@ public class Comparators
 	 */
 	public static class CaseSensitiveIndexLineComparator extends IndexLineComparator
 	{
+		private static final CaseSensitiveIndexLineComparator INSTANCE = new CaseSensitiveIndexLineComparator();
+
+		public static CaseSensitiveIndexLineComparator getInstance()
+		{
+			return INSTANCE;
+		}
+
 		protected CaseSensitiveIndexLineComparator()
 		{
 			super(CommentComparator.getInstance());
@@ -24,6 +31,13 @@ public class Comparators
 	 */
 	public static class LexicographicOrderSenseKeyLineComparator extends SenseKeyLineComparator
 	{
+		private static final LexicographicOrderSenseKeyLineComparator INSTANCE = new LexicographicOrderSenseKeyLineComparator();
+
+		public static LexicographicOrderSenseKeyLineComparator getInstance()
+		{
+			return INSTANCE;
+		}
+
 		protected LexicographicOrderSenseKeyLineComparator()
 		{
 			super();
