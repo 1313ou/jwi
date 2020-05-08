@@ -64,7 +64,7 @@ public class JWI
 				config = new Config();
 				config.checkLexicalId = false;
 				config.charSet = StandardCharsets.UTF_8;
-				config.indexSensekeyComparator = Comparators.CaseSensitiveSenseKeyLineComparator.getInstance();
+				config.indexSenseKeyComparator = Comparators.CaseSensitiveSenseKeyLineComparator.getInstance();
 				break;
 			}
 			case XX_POOLS:

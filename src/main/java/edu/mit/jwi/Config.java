@@ -13,6 +13,6 @@ public class Config
 	public ILineComparator indexVerbComparator;
 	public ILineComparator indexAdjectiveComparator;
 	public ILineComparator indexAdverbComparator;
-	public ILineComparator indexSensekeyComparator;
+	public ILineComparator indexSenseKeyComparator;
 	public Charset charSet;
 }

@@ -107,8 +107,8 @@ public class Dictionary extends CachingDictionary
 
 		if (config.indexSensePattern != null)
 			setSourceMatcher(ContentTypeKey.SENSE, config.indexSensePattern);
-		if (config.indexSensekeyComparator != null)
-			setComparator(ContentTypeKey.SENSE, config.indexSensekeyComparator);
+		if (config.indexSenseKeyComparator != null)
+			setComparator(ContentTypeKey.SENSE, config.indexSenseKeyComparator);
 
 		if (config.charSet != null)
 			setCharset(config.charSet);
