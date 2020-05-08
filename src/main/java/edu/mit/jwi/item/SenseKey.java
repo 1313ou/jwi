@@ -129,7 +129,7 @@ public class SenseKey implements ISenseKey
 
 		// all sense key lemmas are in lower case
 		// also checks for null
-		this.lemma = lemma.toLowerCase();
+		this.lemma = lemma; //.toLowerCase();
 		this.lexID = lexID;
 		this.pos = pos;
 		this.isAdjSat = isAdjSat;
@@ -391,7 +391,7 @@ public class SenseKey implements ISenseKey
 		StringBuilder sb = new StringBuilder(size);
 
 		// make string
-		sb.append(key.getLemma().toLowerCase());
+		sb.append(key.getLemma()/*.toLowerCase()*/);
 		sb.append('%');
 		sb.append(key.getSynsetType());
 		sb.append(':');
