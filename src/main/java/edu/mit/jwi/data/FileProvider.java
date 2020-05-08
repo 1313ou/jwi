@@ -58,6 +58,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 {
+	public static boolean verbose = false;
+
 	// final instance fields
 	private final Lock lifecycleLock = new ReentrantLock();
 	private final Lock loadingLock = new ReentrantLock();
@@ -312,6 +314,10 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 */
 	@SuppressWarnings("rawtypes") public void setCharset(Charset charset)
 	{
+		if (verbose)
+		{
+			System.out.printf("Charset: %s%n", charset);
+		}
 		try
 		{
 			lifecycleLock.lock();
@@ -349,6 +355,10 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 */
 	@SuppressWarnings("rawtypes") public void setComparator(ContentTypeKey key, ILineComparator comparator)
 	{
+		if (verbose)
+		{
+			System.out.printf("Comparator for %s %s%n", key, comparator.getClass().getName());
+		}
 		try
 		{
 			lifecycleLock.lock();
@@ -379,17 +389,21 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#setSourceMatcher(edu.mit.data ContentTypeKey, java.lang.String)
 	 */
-	public void setSourceMatcher(ContentTypeKey contentTypeKey, String pattern)
+	public void setSourceMatcher(ContentTypeKey key, String pattern)
 	{
+		if (verbose)
+		{
+			System.out.printf("Matcher for %s: '%s'%n", key, pattern);
+		}
 		try
 		{
 			lifecycleLock.lock();
 			if (isOpen())
 				throw new IllegalStateException("provider currently open");
 			if (pattern == null)
-				this.sourceMatcher.remove(contentTypeKey);
+				this.sourceMatcher.remove(key);
 			else
-				this.sourceMatcher.put(contentTypeKey, pattern);
+				this.sourceMatcher.put(key, pattern);
 		}
 		finally
 		{
@@ -582,6 +596,8 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 
 			files.remove(file);
 			result.put(type, createDataSource(file, type, policy));
+			if (verbose)
+				System.out.printf("%s %s%n", type, file.getName());
 		}
 		return result;
 	}
