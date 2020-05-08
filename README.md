@@ -10,9 +10,9 @@ Set global hints capability.
 
 Set dictionary resource matcher (eg can use one index amongst many).
 
-Set dictionary comparator (eg use different comparator for index file).
+Set dictionary comparator (eg use a different comparator for index file).
 
-Factored out IContentType key functionality into ContentTyoe key enum.
+Factored out IContentType key functionality into ContentType key enum.
 
 Added Maven support.
 
