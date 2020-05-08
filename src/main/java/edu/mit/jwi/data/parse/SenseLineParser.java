@@ -108,7 +108,8 @@ public class SenseLineParser implements ILineParser<ISenseEntry>
 
 			// get tag cnt
 			begin = end + 1;
-			int tag_cnt = Integer.parseInt(line.substring(begin));
+			end = line.indexOf(' ', begin);
+			int tag_cnt = Integer.parseInt(end == -1 ? line.substring(begin) : line.substring(begin, end));
 			return new SenseEntry(sense_key, synset_offset, sense_number, tag_cnt);
 		}
 		catch (Exception e)
