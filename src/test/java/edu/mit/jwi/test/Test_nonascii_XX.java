@@ -16,8 +16,7 @@ public class Test_nonascii_XX
 	@BeforeClass public static void init() throws IOException
 	{
 		String wnHome = System.getenv("WNHOMEXX_contrib" /* + File.separator + "dict" */);
-		System.out.printf("FROM %s%n", wnHome);
-		jwi = new JWI(wnHome);
+		jwi = new JWI(wnHome, JWI.Mode.XX);
 	}
 
 	@Test public void nonascii()

@@ -10,14 +10,14 @@ import java.io.IOException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-public class Tests_2020
+public class Tests_XX_pools
 {
 	private static JWI jwi;
 
 	@BeforeClass public static void init() throws IOException
 	{
-		String wnHome = System.getenv("WNHOME2020" /* + File.separator + "dict" */);
-		jwi = new JWI(wnHome);
+		String wnHome = System.getenv("WNHOMEXX" /* + File.separator + "dict" */);
+		jwi = new JWI(wnHome, JWI.Mode.XX_POOLS);
 	}
 
 	// enum

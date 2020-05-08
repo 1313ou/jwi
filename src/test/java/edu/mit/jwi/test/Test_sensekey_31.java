@@ -1,10 +1,12 @@
 package edu.mit.jwi.test;
 
-import edu.mit.jwi.item.Word;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class Test_sensekey_31
 {
@@ -13,19 +15,37 @@ public class Test_sensekey_31
 	@BeforeClass public static void init() throws IOException
 	{
 		String wnHome = System.getenv("WNHOME31" /* + File.separator + "dict" */);
-		System.out.printf("FROM %s%n", wnHome);
-		Word.setCheckLexicalId(true);
 		jwi = new JWI(wnHome);
+	}
+
+	@Test public void listDeadSensekeys()
+	{
+		TestLib.listDeadSensekeys(jwi);
+	}
+
+	@Test public void sensekeysLive()
+	{
+		TestLib.allSenseEntriesAreLive(jwi);
+	}
+
+	@Test public void senseEntriesLive()
+	{
+		TestLib.allSenseEntriesAreLive(jwi);
 	}
 
 	@Test public void sensekey()
 	{
-		String skStr = "galore%5:00:00:many:00";
-		TestLib.sensekey(jwi, skStr);
-	}
+		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "galore%5:00:00:abundant:00"));
+		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "galore%5:00:00:many:00"));
+		assertFalse(TestLib.sensekeyFromStringIsLive(jwi, "galore%5:00:01:many:00"));
+		assertFalse(TestLib.sensekeyFromStringIsLive(jwi, "galore%5:00:02:many:00"));
 
-	@Test public void sensekeys()
-	{
-		TestLib.sensekeys(jwi);
+		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "aborigine%1:18:00::"));
+		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "Aborigine%1:18:00::"));
+		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "aborigine%1:18:01::"));
+		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "Aborigine%1:18:01::"));
+
+		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "hot%5:00:00:warm:03"));
+		assertFalse(TestLib.sensekeyFromStringIsLive(jwi, "hot%5:00:19:warm:03"));
 	}
 }

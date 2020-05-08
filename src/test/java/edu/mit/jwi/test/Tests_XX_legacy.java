@@ -10,14 +10,14 @@ import java.io.IOException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-public class Tests_2020
+public class Tests_XX_legacy
 {
 	private static JWI jwi;
 
 	@BeforeClass public static void init() throws IOException
 	{
-		String wnHome = System.getenv("WNHOME2020" /* + File.separator + "dict" */);
-		jwi = new JWI(wnHome);
+		String wnHome = System.getenv("WNHOMEXX" /* + File.separator + "dict" */);
+		jwi = new JWI(wnHome, JWI.Mode.XX_LEGACY);
 	}
 
 	// enum
@@ -79,7 +79,10 @@ public class Tests_2020
 
 	// enum live
 
-	@Test public void allSensekeysAreLive()
+	// not all, for instance
+	// generated Young%1:18:07:: does not have an entry in index.sense.legacy (young:1:18:06 is the legacy
+	// sense aka as loretta_young%1:18:00::
+	public void allSensekeysAreLive()
 	{
 		TestLib.allSensekeysAreLive(jwi);
 	}

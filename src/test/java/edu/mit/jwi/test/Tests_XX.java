@@ -1,7 +1,7 @@
 package edu.mit.jwi.test;
 
 import edu.mit.jwi.item.POS;
-import edu.mit.jwi.item.Word;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -17,22 +17,14 @@ public class Tests_XX
 	@BeforeClass public static void init() throws IOException
 	{
 		String wnHome = System.getenv("WNHOMEXX" /* + File.separator + "dict" */);
-		System.out.printf("FROM %s%n", wnHome);
-		Word.setCheckLexicalId(false);
-		jwi = new JWI(wnHome);
+		jwi = new JWI(wnHome, JWI.Mode.XX);
 	}
+
+	// enum
 
 	@Test public void allSenses()
 	{
 		jwi.forAllSenses(null);
-	}
-
-	@Test public void allSensesNonNull()
-	{
-		jwi.forAllSenses((s) -> {
-			assertNotNull(s);
-			return null;
-		});
 	}
 
 	@Test public void allSynsets()
@@ -40,59 +32,64 @@ public class Tests_XX
 		jwi.forAllSynsets(null);
 	}
 
-	@Test public void allSynsetsNonNull()
-	{
-		jwi.forAllSynsets((s) -> {
-			assertNotNull(s);
-			return null;
-		});
-	}
-
 	@Test public void allSenseEntries()
 	{
 		jwi.forAllSenseEntries(null);
 	}
 
-	@Test public void allSenseEntriesNonNull()
+	// enum non null
+
+	@Test public void allSensesAreNonNull()
 	{
-		jwi.forAllSenseEntries((s) -> {
-			assertNotNull(s);
-			return null;
+		jwi.forAllSenses(Assert::assertNotNull);
+	}
+
+	@Test public void allSynsetsAreNonNull()
+	{
+		jwi.forAllSynsets(Assert::assertNotNull);
+	}
+
+	@Test public void allSenseEntriesAreNonNull()
+	{
+		jwi.forAllSenseEntries(Assert::assertNotNull);
+	}
+
+	@Test public void allLemmasAreNonNull()
+	{
+		jwi.forAllLemmas((l) -> {
+			assertNotNull(l);
+			assertFalse(l.isEmpty());
 		});
 	}
 
-	@Test public void allLemmasNonNull()
+	@Test public void allSensekeysAreNonNull()
 	{
-		jwi.forAllLemmas((s) -> {
-			assertNotNull(s);
-			assertFalse(s.isEmpty());
-			return null;
-		});
+		jwi.forAllSensekeys(Assert::assertNotNull);
 	}
 
-	@Test public void allSensekeysNonNull()
+	@Test public void allSynsetRelationsAreNonNull()
 	{
-		jwi.forAllSensekeys((s) -> {
-			assertNotNull(s);
-			return null;
-		});
+		jwi.forAllSynsetRelations(Assert::assertNotNull);
 	}
 
-	@Test public void allSynsetRelationsNonNull()
+	@Test public void allSenseRelationsAreNonNull()
 	{
-		jwi.forAllSynsetRelations((s) -> {
-			assertNotNull(s);
-			return null;
-		});
+		jwi.forAllSenseRelations(Assert::assertNotNull);
 	}
 
-	@Test public void allSenseRelationsNonNull()
+	// enum live
+
+	@Test public void allSensekeysAreLive()
 	{
-		jwi.forAllSenseRelations((s) -> {
-			assertNotNull(s);
-			return null;
-		});
+		TestLib.allSensekeysAreLive(jwi);
 	}
+
+	@Test public void allSenseEntriesAreLive()
+	{
+		TestLib.allSenseEntriesAreLive(jwi);
+	}
+
+	// others
 
 	// the test involves new is_caused_by
 	@Test public void extraRelations()
@@ -104,6 +101,12 @@ public class Tests_XX
 	@Test public void cased()
 	{
 		jwi.walk("young");
+	}
+
+	// the test involves new is_caused_by
+	@Test public void cased2()
+	{
+		jwi.walk("aborigine");
 	}
 
 	// the test involves adj
