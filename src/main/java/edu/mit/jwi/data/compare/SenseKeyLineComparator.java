@@ -81,7 +81,7 @@ public class SenseKeyLineComparator implements ILineComparator
 	 */
 	protected int compareSenseKeys(String senseKey1, String senseKey2)
 	{
-		return senseKey1.compareTo(senseKey2);
+		return senseKey1.compareToIgnoreCase(senseKey2);
 	}
 
 	/*
