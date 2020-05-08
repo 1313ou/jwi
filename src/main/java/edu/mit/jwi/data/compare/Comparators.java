@@ -25,6 +25,26 @@ public class Comparators
 		}
 	}
 
+	public static class CaseSensitiveSenseKeyLineComparator extends SenseKeyLineComparator
+	{
+		private static final CaseSensitiveSenseKeyLineComparator INSTANCE = new CaseSensitiveSenseKeyLineComparator();
+
+		public static CaseSensitiveSenseKeyLineComparator getInstance()
+		{
+			return INSTANCE;
+		}
+
+		protected CaseSensitiveSenseKeyLineComparator()
+		{
+			super();
+		}
+
+		@Override protected int compareSenseKeys(String senseKey1, String senseKey2)
+		{
+			return senseKey1.compareTo(senseKey2);
+		}
+	}
+
 	/**
 	 * Like ignore case, but in case of ignore-case equals, further case-sensitive processing
 	 * comparison is attempted.
