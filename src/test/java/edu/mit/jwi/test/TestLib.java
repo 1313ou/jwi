@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class TestLib
 {
@@ -64,6 +63,37 @@ public class TestLib
 	public static void allSenseEntriesAreLive(JWI jwi)
 	{
 		jwi.forAllSenseEntries((se) -> {
+			assertNotNull(se);
+			int offset = se.getOffset();
+			POS pos = se.getPOS();
+			ISynsetID sid = new SynsetID(offset, pos);
+			assertNotNull(sid);
+			ISynset synset = jwi.getDict().getSynset(sid);
+			assertNotNull(synset);
+		});
+	}
+
+	public static void allSenseEntryPoolsAreLive(JWI jwi)
+	{
+		jwi.forAllSenseEntryPools((ses) -> {
+			assertNotNull(ses);
+			assertTrue(ses.length >= 1);
+			//if(ses.length > 1)
+			for (ISenseEntry se : ses)
+			{
+				int offset = se.getOffset();
+				POS pos = se.getPOS();
+				ISynsetID sid = new SynsetID(offset, pos);
+				assertNotNull(sid);
+				ISynset synset = jwi.getDict().getSynset(sid);
+				assertNotNull(synset);
+			}
+		});
+	}
+
+	public static void allSenseEntriesFromPoolsAreLive(JWI jwi)
+	{
+		jwi.forAllSenseEntriesFromPools((se) -> {
 			assertNotNull(se);
 			int offset = se.getOffset();
 			POS pos = se.getPOS();

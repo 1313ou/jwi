@@ -1,8 +1,10 @@
 package edu.mit.jwi.test;
 
+import edu.mit.jwi.data.parse.SenseKeyParser;
 import edu.mit.jwi.data.parse.SenseLineParser;
 import edu.mit.jwi.data.parse.SensesLineParser;
 import edu.mit.jwi.item.ISenseEntry;
+import edu.mit.jwi.item.ISenseKey;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,6 +37,16 @@ public class Test_sensekey_XX_pools
 		TestLib.allSenseEntriesAreLive(jwi);
 	}
 
+	@Test public void senseEntryPoolsLive()
+	{
+		TestLib.allSenseEntryPoolsAreLive(jwi);
+	}
+
+	@Test public void senseEntriesFromPoolsAreLive()
+	{
+		TestLib.allSenseEntriesFromPoolsAreLive(jwi);
+	}
+
 	@Test public void sensekey()
 	{
 		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "galore%5:00:01:abundant:00"));
@@ -48,6 +60,28 @@ public class Test_sensekey_XX_pools
 
 		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "hot%5:00:19:warm:03"));
 		assertFalse(TestLib.sensekeyFromStringIsLive(jwi, "hot%5:00:03:warm:03"));
+	}
+
+	@Test public void multiplePools()
+	{
+		jwi.forAllSenseEntryPools((ses) -> {
+			assertNotNull(ses);
+			if (ses.length > 1)
+				System.out.printf("● pool:%s%n", ses[0].getSenseKey().toString());
+		});
+	}
+
+	@Test public void pool()
+	{
+		String skStr = "aborigine%1:18:00::";
+		ISenseKey sk = SenseKeyParser.getInstance().parseLine(skStr);
+		assertEquals(sk.toString(), skStr);
+		ISenseEntry[] senseEntries = jwi.getDict().getSenseEntries(sk);
+		System.out.printf("● sensekey%s%n", sk);
+		for (ISenseEntry se : senseEntries)
+		{
+			System.out.printf(". sense entry %d %d %d%n", se.getOffset(), se.getSenseNumber(), se.getTagCount());
+		}
 	}
 
 	@Test public void parse()
