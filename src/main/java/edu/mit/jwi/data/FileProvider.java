@@ -594,7 +594,10 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			if (file == null)
 				continue;
 
-			files.remove(file);
+			// do not remove file from possible choices as both content types may use the same file
+			if (!type.getKey().equals(ContentTypeKey.SENSE) && !type.getKey().equals(ContentTypeKey.SENSES))
+				files.remove(file);
+
 			result.put(type, createDataSource(file, type, policy));
 			if (verbose)
 				System.out.printf("%s %s%n", type, file.getName());
