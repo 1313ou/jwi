@@ -113,6 +113,15 @@ public interface ICachingDictionary extends IDictionary
 		void cacheSenseEntry(ISenseEntry entry);
 
 		/**
+		 * Caches the specified entries.
+		 *
+		 * @param entries the entries to be cached; may not be <code>null</code>
+		 * @throws NullPointerException if the specified entries are <code>null</code>
+		 * @since JWI 2.4.1
+		 */
+		void cacheSenseEntries(ISenseEntry[] entries);
+
+		/**
 		 * Retrieves the item identified by the specified id.
 		 *
 		 * @param <T> the type of the item
@@ -146,6 +155,17 @@ public interface ICachingDictionary extends IDictionary
 		 * @since JWI 2.2.0
 		 */
 		ISenseEntry retrieveSenseEntry(ISenseKey key);
+
+		/**
+		 * Retrieves the sense entries identified by the specified sense key.
+		 *
+		 * @param key the sense key for the requested sense entries
+		 * @return the sense entries for the specified key, or <code>null</code> if not
+		 * present in the cache
+		 * @throws NullPointerException if the specified key is <code>null</code>
+		 * @since JWI 2.4.1
+		 */
+		ISenseEntry[] retrieveSenseEntries(ISenseKey key);
 
 		/**
 		 * Removes all entries from the cache.
