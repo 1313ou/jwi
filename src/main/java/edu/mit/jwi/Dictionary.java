@@ -106,10 +106,15 @@ public class Dictionary extends CachingDictionary
 			setComparator(ContentTypeKey.INDEX_ADVERB, config.indexAdverbComparator);
 
 		if (config.indexSensePattern != null)
+		{
 			setSourceMatcher(ContentTypeKey.SENSE, config.indexSensePattern);
+			setSourceMatcher(ContentTypeKey.SENSES, config.indexSensePattern);
+		}
 		if (config.indexSenseKeyComparator != null)
+		{
 			setComparator(ContentTypeKey.SENSE, config.indexSenseKeyComparator);
-
+			setComparator(ContentTypeKey.SENSES, config.indexSenseKeyComparator);
+		}
 		if (config.charSet != null)
 			setCharset(config.charSet);
 	}
