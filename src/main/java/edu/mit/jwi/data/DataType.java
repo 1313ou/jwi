@@ -34,6 +34,7 @@ public class DataType<T> implements IDataType<T>
 	public static final DataType<ISynset> DATA = new DataType<>("Data", true, DataLineParser.getInstance(), "data", "dat");
 	public static final DataType<IExceptionEntryProxy> EXCEPTION = new DataType<>("Exception", false, ExceptionLineParser.getInstance(), "exception", "exc");
 	public static final DataType<ISenseEntry> SENSE = new DataType<>("Sense", false, SenseLineParser.getInstance(), "sense");
+	public static final DataType<ISenseEntry[]> SENSES = new DataType<>("Senses", false, SensesLineParser.getInstance(), "sense");
 
 	// fields set on construction
 	private final String name;
