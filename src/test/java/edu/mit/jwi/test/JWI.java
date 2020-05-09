@@ -234,6 +234,74 @@ public class JWI
 		}
 	}
 
+	public void forAllSenseEntryPools(final Consumer<ISenseEntry[]> f)
+	{
+		Iterator<ISenseEntry[]> it = this.dict.getSenseEntriesIterator();
+		while (it.hasNext())
+		{
+			ISenseEntry[] pool = it.next();
+			if (f != null)
+			{
+				f.accept(pool);
+			}
+		}
+	}
+
+	public void tryForAllSenseEntryPools(final Consumer<ISenseEntry[]> f)
+	{
+		Iterator<ISenseEntry[]> it = this.dict.getSenseEntriesIterator();
+		while (it.hasNext())
+		{
+			try
+			{
+				ISenseEntry[] pool = it.next();
+				if (f != null)
+				{
+					f.accept(pool);
+				}
+			}
+			catch (Exception e)
+			{
+				System.err.println(e.getMessage());
+			}
+		}
+	}
+
+	public void forAllSenseEntriesFromPools(final Consumer<ISenseEntry> f)
+	{
+		Iterator<ISenseEntry[]> it = this.dict.getSenseEntriesIterator();
+		while (it.hasNext())
+		{
+			ISenseEntry[] pool = it.next();
+			if (f != null)
+			{
+				for (ISenseEntry entry : pool)
+					f.accept(entry);
+			}
+		}
+	}
+
+	public void tryForAllSenseEntriesFromPools(final Consumer<ISenseEntry> f)
+	{
+		Iterator<ISenseEntry[]> it = this.dict.getSenseEntriesIterator();
+		while (it.hasNext())
+		{
+			try
+			{
+				ISenseEntry[] pool = it.next();
+				if (f != null)
+				{
+					for (ISenseEntry entry : pool)
+						f.accept(entry);
+				}
+			}
+			catch (Exception e)
+			{
+				System.err.println(e.getMessage());
+			}
+		}
+	}
+
 	// S P E C I F I C   I T E R A T I O N S
 
 	public void forAllLemmas(final Consumer<String> f)
