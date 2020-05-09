@@ -354,11 +354,39 @@ public class CachingDictionary implements ICachingDictionary
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see edu.mit.jwi.IDictionary#getSenseEntries(edu.mit.jwi.item.ISenseKey)
+	 */
+	public ISenseEntry[] getSenseEntries(ISenseKey key)
+	{
+		checkOpen();
+		ISenseEntry[] entries = getCache().retrieveSenseEntries(key);
+		if (entries == null)
+		{
+			entries = backing.getSenseEntries(key);
+			if (entries != null)
+				getCache().cacheSenseEntries(entries);
+		}
+		return entries;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntryIterator()
 	 */
 	public Iterator<ISenseEntry> getSenseEntryIterator()
 	{
 		return backing.getSenseEntryIterator();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.IDictionary#getSenseEntriesIterator()
+	 */
+	public Iterator<ISenseEntry[]> getSenseEntriesIterator()
+	{
+		return backing.getSenseEntriesIterator();
 	}
 
 	/*
@@ -446,6 +474,7 @@ public class CachingDictionary implements ICachingDictionary
 		protected Map<IItemID<?>, IItem<?>> itemCache;
 		protected Map<ISenseKey, IWord> keyCache;
 		protected Map<ISenseKey, ISenseEntry> senseCache;
+		protected Map<ISenseKey, ISenseEntry[]> sensesCache;
 
 		/**
 		 * Default constructor that initializes the dictionary with caching enabled.
@@ -489,6 +518,7 @@ public class CachingDictionary implements ICachingDictionary
 				itemCache = this.makeCache(capacity);
 				keyCache = this.makeCache(capacity);
 				senseCache = this.makeCache(capacity);
+				sensesCache = this.makeCache(capacity);
 			}
 			finally
 			{
@@ -518,7 +548,7 @@ public class CachingDictionary implements ICachingDictionary
 		 */
 		public boolean isOpen()
 		{
-			return senseCache != null;
+			return senseCache != null && sensesCache != null;
 		}
 
 		/**
@@ -571,6 +601,8 @@ public class CachingDictionary implements ICachingDictionary
 				keyCache.clear();
 			if (senseCache != null)
 				senseCache.clear();
+			if (sensesCache != null)
+				sensesCache.clear();
 		}
 
 		/*
@@ -639,6 +671,7 @@ public class CachingDictionary implements ICachingDictionary
 			reduceCacheSize(itemCache);
 			reduceCacheSize(keyCache);
 			reduceCacheSize(senseCache);
+			reduceCacheSize(sensesCache);
 		}
 
 		/*
@@ -649,7 +682,7 @@ public class CachingDictionary implements ICachingDictionary
 		public int size()
 		{
 			checkOpen();
-			return itemCache.size() + keyCache.size() + senseCache.size();
+			return itemCache.size() + keyCache.size() + senseCache.size() + sensesCache.size();
 		}
 
 		/*
@@ -692,6 +725,20 @@ public class CachingDictionary implements ICachingDictionary
 				return;
 			senseCache.put(entry.getSenseKey(), entry);
 			reduceCacheSize(senseCache);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see edu.mit.jwi.ICachingDictionary.IItemCache#cacheSenseEntries(edu.mit.jwi.item.ISenseEntry)
+		 */
+		public void cacheSenseEntries(ISenseEntry[] entries)
+		{
+			checkOpen();
+			if (!isEnabled())
+				return;
+			sensesCache.put(entries[0].getSenseKey(), entries);
+			reduceCacheSize(sensesCache);
 		}
 
 		private final Object cacheLock = new Object();
@@ -752,6 +799,17 @@ public class CachingDictionary implements ICachingDictionary
 		{
 			checkOpen();
 			return senseCache.get(key);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see edu.mit.jwi.ICachingDictionary.IItemCache#retrieveSenseEntries(edu.mit.jwi.item.ISenseKey)
+		 */
+		public ISenseEntry[] retrieveSenseEntries(ISenseKey key)
+		{
+			checkOpen();
+			return sensesCache.get(key);
 		}
 	}
 }
