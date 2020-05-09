@@ -19,7 +19,6 @@ import edu.mit.jwi.morph.IStemmer;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Objects that implement this interface are intended as the main entry point to

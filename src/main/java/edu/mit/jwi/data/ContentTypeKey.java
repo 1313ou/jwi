@@ -33,8 +33,7 @@ public enum ContentTypeKey
 	EXCEPTION_VERB(DataType.EXCEPTION, POS.VERB), //
 	EXCEPTION_ADVERB(DataType.EXCEPTION, POS.ADVERB), //
 	EXCEPTION_ADJECTIVE(DataType.EXCEPTION, POS.ADJECTIVE), //
-	SENSE(DataType.SENSE, null),
-	SENSES(DataType.SENSES, null);
+	SENSE(DataType.SENSE, null), SENSES(DataType.SENSES, null);
 
 	private final IDataType<?> fType;
 

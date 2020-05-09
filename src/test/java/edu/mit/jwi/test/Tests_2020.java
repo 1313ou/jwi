@@ -1,6 +1,6 @@
 package edu.mit.jwi.test;
 
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.item.POS;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
