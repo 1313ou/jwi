@@ -50,6 +50,7 @@ public class ContentType<T> implements IContentType<T>
 			ExceptionLineComparator.getInstance());
 
 	public static final ContentType<ISenseEntry> SENSE = new ContentType<>(ContentTypeKey.SENSE, SenseKeyLineComparator.getInstance());
+	public static final ContentType<ISenseEntry[]> SENSES = new ContentType<>(ContentTypeKey.SENSES, SenseKeyLineComparator.getInstance());
 
 	// fields set on construction
 	private final ContentTypeKey fKey;
