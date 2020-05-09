@@ -19,6 +19,6 @@ Added Maven support.
 On Maven Central as:
 
     <groupId>io.github.x-englishwordnet</groupId>
-    <artifactId>jwi</artifactId>
+    <artifactId>jwix</artifactId>
     <packaging>jar</packaging>
     <version>2.4.0.1-SNAPSHOT</version>
