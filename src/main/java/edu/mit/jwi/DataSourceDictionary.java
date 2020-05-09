@@ -283,6 +283,22 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see edu.mit.jwi.IDictionary#getSenseEntries(edu.mit.jwi.item.ISenseKey)
+	 */
+	public ISenseEntry[] getSenseEntries(ISenseKey key)
+	{
+		checkOpen();
+		IContentType<ISenseEntry[]> content = provider.resolveContentType(DataType.SENSES, null);
+		IDataSource<ISenseEntry[]> file = provider.getSource(content);
+		String line = file.getLine(key.toString());
+		if (line == null)
+			return null;
+		return content.getDataType().getParser().parseLine(line);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see edu.mit.wordnet.core.dict.IDictionary#getSynset(edu.mit.wordnet.core.data.ISynsetID)
 	 */
 	public ISynset getSynset(ISynsetID id)
@@ -423,6 +439,17 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	{
 		checkOpen();
 		return new SenseEntryFileIterator();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see edu.mit.jwi.IDictionary#getSenseEntriesIterator()
+	 */
+	public Iterator<ISenseEntry[]> getSenseEntriesIterator()
+	{
+		checkOpen();
+		return new SenseEntriesFileIterator();
 	}
 
 	/**
@@ -591,6 +618,27 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 * @see edu.mit.wordnet.core.base.dict.Dictionary.FileIterator#parseLine(java.lang.String)
 		 */
 		public ISenseEntry parseLine(String line)
+		{
+			return fParser.parseLine(line);
+		}
+	}
+
+	/**
+	 * Iterates over the sense entries file.
+	 */
+	public class SenseEntriesFileIterator extends FileIterator2<ISenseEntry[]>
+	{
+		public SenseEntriesFileIterator()
+		{
+			super(provider.resolveContentType(DataType.SENSES, null));
+		}
+
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see edu.mit.wordnet.core.base.dict.Dictionary.FileIterator#parseLine(java.lang.String)
+		 */
+		public ISenseEntry[] parseLine(String line)
 		{
 			return fParser.parseLine(line);
 		}
