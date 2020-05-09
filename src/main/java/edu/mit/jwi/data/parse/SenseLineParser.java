@@ -14,6 +14,8 @@ import edu.mit.jwi.item.ISenseEntry;
 import edu.mit.jwi.item.ISenseKey;
 import edu.mit.jwi.item.SenseEntry;
 
+import java.util.StringTokenizer;
+
 /**
  * Parser for Wordnet sense index files (e.g., <code>index.sense</code> or
  * <code>sense.index</code>). It produces an {@code ISenseEntry} object.
@@ -89,32 +91,33 @@ public class SenseLineParser implements ILineParser<ISenseEntry>
 
 		try
 		{
-			int begin = 0, end;
-
 			// get sense key
-			end = line.indexOf(' ', begin);
-			String keyStr = line.substring(begin, end);
-			ISenseKey sense_key = keyParser.parseLine(keyStr);
+			int end = line.indexOf(' ');
+			String keyStr = line.substring(0, end);
+			ISenseKey senseKey = keyParser.parseLine(keyStr);
 
-			// get offset
-			begin = end + 1;
-			end = line.indexOf(' ', begin);
-			int synset_offset = Integer.parseInt(line.substring(begin, end));
-
-			// get sense number
-			begin = end + 1;
-			end = line.indexOf(' ', begin);
-			int sense_number = Integer.parseInt(line.substring(begin, end));
-
-			// get tag cnt
-			begin = end + 1;
-			end = line.indexOf(' ', begin);
-			int tag_cnt = Integer.parseInt(end == -1 ? line.substring(begin) : line.substring(begin, end));
-			return new SenseEntry(sense_key, synset_offset, sense_number, tag_cnt);
+			// get sense entry
+			String tail = line.substring(end + 1);
+			StringTokenizer tokenizer = new StringTokenizer(tail);
+			return parseSenseEntry(tokenizer, senseKey);
 		}
 		catch (Exception e)
 		{
 			throw new MisformattedLineException(line, e);
 		}
+	}
+
+	protected static SenseEntry parseSenseEntry(StringTokenizer tokenizer, ISenseKey senseKey)
+	{
+		// get offset
+		int synsetOffset = Integer.parseInt(tokenizer.nextToken());
+
+		// get sense number
+		int senseNumber = Integer.parseInt(tokenizer.nextToken());
+
+		// get tag cnt
+		int tagCnt = Integer.parseInt(tokenizer.nextToken());
+
+		return new SenseEntry(senseKey, synsetOffset, senseNumber, tagCnt);
 	}
 }
