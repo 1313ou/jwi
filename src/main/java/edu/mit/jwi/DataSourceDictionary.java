@@ -295,7 +295,6 @@ public class DataSourceDictionary implements IDataSourceDictionary
 					ISynset synset = possibleWord.getSynset();
 					assert synset != null;
 					List<IWord> words = synset.getWords();
-					assert words != null;
 					for (IWord synonym : words)
 					{
 						if (synonym.getSenseKey().equals(key))
