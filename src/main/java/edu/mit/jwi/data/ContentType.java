@@ -123,8 +123,7 @@ public class ContentType<T> implements IContentType<T>
 	@NonNull public IDataType<T> getDataType()
 	{
 		assert fKey != null;
-		//noinspection unchecked
-		return (IDataType<T>) fKey.getDataType();
+		return fKey.getDataType();
 	}
 
 	/*

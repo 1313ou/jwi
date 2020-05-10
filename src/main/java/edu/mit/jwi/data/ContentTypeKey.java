@@ -45,9 +45,10 @@ public enum ContentTypeKey
 		this.fPOS = fPOS;
 	}
 
-	public IDataType<?> getDataType()
+	public <T> IDataType<T> getDataType()
 	{
-		return fType;
+		//noinspection unchecked
+		return (IDataType<T>) fType;
 	}
 
 	public POS getPOS()
