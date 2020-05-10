@@ -153,7 +153,7 @@ public class DataType<T> implements IDataType<T>
 	 * order they are declared.
 	 * @since JWI 2.0.0
 	 */
-	@Nullable public static Collection<DataType<?>> values()
+	@NonNull public static Collection<DataType<?>> values()
 	{
 		if (dataTypes == null)
 		{
