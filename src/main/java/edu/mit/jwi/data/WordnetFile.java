@@ -513,8 +513,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 		// pb with covariant returns if compiled with JSK >=9
 		// unless release option is used
 		ByteBuffer buf2 = buf.duplicate();
-		buf2 = (ByteBuffer)buf2.position(start);
-		buf2 = (ByteBuffer)buf2. limit(end);
+		buf2 = (ByteBuffer) buf2.position(start);
+		buf2 = (ByteBuffer) buf2.limit(end);
 		buf = buf2;
 
 		// decode the buffer using the provided character set
