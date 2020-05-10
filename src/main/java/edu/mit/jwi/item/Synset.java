@@ -233,10 +233,6 @@ public class Synset implements ISynset
 	 */
 	@Nullable public List<ISynsetID> getRelatedSynsets(IPointer ptrType)
 	{
-		if (relatedMap == null)
-		{
-			return Collections.emptyList();
-		}
 		List<ISynsetID> result = relatedMap.get(ptrType);
 		return result != null ? result : Collections.emptyList();
 	}
