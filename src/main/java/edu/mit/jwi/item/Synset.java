@@ -37,11 +37,11 @@ public class Synset implements ISynset
 	@Nullable private final ISynsetID id;
 	@Nullable private final String gloss;
 	@Nullable private final ILexFile lexFile;
-	private final List<IWord> words;
+	@NonNull private final List<IWord> words;
 	private final boolean isAdjSat;
 	private final boolean isAdjHead;
-	private final List<ISynsetID> related;
-	private final Map<IPointer, List<ISynsetID>> relatedMap;
+	@NonNull private final List<ISynsetID> related;
+	@NonNull private final Map<IPointer, List<ISynsetID>> relatedMap;
 
 	/**
 	 * Constructs a new synset object with the specified parameters.
@@ -191,7 +191,7 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getWords()
 	 */
-	public List<IWord> getWords()
+	@NonNull public List<IWord> getWords()
 	{
 		return words;
 	}
@@ -221,7 +221,7 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getRelatedMap()
 	 */
-	public Map<IPointer, List<ISynsetID>> getRelatedMap()
+	@NonNull public Map<IPointer, List<ISynsetID>> getRelatedMap()
 	{
 		return relatedMap;
 	}
@@ -246,7 +246,7 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getRelatedSynsets()
 	 */
-	public List<ISynsetID> getRelatedSynsets()
+	@NonNull public List<ISynsetID> getRelatedSynsets()
 	{
 		return related;
 	}

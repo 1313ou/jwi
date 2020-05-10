@@ -40,9 +40,9 @@ public class Word implements IWord
 	@NonNull private final ISenseKey senseKey;
 	@Nullable private final AdjMarker adjMarker;
 	private final int lexID;
-	private final List<IVerbFrame> frames;
-	private final List<IWordID> allWords;
-	private final Map<IPointer, List<IWordID>> wordMap;
+	@NonNull private final List<IVerbFrame> frames;
+	@NonNull private final List<IWordID> allWords;
+	@NonNull private final Map<IPointer, List<IWordID>> wordMap;
 
 	/**
 	 * Constructs a new word object.
@@ -207,7 +207,7 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getRelatedMap()
 	 */
-	public Map<IPointer, List<IWordID>> getRelatedMap()
+	@NonNull public Map<IPointer, List<IWordID>> getRelatedMap()
 	{
 		return wordMap;
 	}
@@ -228,7 +228,7 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getRelatedWords()
 	 */
-	public List<IWordID> getRelatedWords()
+	@NonNull public List<IWordID> getRelatedWords()
 	{
 		return (wordMap == null) ? Collections.emptyList() : allWords;
 	}
@@ -238,7 +238,7 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getVerbFrames()
 	 */
-	public List<IVerbFrame> getVerbFrames()
+	@NonNull public List<IVerbFrame> getVerbFrames()
 	{
 		return frames;
 	}

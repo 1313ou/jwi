@@ -80,7 +80,7 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return an immutable map from lexical pointers to words
 	 * @since JWI 2.0.0
 	 */
-	Map<IPointer, List<IWordID>> getRelatedMap();
+	@NonNull Map<IPointer, List<IWordID>> getRelatedMap();
 
 	/**
 	 * Returns an immutable list of all word ids related to this word by the
@@ -108,7 +108,7 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return an immutable list of all lexically-related words
 	 * @since JWI 2.0.0
 	 */
-	List<IWordID> getRelatedWords();
+	@NonNull List<IWordID> getRelatedWords();
 
 	/**
 	 * Returns an immutable list of all verb frames associated with this word.
@@ -118,7 +118,7 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * word, or the empty list if none.
 	 * @since JWI 2.0.0
 	 */
-	List<IVerbFrame> getVerbFrames();
+	@NonNull List<IVerbFrame> getVerbFrames();
 
 	/**
 	 * Returns the adjective marker of this word. If this word has no adjective

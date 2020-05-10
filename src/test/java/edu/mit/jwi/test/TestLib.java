@@ -1,5 +1,6 @@
 package edu.mit.jwi.test;
 
+import edu.mit.jwi.NonNull;
 import edu.mit.jwi.data.parse.DataLineParser;
 import edu.mit.jwi.data.parse.SenseKeyParser;
 import edu.mit.jwi.item.*;
@@ -12,14 +13,14 @@ import static org.junit.Assert.*;
 
 public class TestLib
 {
-	public static boolean sensekeyFromStringIsLive(JWI jwi, String skStr)
+	public static boolean sensekeyFromStringIsLive(@NonNull JWI jwi, String skStr)
 	{
 		ISenseKey sk = SenseKeyParser.getInstance().parseLine(skStr);
 		assertEquals(sk.toString(), skStr);
 		return sensekeyIsLive(jwi, sk);
 	}
 
-	public static boolean sensekeyIsLive(JWI jwi, ISenseKey sk)
+	public static boolean sensekeyIsLive(@NonNull JWI jwi, @NonNull ISenseKey sk)
 	{
 		//System.out.println("● sensekey=" + sk);
 		ISenseEntry senseEntry = jwi.getDict().getSenseEntry(sk);
@@ -30,7 +31,7 @@ public class TestLib
 		return jwi.getDict().getSynset(sid) != null;
 	}
 
-	public static void listDeadSensekeys(JWI jwi)
+	public static void listDeadSensekeys(@NonNull JWI jwi)
 	{
 		AtomicInteger errorCount = new AtomicInteger();
 		jwi.forAllSenses((sense) -> {
@@ -46,7 +47,7 @@ public class TestLib
 		assertEquals(0, errorCount.get());
 	}
 
-	public static void allSensekeysAreLive(JWI jwi)
+	public static void allSensekeysAreLive(@NonNull JWI jwi)
 	{
 		jwi.forAllSensekeys((sk) -> {
 			assertNotNull(sk);
@@ -60,7 +61,7 @@ public class TestLib
 		});
 	}
 
-	public static void allSenseEntriesAreLive(JWI jwi)
+	public static void allSenseEntriesAreLive(@NonNull JWI jwi)
 	{
 		jwi.forAllSenseEntries((se) -> {
 			assertNotNull(se);
@@ -73,7 +74,7 @@ public class TestLib
 		});
 	}
 
-	public static void allSenseEntryPoolsAreLive(JWI jwi)
+	public static void allSenseEntryPoolsAreLive(@NonNull JWI jwi)
 	{
 		jwi.forAllSenseEntryPools((ses) -> {
 			assertNotNull(ses);
@@ -91,7 +92,7 @@ public class TestLib
 		});
 	}
 
-	public static void allSenseEntriesFromPoolsAreLive(JWI jwi)
+	public static void allSenseEntriesFromPoolsAreLive(@NonNull JWI jwi)
 	{
 		jwi.forAllSenseEntriesFromPools((se) -> {
 			assertNotNull(se);
@@ -104,7 +105,7 @@ public class TestLib
 		});
 	}
 
-	public static List<String> parseDataLineIntoMembers(String line)
+	@NonNull public static List<String> parseDataLineIntoMembers(String line)
 	{
 		List<String> result = new ArrayList<>();
 		DataLineParser parser = DataLineParser.getInstance();

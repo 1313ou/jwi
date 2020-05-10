@@ -37,7 +37,7 @@ public class IndexWord implements IIndexWord
 	@Nullable private final IIndexWordID id;
 	private final int tagSenseCount;
 	private final Set<IPointer> pointers;
-	private final List<IWordID> wordIDs;
+	@NonNull private final List<IWordID> wordIDs;
 
 	/**
 	 * Constructs a new index word.
@@ -184,7 +184,7 @@ public class IndexWord implements IIndexWord
 	 *
 	 * @see edu.mit.jwi.item.IIndexWord#getWordIDs()
 	 */
-	public List<IWordID> getWordIDs()
+	@NonNull public List<IWordID> getWordIDs()
 	{
 		return wordIDs;
 	}

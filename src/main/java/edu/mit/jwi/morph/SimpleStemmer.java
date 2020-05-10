@@ -96,7 +96,7 @@ public class SimpleStemmer implements IStemmer
 	public static final String ENDING_y = "y";
 	public static final String ENDING_z = "z";
 
-	public static final Map<POS, List<StemmingRule>> ruleMap;
+	@NonNull public static final Map<POS, List<StemmingRule>> ruleMap;
 
 	static
 	{
@@ -151,7 +151,7 @@ public class SimpleStemmer implements IStemmer
 	 * @return the rule map for this stemmer
 	 * @since JWI 3.5.1
 	 */
-	@SuppressWarnings("SameReturnValue") public Map<POS, List<StemmingRule>> getRuleMap()
+	@NonNull @SuppressWarnings("SameReturnValue") public Map<POS, List<StemmingRule>> getRuleMap()
 	{
 		return ruleMap;
 	}
@@ -240,7 +240,7 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	protected List<String> stripNounSuffix(@NonNull final String noun)
+	@NonNull protected List<String> stripNounSuffix(@NonNull final String noun)
 	{
 		if (noun.length() <= 2)
 		{
@@ -283,7 +283,7 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.1.1
 	 */
-	protected List<String> getNounCollocationRoots(@NonNull String composite)
+	@NonNull protected List<String> getNounCollocationRoots(@NonNull String composite)
 	{
 		// split into parts
 		String[] parts = composite.split(underscore);
@@ -377,7 +377,7 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	protected List<String> stripVerbSuffix(@NonNull final String verb)
+	@NonNull protected List<String> stripVerbSuffix(@NonNull final String verb)
 	{
 		if (verb.length() <= 2)
 		{
@@ -411,7 +411,7 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.1.1
 	 */
-	protected List<String> getVerbCollocationRoots(@NonNull String composite)
+	@NonNull protected List<String> getVerbCollocationRoots(@NonNull String composite)
 	{
 		// split into parts
 		String[] parts = composite.split(underscore);

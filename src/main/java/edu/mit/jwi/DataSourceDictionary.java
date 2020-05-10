@@ -557,7 +557,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	public abstract class FileIterator<T, N> implements Iterator<N>, IHasPOS
 	{
 		@Nullable protected final IDataSource<T> fFile;
-		protected final Iterator<String> iterator;
+		@NonNull protected final Iterator<String> iterator;
 		@Nullable protected final ILineParser<T> fParser;
 		protected String currentLine;
 

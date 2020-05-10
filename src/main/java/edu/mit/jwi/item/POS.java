@@ -73,7 +73,7 @@ public enum POS
 	private final String name;
 	private final char tag;
 	private final int num;
-	private final Set<String> filenameHints;
+	@NonNull private final Set<String> filenameHints;
 
 	// private constructor
 	POS(String name, char tag, int num, String... patterns)
@@ -91,7 +91,7 @@ public enum POS
 	 * @return an immutable set of resource name hints
 	 * @since JWI 2.2
 	 */
-	public Set<String> getResourceNameHints()
+	@NonNull public Set<String> getResourceNameHints()
 	{
 		return filenameHints;
 	}

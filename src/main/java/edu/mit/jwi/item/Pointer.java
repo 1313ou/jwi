@@ -169,8 +169,8 @@ public class Pointer implements IPointer
 		return str;
 	}
 
-	private static final Map<String, Pointer> pointerMap;
-	private static final Set<Pointer> pointerSet;
+	@NonNull private static final Map<String, Pointer> pointerMap;
+	@NonNull private static final Set<Pointer> pointerSet;
 
 	// class initialization code
 	static
@@ -226,7 +226,7 @@ public class Pointer implements IPointer
 	 * this class
 	 * @since JWI 2.1.0
 	 */
-	public static Collection<Pointer> values()
+	@NonNull public static Collection<Pointer> values()
 	{
 		return pointerSet;
 	}

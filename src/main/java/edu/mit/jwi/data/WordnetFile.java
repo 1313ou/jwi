@@ -50,7 +50,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 {
 	// fields set on construction
-	private final String name;
+	@NonNull private final String name;
 	@Nullable private final IContentType<T> contentType;
 	@Nullable private final ICommentDetector detector;
 	@NonNull private final File file;
@@ -97,7 +97,7 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataSource#getName()
 	 */
-	public String getName()
+	@NonNull public String getName()
 	{
 		return name;
 	}

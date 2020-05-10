@@ -1,8 +1,6 @@
 package edu.mit.jwi.test;
 
-import edu.mit.jwi.Config;
-import edu.mit.jwi.Dictionary;
-import edu.mit.jwi.IDictionary;
+import edu.mit.jwi.*;
 import edu.mit.jwi.data.FileProvider;
 import edu.mit.jwi.data.compare.Comparators;
 import edu.mit.jwi.item.*;
@@ -24,7 +22,7 @@ import java.util.function.Consumer;
  */
 public class JWI
 {
-	private final IDictionary dict;
+	@NonNull private final IDictionary dict;
 
 	/**
 	 * Main
@@ -39,7 +37,7 @@ public class JWI
 		new JWI(wnHome).walk(lemma);
 	}
 
-	public JWI(final String wnHome) throws IOException
+	public JWI(@NonNull final String wnHome) throws IOException
 	{
 		this(wnHome, Mode.STANDARD);
 	}
@@ -47,7 +45,7 @@ public class JWI
 	public enum Mode
 	{STANDARD, XX, XX_POOLS, XX_LEGACY}
 
-	public JWI(final String wnHome, Mode mode) throws IOException
+	public JWI(@NonNull final String wnHome, @NonNull Mode mode) throws IOException
 	{
 		FileProvider.verbose = true;
 		System.out.printf("FROM %s%n", wnHome);
@@ -94,14 +92,14 @@ public class JWI
 		this.dict.open();
 	}
 
-	public IDictionary getDict()
+	@NonNull public IDictionary getDict()
 	{
 		return dict;
 	}
 
 	// M A I N   I T E R A T I O N S
 
-	public void forAllSenses(final Consumer<IWord> f)
+	public void forAllSenses(@Nullable final Consumer<IWord> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -128,7 +126,7 @@ public class JWI
 		}
 	}
 
-	public void tryForAllSenses(final Consumer<IWord> f)
+	public void tryForAllSenses(@Nullable final Consumer<IWord> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -162,7 +160,7 @@ public class JWI
 		}
 	}
 
-	public void forAllSynsets(final Consumer<ISynset> f)
+	public void forAllSynsets(@Nullable final Consumer<ISynset> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -178,7 +176,7 @@ public class JWI
 		}
 	}
 
-	public void tryForAllSynsets(final Consumer<ISynset> f)
+	public void tryForAllSynsets(@Nullable final Consumer<ISynset> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -201,7 +199,7 @@ public class JWI
 		}
 	}
 
-	public void forAllSenseEntries(final Consumer<ISenseEntry> f)
+	public void forAllSenseEntries(@Nullable final Consumer<ISenseEntry> f)
 	{
 		Iterator<ISenseEntry> it = this.dict.getSenseEntryIterator();
 		while (it.hasNext())
@@ -214,7 +212,7 @@ public class JWI
 		}
 	}
 
-	public void tryForAllSenseEntries(final Consumer<ISenseEntry> f)
+	public void tryForAllSenseEntries(@Nullable final Consumer<ISenseEntry> f)
 	{
 		Iterator<ISenseEntry> it = this.dict.getSenseEntryIterator();
 		while (it.hasNext())
@@ -234,7 +232,7 @@ public class JWI
 		}
 	}
 
-	public void forAllSenseEntryPools(final Consumer<ISenseEntry[]> f)
+	public void forAllSenseEntryPools(@Nullable final Consumer<ISenseEntry[]> f)
 	{
 		Iterator<ISenseEntry[]> it = this.dict.getSenseEntriesIterator();
 		while (it.hasNext())
@@ -247,7 +245,7 @@ public class JWI
 		}
 	}
 
-	public void tryForAllSenseEntryPools(final Consumer<ISenseEntry[]> f)
+	public void tryForAllSenseEntryPools(@Nullable final Consumer<ISenseEntry[]> f)
 	{
 		Iterator<ISenseEntry[]> it = this.dict.getSenseEntriesIterator();
 		while (it.hasNext())
@@ -267,7 +265,7 @@ public class JWI
 		}
 	}
 
-	public void forAllSenseEntriesFromPools(final Consumer<ISenseEntry> f)
+	public void forAllSenseEntriesFromPools(@Nullable final Consumer<ISenseEntry> f)
 	{
 		Iterator<ISenseEntry[]> it = this.dict.getSenseEntriesIterator();
 		while (it.hasNext())
@@ -281,7 +279,7 @@ public class JWI
 		}
 	}
 
-	public void tryForAllSenseEntriesFromPools(final Consumer<ISenseEntry> f)
+	public void tryForAllSenseEntriesFromPools(@Nullable final Consumer<ISenseEntry> f)
 	{
 		Iterator<ISenseEntry[]> it = this.dict.getSenseEntriesIterator();
 		while (it.hasNext())
@@ -304,7 +302,7 @@ public class JWI
 
 	// S P E C I F I C   I T E R A T I O N S
 
-	public void forAllLemmas(final Consumer<String> f)
+	public void forAllLemmas(@Nullable final Consumer<String> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -332,7 +330,7 @@ public class JWI
 		}
 	}
 
-	public void forAllSensekeys(final Consumer<ISenseKey> f)
+	public void forAllSensekeys(@Nullable final Consumer<ISenseKey> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -360,7 +358,7 @@ public class JWI
 		}
 	}
 
-	public void forAllSynsetRelations(final Consumer<ISynset> f)
+	public void forAllSynsetRelations(@Nullable final Consumer<ISynset> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -381,7 +379,7 @@ public class JWI
 		}
 	}
 
-	public void forAllSenseRelations(final Consumer<IWord> f)
+	public void forAllSenseRelations(@Nullable final Consumer<IWord> f)
 	{
 		for (final POS pos : POS.values())
 		{
@@ -423,7 +421,7 @@ public class JWI
 		}
 	}
 
-	public void walk(final String lemma, final POS pos)
+	public void walk(final String lemma, @NonNull final POS pos)
 	{
 		// a line in an index file
 		final IIndexWord idx = this.dict.getIndexWord(lemma, pos);
@@ -438,7 +436,7 @@ public class JWI
 		}
 	}
 
-	public void walk(final IIndexWord idx)
+	public void walk(@NonNull final IIndexWord idx)
 	{
 		Set<IPointer> pointers = idx.getPointers();
 		for (IPointer ptr : pointers)
@@ -454,7 +452,7 @@ public class JWI
 		}
 	}
 
-	public void walk(final IWordID senseid)
+	public void walk(@NonNull final IWordID senseid)
 	{
 		System.out.println("--------------------------------------------------------------------------------");
 		//System.out.println("senseid = " + senseid.toString());
@@ -471,7 +469,7 @@ public class JWI
 		walk(synset, 1);
 	}
 
-	public void walk(final IWord sense)
+	public void walk(@NonNull final IWord sense)
 	{
 		System.out.printf("● sense: %s lexid: %d sensekey: %s%n", sense.toString(), sense.getLexicalID(), sense.getSenseKey());
 
@@ -502,7 +500,7 @@ public class JWI
 				senseEntry == null ? "<missing>" : senseEntry.getTagCount());
 	}
 
-	public void walk(final Map<IPointer, List<IWordID>> relatedMap)
+	public void walk(@Nullable final Map<IPointer, List<IWordID>> relatedMap)
 	{
 		if (relatedMap != null)
 		{
@@ -518,7 +516,7 @@ public class JWI
 		}
 	}
 
-	public void walk(final List<IVerbFrame> verbFrames, final String lemma)
+	public void walk(@Nullable final List<IVerbFrame> verbFrames, final String lemma)
 	{
 		if (verbFrames != null)
 		{
@@ -527,7 +525,7 @@ public class JWI
 		}
 	}
 
-	public void walk(final ISynset synset, final int level)
+	public void walk(@NonNull final ISynset synset, final int level)
 	{
 		final String indentSpace = new String(new char[level]).replace('\0', '\t');
 		final Map<IPointer, List<ISynsetID>> links = synset.getRelatedMap();
@@ -539,7 +537,7 @@ public class JWI
 		}
 	}
 
-	public void walk(final List<ISynsetID> relations2, final IPointer p, final int level)
+	public void walk(@NonNull final List<ISynsetID> relations2, @NonNull final IPointer p, final int level)
 	{
 		final String indentSpace = new String(new char[level]).replace('\0', '\t');
 		for (final ISynsetID synsetid2 : relations2)
@@ -551,7 +549,7 @@ public class JWI
 		}
 	}
 
-	public void walk(final ISynset synset, final IPointer p, final int level)
+	public void walk(@NonNull final ISynset synset, @NonNull final IPointer p, final int level)
 	{
 		final String indentSpace = new String(new char[level]).replace('\0', '\t');
 		final List<ISynsetID> relations2 = synset.getRelatedSynsets(p);
@@ -566,12 +564,12 @@ public class JWI
 
 	// H E L P E R S
 
-	public static String toString(final ISynset synset)
+	@Nullable public static String toString(@NonNull final ISynset synset)
 	{
 		return getMembers(synset) + synset.getGloss();
 	}
 
-	public static String getMembers(final ISynset synset)
+	@NonNull public static String getMembers(@NonNull final ISynset synset)
 	{
 		final StringBuilder sb = new StringBuilder();
 		sb.append('{');
@@ -593,7 +591,7 @@ public class JWI
 		return sb.toString();
 	}
 
-	private static boolean canRecurse(IPointer p)
+	private static boolean canRecurse(@NonNull IPointer p)
 	{
 		String symbol = p.getSymbol();
 		switch (symbol)

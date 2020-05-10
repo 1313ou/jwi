@@ -169,7 +169,7 @@ public class ContentType<T> implements IContentType<T>
 	}
 
 	// set of all content types implemented in this class
-	private static final Set<ContentType<?>> contentTypes;
+	@NonNull private static final Set<ContentType<?>> contentTypes;
 
 	// initialization for static content type set
 	static
@@ -218,7 +218,7 @@ public class ContentType<T> implements IContentType<T>
 	 * order they are declared.
 	 * @since JWI 2.0.0
 	 */
-	public static Collection<ContentType<?>> values()
+	@NonNull public static Collection<ContentType<?>> values()
 	{
 		return contentTypes;
 	}

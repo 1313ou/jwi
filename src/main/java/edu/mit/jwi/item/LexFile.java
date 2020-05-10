@@ -321,7 +321,7 @@ public class LexFile implements ILexFile
 		return Integer.toString(num);
 	}
 
-	private static final Map<Integer, LexFile> lexFileMap;
+	@NonNull private static final Map<Integer, LexFile> lexFileMap;
 
 	static
 	{

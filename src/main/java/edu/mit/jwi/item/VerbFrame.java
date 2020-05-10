@@ -152,7 +152,7 @@ public class VerbFrame implements IVerbFrame
 	}
 
 	// verb frame cache
-	private static final Map<Integer, VerbFrame> verbFrameMap;
+	@NonNull private static final Map<Integer, VerbFrame> verbFrameMap;
 
 	static
 	{

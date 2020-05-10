@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import edu.mit.jwi.NonNull;
+
 import java.util.List;
 import java.util.Set;
 
@@ -41,7 +43,7 @@ public interface IIndexWord extends IHasPOS, IItem<IIndexWordID>
 	 * this root form and part of speech combination.
 	 * @since JWI 2.0
 	 */
-	List<IWordID> getWordIDs();
+	@NonNull List<IWordID> getWordIDs();
 
 	/**
 	 * Returns the number of senses of lemma that are ranked according to their

@@ -10,6 +10,7 @@
 
 package edu.mit.jwi.item;
 
+import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 
 import java.util.List;
@@ -67,7 +68,7 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * @return a non-<code>null</code>, immutable list of words for this synset
 	 * @since JWI 2.0.0
 	 */
-	List<IWord> getWords();
+	@NonNull List<IWord> getWords();
 
 	/**
 	 * Returns the word with the specified word number. Words are numbered
@@ -111,7 +112,7 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * synsets
 	 * @since JWI 2.0.0
 	 */
-	Map<IPointer, List<ISynsetID>> getRelatedMap();
+	@NonNull Map<IPointer, List<ISynsetID>> getRelatedMap();
 
 	/**
 	 * Returns an immutable list of the ids of all synsets that are related to
@@ -139,5 +140,5 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * @return a list of all synsets semantically related to the current synset
 	 * @since JWI 2.0.0
 	 */
-	List<ISynsetID> getRelatedSynsets();
+	@NonNull List<ISynsetID> getRelatedSynsets();
 }
