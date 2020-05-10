@@ -49,7 +49,7 @@ public interface IDataSource<T> extends IHasVersion, Iterable<String>, IHasLifec
 	 * all whitespace
 	 * @since JWI 2.0.0
 	 */
-	String getName();
+	@NonNull String getName();
 
 	/**
 	 * Returns the assigned content type of the resource that backs this object.
