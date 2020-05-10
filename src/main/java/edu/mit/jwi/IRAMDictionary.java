@@ -101,6 +101,7 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 		 */
 		@NonNull public InputStream makeInputStream() throws IOException
 		{
+			assert file != null;
 			return new FileInputStream(file);
 		}
 	}
