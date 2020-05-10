@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data.compare;
 
+import androidx.annotation.Nullable;
+
 import java.util.Comparator;
 
 /**
@@ -32,5 +34,5 @@ public interface ILineComparator extends Comparator<String>
 	 * <code>null</code> if there is none
 	 * @since JWI 2.0.0
 	 */
-	ICommentDetector getCommentDetector();
+	@Nullable ICommentDetector getCommentDetector();
 }

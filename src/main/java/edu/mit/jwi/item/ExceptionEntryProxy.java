@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -34,7 +37,7 @@ public class ExceptionEntryProxy implements IExceptionEntryProxy
 	private static final long serialVersionUID = 240;
 
 	// immutable instance fields
-	private final String surfaceForm;
+	@Nullable private final String surfaceForm;
 	private final List<String> rootForms;
 
 	/**
@@ -44,10 +47,12 @@ public class ExceptionEntryProxy implements IExceptionEntryProxy
 	 * @throws NullPointerException if the specified proxy is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	public ExceptionEntryProxy(IExceptionEntryProxy proxy)
+	public ExceptionEntryProxy(@Nullable IExceptionEntryProxy proxy)
 	{
 		if (proxy == null)
+		{
 			throw new NullPointerException();
+		}
 		this.surfaceForm = proxy.getSurfaceForm();
 		this.rootForms = proxy.getRootForms();
 	}
@@ -59,17 +64,23 @@ public class ExceptionEntryProxy implements IExceptionEntryProxy
 	 * @param rootForms   the root forms for the entry; may not contain <code>null</code>, empty, or all whitespace strings
 	 * @since JWI 1.0
 	 */
-	public ExceptionEntryProxy(String surfaceForm, String... rootForms)
+	public ExceptionEntryProxy(@Nullable String surfaceForm, @NonNull String... rootForms)
 	{
 		if (surfaceForm == null)
+		{
 			throw new NullPointerException();
+		}
 		for (int i = 0; i < rootForms.length; i++)
 		{
 			if (rootForms[i] == null)
+			{
 				throw new NullPointerException();
+			}
 			rootForms[i] = rootForms[i].trim();
 			if (rootForms[i].length() == 0)
+			{
 				throw new IllegalArgumentException();
+			}
 		}
 
 		this.surfaceForm = surfaceForm;
@@ -81,7 +92,7 @@ public class ExceptionEntryProxy implements IExceptionEntryProxy
 	 *
 	 * @see edu.mit.jwi.item.IExceptionEntryProxy#getSurfaceForm()
 	 */
-	public String getSurfaceForm()
+	@Nullable public String getSurfaceForm()
 	{
 		return surfaceForm;
 	}
@@ -101,7 +112,7 @@ public class ExceptionEntryProxy implements IExceptionEntryProxy
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("EXC-");
@@ -111,7 +122,9 @@ public class ExceptionEntryProxy implements IExceptionEntryProxy
 		{
 			sb.append(i.next());
 			if (i.hasNext())
+			{
 				sb.append(',');
+			}
 		}
 		sb.append(']');
 		return sb.toString();

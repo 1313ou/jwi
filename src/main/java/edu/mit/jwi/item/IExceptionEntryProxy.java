@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public interface IExceptionEntryProxy extends Serializable
 	 * @return the lowercase surface form of the exception entry
 	 * @since JWI 1.0
 	 */
-	String getSurfaceForm();
+	@Nullable String getSurfaceForm();
 
 	/**
 	 * Returns an unmodifiable list of acceptable root forms for the surface

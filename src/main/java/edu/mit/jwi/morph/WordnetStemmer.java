@@ -10,6 +10,7 @@
 
 package edu.mit.jwi.morph;
 
+import androidx.annotation.Nullable;
 import edu.mit.jwi.IDictionary;
 import edu.mit.jwi.item.IExceptionEntry;
 import edu.mit.jwi.item.POS;
@@ -29,7 +30,7 @@ import java.util.*;
  */
 public class WordnetStemmer extends SimpleStemmer
 {
-	private final IDictionary dict;
+	@Nullable private final IDictionary dict;
 
 	/**
 	 * Constructs a WordnetStemmer that, naturally, requires a Wordnet
@@ -39,10 +40,12 @@ public class WordnetStemmer extends SimpleStemmer
 	 * @throws NullPointerException if the specified dictionary is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	public WordnetStemmer(IDictionary dict)
+	public WordnetStemmer(@Nullable IDictionary dict)
 	{
 		if (dict == null)
+		{
 			throw new NullPointerException();
+		}
 		this.dict = dict;
 	}
 
@@ -52,7 +55,7 @@ public class WordnetStemmer extends SimpleStemmer
 	 * @return the dictionary in use by this stemmer
 	 * @since JWI 2.2.0
 	 */
-	public IDictionary getDictionary()
+	@Nullable public IDictionary getDictionary()
 	{
 		return dict;
 	}
@@ -62,26 +65,35 @@ public class WordnetStemmer extends SimpleStemmer
 	 *
 	 * @see edu.mit.jwi.morph.SimpleStemmer#findStems(java.lang.String, edu.mit.jwi.item.POS)
 	 */
-	public List<String> findStems(String word, POS pos)
+	public List<String> findStems(String word, @Nullable POS pos)
 	{
 		word = normalize(word);
 
 		if (pos == null)
+		{
 			return super.findStems(word, null);
+		}
 
 		Set<String> result = new LinkedHashSet<>();
 
 		// first look for the word in the exception lists
+		assert dict != null;
 		IExceptionEntry excEntry = dict.getExceptionEntry(word, pos);
 		if (excEntry != null)
+		{
 			result.addAll(excEntry.getRootForms());
+		}
 
 		// then look and see if it's in Wordnet; if so, the form itself is a stem
 		if (dict.getIndexWord(word, pos) != null)
+		{
 			result.add(word);
+		}
 
 		if (excEntry != null)
+		{
 			return new ArrayList<>(result);
+		}
 
 		// go to the simple stemmer and check and see if any of those stems are in WordNet
 		List<String> possibles = super.findStems(word, pos);
@@ -93,10 +105,13 @@ public class WordnetStemmer extends SimpleStemmer
 		for (String possible : possibles)
 		{
 			if (dict.getIndexWord(possible, pos) != null)
+			{
 				result.add(possible);
+			}
 		}
 
 		if (result.isEmpty())
+		{
 			if (possibles.isEmpty())
 			{
 				return Collections.emptyList();
@@ -105,6 +120,7 @@ public class WordnetStemmer extends SimpleStemmer
 			{
 				return new ArrayList<>(possibles);
 			}
+		}
 		return new ArrayList<>(result);
 	}
 }

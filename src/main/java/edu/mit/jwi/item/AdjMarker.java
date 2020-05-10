@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.Nullable;
+
 /**
  * The three different possible syntactic markers indicating limitations on the
  * syntactic position an adjective may have in relation to the noun it modifies.
@@ -20,11 +22,12 @@ package edu.mit.jwi.item;
  */
 public enum AdjMarker
 {
+
 	PREDICATE("(p)", "predicate position"), PRENOMINAL("(a)", "prenominal (attributive) position"), POSTNOMINAL("(ip)", "immediately postnominal position");
 
 	// unmodifiable fields
-	private final String symbol;
-	private final String description;
+	@Nullable private final String symbol;
+	@Nullable private final String description;
 
 	/**
 	 * Constructs a new adjective marker with the specified symbol and
@@ -36,18 +39,26 @@ public enum AdjMarker
 	 * @throws IllegalArgumentException if either argument is empty or all whitespace
 	 * @since JWI 2.1.0
 	 */
-	AdjMarker(String symbol, String description)
+	AdjMarker(@Nullable String symbol, @Nullable String description)
 	{
 		if (symbol == null)
+		{
 			throw new NullPointerException();
+		}
 		if (description == null)
+		{
 			throw new NullPointerException();
+		}
 		symbol = symbol.trim();
 		description = description.trim();
 		if (symbol.length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		if (description.length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		this.symbol = symbol;
 		this.description = description;
 	}
@@ -59,7 +70,7 @@ public enum AdjMarker
 	 * @return the symbol for this adjective marker
 	 * @since JWI 2.1.0
 	 */
-	public String getSymbol()
+	@Nullable public String getSymbol()
 	{
 		return symbol;
 	}
@@ -71,7 +82,7 @@ public enum AdjMarker
 	 * @return a user-readable description of the marker
 	 * @since JWI 2.1.0
 	 */
-	public String getDescription()
+	@Nullable public String getDescription()
 	{
 		return description;
 	}

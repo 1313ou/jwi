@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -28,7 +30,7 @@ public interface ISenseEntry extends IHasPOS, Serializable
 	 * @return The non-<code>null</code> sense key for this sense entry.
 	 * @since JWI 2.1.0
 	 */
-	ISenseKey getSenseKey();
+	@Nullable ISenseKey getSenseKey();
 
 	/**
 	 * Returns the synset offset for this sense entry, a non-negative integer.

@@ -10,6 +10,7 @@
 
 package edu.mit.jwi.data.parse;
 
+import androidx.annotation.Nullable;
 import edu.mit.jwi.item.*;
 
 /**
@@ -43,7 +44,9 @@ public class SenseKeyParser implements ILineParser<ISenseKey>
 	public static SenseKeyParser getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new SenseKeyParser();
+		}
 		return instance;
 	}
 
@@ -63,10 +66,12 @@ public class SenseKeyParser implements ILineParser<ISenseKey>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	public ISenseKey parseLine(String key)
+	@Nullable public ISenseKey parseLine(@Nullable String key)
 	{
 		if (key == null)
+		{
 			throw new NullPointerException();
+		}
 
 		try
 		{
@@ -96,7 +101,9 @@ public class SenseKeyParser implements ILineParser<ISenseKey>
 
 			// if it's not an adjective satellite, we're done
 			if (!isAdjSat)
+			{
 				return new SenseKey(lemma, lex_id, pos, lexFile, null, -1, key);
+			}
 
 			// get head_word
 			begin = end + 1;
@@ -129,11 +136,13 @@ public class SenseKeyParser implements ILineParser<ISenseKey>
 	 * @return the lexical file corresponding to the specified frame number
 	 * @since JWI 2.1.0
 	 */
-	protected ILexFile resolveLexicalFile(int lexFileNum)
+	@Nullable protected ILexFile resolveLexicalFile(int lexFileNum)
 	{
 		ILexFile lexFile = LexFile.getLexicalFile(lexFileNum);
 		if (lexFile == null)
+		{
 			lexFile = UnknownLexFile.getUnknownLexicalFile(lexFileNum);
+		}
 		return lexFile;
 	}
 }

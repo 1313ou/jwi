@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.Nullable;
+
 /**
  * An object that potentially has an associated part of speech.
  *
@@ -27,5 +29,5 @@ public interface IHasPOS
 	 * @return The associated part of speech, or <code>null</code> if none.
 	 * @since JWI 2.0.0
 	 */
-	POS getPOS();
+	@Nullable POS getPOS();
 }

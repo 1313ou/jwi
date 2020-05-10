@@ -10,6 +10,7 @@
 
 package edu.mit.jwi.data;
 
+import androidx.annotation.NonNull;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.item.IHasPOS;
 
@@ -39,7 +40,7 @@ public interface IContentType<T> extends IHasPOS, IHasCharset
 	 * content type
 	 * @since JWI 2.4.1
 	 */
-	ContentTypeKey getKey();
+	@NonNull ContentTypeKey getKey();
 
 	/**
 	 * Returns the assigned resource type of this object. This method may not
@@ -49,7 +50,7 @@ public interface IContentType<T> extends IHasPOS, IHasCharset
 	 * content type
 	 * @since JWI 1.0
 	 */
-	IDataType<T> getDataType();
+	@NonNull IDataType<T> getDataType();
 
 	/**
 	 * Returns a comparator that can be used to determine ordering between

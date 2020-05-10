@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Concrete, default implementation of the <code>ISenseKey</code> interface.
  *
@@ -29,17 +32,17 @@ public class SenseKey implements ISenseKey
 	private static final long serialVersionUID = 240;
 
 	// final instance fields
-	private final String lemma;
+	@NonNull private final String lemma;
 	private final int lexID;
-	private final POS pos;
+	@Nullable private final POS pos;
 	private final boolean isAdjSat;
-	private final ILexFile lexFile;
+	@Nullable private final ILexFile lexFile;
 
 	// dynamic fields
 	private boolean isHeadSet;
-	private String headLemma = null;
+	@Nullable private String headLemma = null;
 	private int headLexID = -1;
-	private String toString;
+	@Nullable private String toString;
 
 	/**
 	 * Constructs a new sense key.
@@ -50,7 +53,7 @@ public class SenseKey implements ISenseKey
 	 * @throws NullPointerException if either the lemma or synset is <code>null</code>
 	 * @since JWI 2.1.0
 	 */
-	public SenseKey(String lemma, int lexID, ISynset synset)
+	public SenseKey(@NonNull String lemma, int lexID, @NonNull ISynset synset)
 	{
 		this(lemma, lexID, synset.getPOS(), synset.isAdjectiveSatellite(), synset.getLexicalFile());
 	}
@@ -69,11 +72,13 @@ public class SenseKey implements ISenseKey
 	 *                              <code>null</code>
 	 * @since JWI 2.1.0
 	 */
-	public SenseKey(String lemma, int lexID, POS pos, boolean isAdjSat, ILexFile lexFile, String originalKey)
+	public SenseKey(@NonNull String lemma, int lexID, POS pos, boolean isAdjSat, ILexFile lexFile, @Nullable String originalKey)
 	{
 		this(lemma, lexID, pos, isAdjSat, lexFile);
 		if (originalKey == null)
+		{
 			throw new NullPointerException();
+		}
 		this.toString = originalKey;
 	}
 
@@ -91,7 +96,7 @@ public class SenseKey implements ISenseKey
 	 *                              <code>null</code>
 	 * @since JWI 2.1.0
 	 */
-	public SenseKey(String lemma, int lexID, POS pos, ILexFile lexFile, String headLemma, int headLexID, String originalKey)
+	public SenseKey(@NonNull String lemma, int lexID, POS pos, ILexFile lexFile, @Nullable String headLemma, int headLexID, @Nullable String originalKey)
 	{
 		this(lemma, lexID, pos, (headLemma != null), lexFile);
 		if (headLemma == null)
@@ -103,7 +108,9 @@ public class SenseKey implements ISenseKey
 			setHead(headLemma, headLexID);
 		}
 		if (originalKey == null)
+		{
 			throw new NullPointerException();
+		}
 		this.toString = originalKey;
 	}
 
@@ -120,16 +127,20 @@ public class SenseKey implements ISenseKey
 	 *                              <code>null</code>
 	 * @since JWI 2.1.0
 	 */
-	public SenseKey(String lemma, int lexID, POS pos, boolean isAdjSat, ILexFile lexFile)
+	public SenseKey(@NonNull String lemma, int lexID, @Nullable POS pos, boolean isAdjSat, @Nullable ILexFile lexFile)
 	{
 		if (pos == null)
+		{
 			throw new NullPointerException();
+		}
 		if (lexFile == null)
+		{
 			throw new NullPointerException();
+		}
 
 		// all sense key lemmas are in lower case
 		// also checks for null
-		this.lemma = lemma; //.toLowerCase();
+		this.lemma = lemma.toLowerCase();
 		this.lexID = lexID;
 		this.pos = pos;
 		this.isAdjSat = isAdjSat;
@@ -142,7 +153,7 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see edu.mit.jwi.item.ISenseKey#getLemma()
 	 */
-	public String getLemma()
+	@NonNull public String getLemma()
 	{
 		return lemma;
 	}
@@ -162,7 +173,7 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	public POS getPOS()
+	@Nullable public POS getPOS()
 	{
 		return pos;
 	}
@@ -174,6 +185,7 @@ public class SenseKey implements ISenseKey
 	 */
 	public int getSynsetType()
 	{
+		assert pos != null;
 		return isAdjSat ? 5 : pos.getNumber();
 	}
 
@@ -192,7 +204,7 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see edu.mit.jwi.item.ISenseKey#getLexicalFile()
 	 */
-	public ILexFile getLexicalFile()
+	@Nullable public ILexFile getLexicalFile()
 	{
 		return lexFile;
 	}
@@ -202,13 +214,17 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see edu.mit.jwi.item.ISenseKey#setHead(java.lang.String, int)
 	 */
-	public void setHead(String headLemma, int headLexID)
+	public void setHead(@NonNull String headLemma, int headLexID)
 	{
 		if (!needsHeadSet())
+		{
 			throw new IllegalStateException();
+		}
 		Word.checkLexicalID(headLexID);
 		if (headLemma.trim().length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		this.headLemma = headLemma;
 		this.headLexID = headLexID;
 		this.isHeadSet = true;
@@ -219,7 +235,7 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see edu.mit.jwi.item.ISenseKey#getHeadWord()
 	 */
-	public String getHeadWord()
+	@Nullable public String getHeadWord()
 	{
 		checkHeadSet();
 		return headLemma;
@@ -251,41 +267,65 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	public int compareTo(ISenseKey key)
+	public int compareTo(@NonNull ISenseKey key)
 	{
 		int cmp;
 
 		// first sort alphabetically by lemma
 		cmp = this.getLemma().compareTo(key.getLemma());
 		if (cmp != 0)
+		{
 			return cmp;
+		}
 
 		// then sort by synset type
 		cmp = Float.compare(this.getSynsetType(), key.getSynsetType());
 		if (cmp != 0)
+		{
 			return cmp;
+		}
 
 		// then sort by lex_filenum
-		cmp = Float.compare(this.getLexicalFile().getNumber(), key.getLexicalFile().getNumber());
+		ILexFile lf = this.getLexicalFile();
+		assert lf != null;
+		ILexFile lf2 = key.getLexicalFile();
+		assert lf2 != null;
+		cmp = Float.compare(lf.getNumber(), lf2.getNumber());
 		if (cmp != 0)
+		{
 			return cmp;
+		}
 
 		// then sort by lex_id
 		cmp = Float.compare(this.getLexicalID(), key.getLexicalID());
 		if (cmp != 0)
+		{
 			return cmp;
+		}
 
 		if (!this.isAdjectiveSatellite() && !key.isAdjectiveSatellite())
+		{
 			return 0;
+		}
 		if (!this.isAdjectiveSatellite() & key.isAdjectiveSatellite())
+		{
 			return -1;
+		}
 		if (this.isAdjectiveSatellite() & !key.isAdjectiveSatellite())
+		{
 			return 1;
+		}
 
 		// then sort by head_word
-		cmp = this.getHeadWord().compareTo(key.getHeadWord());
+		String hw = this.getHeadWord();
+		assert hw != null;
+		String hw2 = key.getHeadWord();
+		assert hw2 != null;
+		cmp = hw.compareTo(hw2);
 		if (cmp != 0)
+		{
 			return cmp;
+		}
 
 		// finally by head_id
 		return Float.compare(this.getHeadID(), key.getHeadID());
@@ -296,11 +336,13 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		checkHeadSet();
 		if (toString == null)
+		{
 			toString = toString(this);
+		}
 		return toString;
 	}
 
@@ -314,7 +356,9 @@ public class SenseKey implements ISenseKey
 	protected void checkHeadSet()
 	{
 		if (needsHeadSet())
+		{
 			throw new IllegalStateException("Head word and id not yet set");
+		}
 	}
 
 	/*
@@ -328,7 +372,9 @@ public class SenseKey implements ISenseKey
 		int result = 1;
 		result = prime * result + lemma.hashCode();
 		result = prime * result + lexID;
+		assert pos != null;
 		result = prime * result + pos.hashCode();
+		assert lexFile != null;
 		result = prime * result + lexFile.hashCode();
 		result = prime * result + (isAdjSat ? 1231 : 1237);
 		if (isAdjSat)
@@ -344,29 +390,50 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(Object obj)
+	@Override public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (!(obj instanceof SenseKey))
+		{
 			return false;
+		}
 		final SenseKey other = (SenseKey) obj;
 		if (!lemma.equals(other.getLemma()))
+		{
 			return false;
+		}
 		if (lexID != other.getLexicalID())
+		{
 			return false;
+		}
 		if (pos != other.getPOS())
+		{
 			return false;
+		}
+		assert other.getLexicalFile() != null;
+		assert lexFile != null;
 		if (lexFile.getNumber() != other.getLexicalFile().getNumber())
+		{
 			return false;
+		}
 		if (isAdjSat != other.isAdjectiveSatellite())
+		{
 			return false;
+		}
 		if (isAdjSat)
 		{
+			assert headLemma != null;
 			if (!headLemma.equals(other.getHeadWord()))
+			{
 				return false;
+			}
 			return headLexID == other.getHeadID();
 		}
 		return true;
@@ -380,22 +447,29 @@ public class SenseKey implements ISenseKey
 	 * @throws NullPointerException if the specified key is <code>null</code>
 	 * @since JWI 2.1.0
 	 */
-	public static String toString(ISenseKey key)
+	@NonNull public static String toString(@NonNull ISenseKey key)
 	{
+		String hw = key.getHeadWord();
+		assert hw != null;
+		ILexFile lf = key.getLexicalFile();
+		assert lf != null;
+
 		// figure out appropriate size
 		int size = key.getLemma().length() + 10;
 		if (key.isAdjectiveSatellite())
-			size += key.getHeadWord().length() + 2;
+		{
+			size += hw.length() + 2;
+		}
 
 		// allocate builder
 		StringBuilder sb = new StringBuilder(size);
 
 		// make string
-		sb.append(key.getLemma()/*.toLowerCase()*/);
+		sb.append(key.getLemma().toLowerCase());
 		sb.append('%');
 		sb.append(key.getSynsetType());
 		sb.append(':');
-		sb.append(LexFile.getLexicalFileNumberString(key.getLexicalFile().getNumber()));
+		sb.append(LexFile.getLexicalFileNumberString(lf.getNumber()));
 		sb.append(':');
 		sb.append(Word.getLexicalIDForSenseKey(key.getLexicalID()));
 		sb.append(':');

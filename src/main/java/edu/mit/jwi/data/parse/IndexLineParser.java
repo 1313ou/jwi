@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data.parse;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.item.*;
 
 import java.util.StringTokenizer;
@@ -44,7 +46,9 @@ public class IndexLineParser implements ILineParser<IIndexWord>
 	public static IndexLineParser getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new IndexLineParser();
+		}
 		return instance;
 	}
 
@@ -64,10 +68,12 @@ public class IndexLineParser implements ILineParser<IIndexWord>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	public IIndexWord parseLine(String line)
+	@NonNull public IIndexWord parseLine(@Nullable String line)
 	{
 		if (line == null)
+		{
 			throw new NullPointerException();
+		}
 
 		try
 		{
@@ -133,7 +139,7 @@ public class IndexLineParser implements ILineParser<IIndexWord>
 	 *                                  correspond to a known pointer
 	 * @since JWI 2.3.0
 	 */
-	protected IPointer resolvePointer(String symbol, POS pos)
+	@Nullable protected IPointer resolvePointer(@NonNull String symbol, POS pos)
 	{
 		return Pointer.getPointerType(symbol, pos);
 	}

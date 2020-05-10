@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.data.compare;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * <p>
  * A comparator that captures the ordering of lines in sense index files (e.g.,
@@ -42,7 +45,9 @@ public class SenseKeyLineComparator implements ILineComparator
 	public static SenseKeyLineComparator getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new SenseKeyLineComparator();
+		}
 		return instance;
 	}
 
@@ -62,7 +67,7 @@ public class SenseKeyLineComparator implements ILineComparator
 	 *
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
-	public int compare(String line1, String line2)
+	public int compare(@NonNull String line1, @NonNull String line2)
 	{
 		// get sense keys
 		int i1 = line1.indexOf(' ');
@@ -73,13 +78,13 @@ public class SenseKeyLineComparator implements ILineComparator
 	}
 
 	/**
-	 * Compare sensekeys (overridable if non-standard compare is needed)
+	 * Compare senseKeys (overridable if non-standard compare is needed)
 	 *
 	 * @param senseKey1 sense key 1
 	 * @param senseKey2 sense key 1
 	 * @return compare code
 	 */
-	protected int compareSenseKeys(String senseKey1, String senseKey2)
+	protected int compareSenseKeys(@NonNull String senseKey1, @NonNull String senseKey2)
 	{
 		return senseKey1.compareToIgnoreCase(senseKey2);
 	}
@@ -89,7 +94,7 @@ public class SenseKeyLineComparator implements ILineComparator
 	 *
 	 * @see edu.mit.jwi.data.compare.ILineComparator#getCommentDetector()
 	 */
-	public ICommentDetector getCommentDetector()
+	@Nullable public ICommentDetector getCommentDetector()
 	{
 		return null;
 	}

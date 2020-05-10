@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -29,7 +31,7 @@ public interface IPointer extends Serializable
 	 * @return the symbol for this pointer
 	 * @since JWI 2.0.0
 	 */
-	String getSymbol();
+	@NonNull String getSymbol();
 
 	/**
 	 * Returns a user-friendly name of this pointer type for identification
@@ -38,5 +40,5 @@ public interface IPointer extends Serializable
 	 * @return the user-friendly name of this pointer
 	 * @since JWI 2.0.0
 	 */
-	String getName();
+	@NonNull String getName();
 }

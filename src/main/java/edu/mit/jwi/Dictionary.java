@@ -10,6 +10,7 @@
 
 package edu.mit.jwi;
 
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.FileProvider;
 import edu.mit.jwi.item.Word;
@@ -86,24 +87,36 @@ public class Dictionary extends CachingDictionary
 		configure(config);
 	}
 
-	private void configure(Config config)
+	private void configure(@Nullable Config config)
 	{
 		if (config == null)
+		{
 			return;
+		}
 
 		// global params
 		if (config.checkLexicalId != null)
+		{
 			Word.setCheckLexicalId(config.checkLexicalId);
+		}
 
 		// dictionary params
 		if (config.indexNounComparator != null)
+		{
 			setComparator(ContentTypeKey.INDEX_NOUN, config.indexNounComparator);
+		}
 		if (config.indexVerbComparator != null)
+		{
 			setComparator(ContentTypeKey.INDEX_VERB, config.indexVerbComparator);
+		}
 		if (config.indexAdjectiveComparator != null)
+		{
 			setComparator(ContentTypeKey.INDEX_ADJECTIVE, config.indexAdjectiveComparator);
+		}
 		if (config.indexAdverbComparator != null)
+		{
 			setComparator(ContentTypeKey.INDEX_ADVERB, config.indexAdverbComparator);
+		}
 
 		if (config.indexSensePattern != null)
 		{
@@ -116,6 +129,8 @@ public class Dictionary extends CachingDictionary
 			setComparator(ContentTypeKey.SENSES, config.indexSenseKeyComparator);
 		}
 		if (config.charSet != null)
+		{
 			setCharset(config.charSet);
+		}
 	}
 }

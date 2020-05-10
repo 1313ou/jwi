@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +62,7 @@ public class UnknownLexFile extends LexFile
 	 * @throws IllegalArgumentException if the specified integer is not a valid lexical file number
 	 * @since JWI 2.1.4
 	 */
-	public static UnknownLexFile getUnknownLexicalFile(int num)
+	@NonNull public static UnknownLexFile getUnknownLexicalFile(int num)
 	{
 		checkLexicalFileNumber(num);
 		UnknownLexFile result = lexFileMap.get(num);

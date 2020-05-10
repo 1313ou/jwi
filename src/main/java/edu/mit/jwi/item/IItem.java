@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -28,5 +30,5 @@ public interface IItem<T extends IItemID<?>> extends Serializable
 	 * @return the non-<code>null</code> ID for this item
 	 * @since JWI 2.0.0
 	 */
-	T getID();
+	@Nullable T getID();
 }

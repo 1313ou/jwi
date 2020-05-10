@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Default implementation of the {@code IWordID} interface.
  *
@@ -48,8 +51,8 @@ public class WordID implements IWordID
 	public static final String unknownWordNumber = "??";
 
 	// final instance fields
-	private final ISynsetID id;
-	private final String lemma;
+	@Nullable private final ISynsetID id;
+	@Nullable private final String lemma;
 	private final int num;
 
 	/**
@@ -77,7 +80,7 @@ public class WordID implements IWordID
 	 *               whitespace
 	 * @since JWI 1.0
 	 */
-	public WordID(int offset, POS pos, String lemma)
+	public WordID(int offset, POS pos, @NonNull String lemma)
 	{
 		this(new SynsetID(offset, pos), lemma);
 	}
@@ -92,10 +95,12 @@ public class WordID implements IWordID
 	 * @throws IllegalArgumentException if the lemma is empty or all whitespace
 	 * @since JWI 1.0
 	 */
-	public WordID(ISynsetID id, int num)
+	public WordID(@Nullable ISynsetID id, int num)
 	{
 		if (id == null)
+		{
 			throw new NullPointerException();
+		}
 		Word.checkWordNumber(num);
 		this.id = id;
 		this.num = num;
@@ -113,12 +118,16 @@ public class WordID implements IWordID
 	 * @throws IllegalArgumentException if the lemma is empty or all whitespace
 	 * @since JWI 1.0
 	 */
-	public WordID(ISynsetID id, String lemma)
+	public WordID(@Nullable ISynsetID id, @NonNull String lemma)
 	{
 		if (id == null)
+		{
 			throw new NullPointerException();
+		}
 		if (lemma.trim().length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		this.id = id;
 		this.num = -1;
 		this.lemma = lemma.toLowerCase();
@@ -136,12 +145,16 @@ public class WordID implements IWordID
 	 *                                  is not legal
 	 * @since JWI 1.0
 	 */
-	public WordID(ISynsetID id, int num, String lemma)
+	public WordID(@Nullable ISynsetID id, int num, @NonNull String lemma)
 	{
 		if (id == null)
+		{
 			throw new NullPointerException();
+		}
 		if (lemma.trim().length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		Word.checkWordNumber(num);
 		this.id = id;
 		this.num = num;
@@ -153,7 +166,7 @@ public class WordID implements IWordID
 	 *
 	 * @see edu.mit.jwi.item.IWordID#getSynsetID()
 	 */
-	public ISynsetID getSynsetID()
+	@Nullable public ISynsetID getSynsetID()
 	{
 		return id;
 	}
@@ -173,7 +186,7 @@ public class WordID implements IWordID
 	 *
 	 * @see edu.mit.jwi.item.IWordID#getLemma()
 	 */
-	public String getLemma()
+	@Nullable public String getLemma()
 	{
 		return lemma;
 	}
@@ -185,6 +198,7 @@ public class WordID implements IWordID
 	 */
 	public POS getPOS()
 	{
+		assert id != null;
 		return id.getPOS();
 	}
 
@@ -195,6 +209,7 @@ public class WordID implements IWordID
 	 */
 	@Override public int hashCode()
 	{
+		assert id != null;
 		return 31 * id.hashCode();
 		//        final int PRIME = 31;
 		//        int result = 1;
@@ -210,21 +225,34 @@ public class WordID implements IWordID
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(Object obj)
+	@Override public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (getClass() != obj.getClass())
+		{
 			return false;
+		}
 		final WordID other = (WordID) obj;
+		assert id != null;
 		if (!id.equals(other.id))
+		{
 			return false;
+		}
 		if (other.num != -1 && num != -1 && other.num != num)
+		{
 			return false;
+		}
 		if (other.lemma != null && lemma != null)
+		{
 			return other.lemma.equalsIgnoreCase(lemma);
+		}
 		return true;
 	}
 
@@ -233,12 +261,15 @@ public class WordID implements IWordID
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@Override public String toString()
+	@NonNull @Override public String toString()
 	{
+		assert id != null;
+		POS pos = id.getPOS();
+		assert pos != null;
 		return wordIDPrefix + //
 				Synset.zeroFillOffset(id.getOffset()) +  //
 				'-' +  //
-				Character.toUpperCase(id.getPOS().getTag()) +  //
+				Character.toUpperCase(pos.getTag()) +  //
 				'-' +  //
 				((num < 0) ? unknownWordNumber : Word.zeroFillWordNumber(num)) +  //
 				'-' +  //
@@ -259,14 +290,20 @@ public class WordID implements IWordID
 	 * @throws NullPointerException     if the specified string is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	public static IWordID parseWordID(String value)
+	@NonNull public static IWordID parseWordID(@Nullable String value)
 	{
 		if (value == null)
+		{
 			throw new NullPointerException();
+		}
 		if (value.length() < 19)
+		{
 			throw new IllegalArgumentException();
+		}
 		if (!value.startsWith("WID-"))
+		{
 			throw new IllegalArgumentException();
+		}
 
 		// get synset id
 		int offset = Integer.parseInt(value.substring(4, 12));
@@ -284,7 +321,9 @@ public class WordID implements IWordID
 		// get lemma
 		String lemma = value.substring(18);
 		if (lemma.equals(unknownLemma))
+		{
 			throw new IllegalArgumentException();
+		}
 		return new WordID(id, lemma);
 	}
 }

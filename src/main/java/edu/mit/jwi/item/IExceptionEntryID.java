@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+
 /**
  * A unique identifier sufficient to retrieve the specified
  * exception entry from Wordnet.
@@ -30,5 +32,5 @@ public interface IExceptionEntryID extends IHasPOS, IItemID<IExceptionEntry>
 	 * this id object
 	 * @since JWI 1.0
 	 */
-	String getSurfaceForm();
+	@NonNull String getSurfaceForm();
 }

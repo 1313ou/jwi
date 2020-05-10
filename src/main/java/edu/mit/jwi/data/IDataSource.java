@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.IDataSourceDictionary;
 import edu.mit.jwi.item.IHasVersion;
 
@@ -56,7 +58,7 @@ public interface IDataSource<T> extends IHasVersion, Iterable<String>, IHasLifec
 	 * <code>null</code>.
 	 * @since JWI 2.0.0
 	 */
-	IContentType<T> getContentType();
+	@Nullable IContentType<T> getContentType();
 
 	/**
 	 * Returns the line in the resource contains the data indexed by the
@@ -68,7 +70,7 @@ public interface IDataSource<T> extends IHasVersion, Iterable<String>, IHasLifec
 	 * @throws NullPointerException if the specified key is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	String getLine(String key);
+	@Nullable String getLine(String key);
 
 	/**
 	 * Returns an iterator that will iterator over lines in the data resource,
@@ -85,5 +87,5 @@ public interface IDataSource<T> extends IHasVersion, Iterable<String>, IHasLifec
 	 * indexed by the specified key
 	 * @since JWI 2.0.0
 	 */
-	Iterator<String> iterator(String key);
+	@NonNull Iterator<String> iterator(String key);
 }

@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.Nullable;
+
 /**
  * Concrete implementation of the <code>ISenseEntry</code> interface.
  *
@@ -32,7 +34,7 @@ public class SenseEntry implements ISenseEntry
 	private final int offset;
 	private final int num;
 	private final int count;
-	private final ISenseKey key;
+	@Nullable private final ISenseKey key;
 
 	/**
 	 * Constructs a new sense entry object.
@@ -43,10 +45,12 @@ public class SenseEntry implements ISenseEntry
 	 * @param count  the tag count of the entry
 	 * @since JWI 2.1.0
 	 */
-	public SenseEntry(ISenseKey key, int offset, int num, int count)
+	public SenseEntry(@Nullable ISenseKey key, int offset, int num, int count)
 	{
 		if (key == null)
+		{
 			throw new NullPointerException();
+		}
 		Synset.checkOffset(offset);
 
 		this.key = key;
@@ -70,8 +74,9 @@ public class SenseEntry implements ISenseEntry
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	public POS getPOS()
+	@Nullable public POS getPOS()
 	{
+		assert key != null;
 		return key.getPOS();
 	}
 
@@ -90,7 +95,7 @@ public class SenseEntry implements ISenseEntry
 	 *
 	 * @see edu.mit.jwi.item.ISenseEntry#getSenseKey()
 	 */
-	public ISenseKey getSenseKey()
+	@Nullable public ISenseKey getSenseKey()
 	{
 		return key;
 	}
@@ -115,6 +120,7 @@ public class SenseEntry implements ISenseEntry
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + count;
+		assert key != null;
 		result = prime * result + key.hashCode();
 		result = prime * result + num;
 		result = prime * result + offset;
@@ -126,21 +132,34 @@ public class SenseEntry implements ISenseEntry
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(Object obj)
+	@Override public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (!(obj instanceof ISenseEntry))
+		{
 			return false;
+		}
 		final ISenseEntry other = (ISenseEntry) obj;
 		if (count != other.getTagCount())
+		{
 			return false;
+		}
 		if (num != other.getSenseNumber())
+		{
 			return false;
+		}
 		if (offset != other.getOffset())
+		{
 			return false;
+		}
+		assert key != null;
 		return key.equals(other.getSenseKey());
 	}
 }

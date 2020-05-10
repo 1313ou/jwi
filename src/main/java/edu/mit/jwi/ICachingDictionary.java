@@ -10,6 +10,8 @@
 
 package edu.mit.jwi;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.IHasLifecycle;
 import edu.mit.jwi.item.*;
 
@@ -29,7 +31,7 @@ public interface ICachingDictionary extends IDictionary
 	 * @return the cache for this dictionary
 	 * @since JWI 2.2.0
 	 */
-	IItemCache getCache();
+	@NonNull IItemCache getCache();
 
 	/**
 	 * The cache used by a caching dictionary.
@@ -132,7 +134,7 @@ public interface ICachingDictionary extends IDictionary
 		 * @throws NullPointerException if the specified id is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		<T extends IItem<D>, D extends IItemID<T>> T retrieveItem(D id);
+		@Nullable <T extends IItem<D>, D extends IItemID<T>> T retrieveItem(D id);
 
 		/**
 		 * Retrieves the word identified by the specified sense key.
@@ -143,7 +145,7 @@ public interface ICachingDictionary extends IDictionary
 		 * @throws NullPointerException if the specified key is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		IWord retrieveWord(ISenseKey key);
+		@Nullable IWord retrieveWord(ISenseKey key);
 
 		/**
 		 * Retrieves the sense entry identified by the specified sense key.
@@ -154,7 +156,7 @@ public interface ICachingDictionary extends IDictionary
 		 * @throws NullPointerException if the specified key is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		ISenseEntry retrieveSenseEntry(ISenseKey key);
+		@Nullable ISenseEntry retrieveSenseEntry(ISenseKey key);
 
 		/**
 		 * Retrieves the sense entries identified by the specified sense key.
@@ -165,7 +167,7 @@ public interface ICachingDictionary extends IDictionary
 		 * @throws NullPointerException if the specified key is <code>null</code>
 		 * @since JWI 2.4.1
 		 */
-		ISenseEntry[] retrieveSenseEntries(ISenseKey key);
+		@Nullable ISenseEntry[] retrieveSenseEntries(ISenseKey key);
 
 		/**
 		 * Removes all entries from the cache.

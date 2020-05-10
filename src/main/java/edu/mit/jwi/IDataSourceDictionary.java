@@ -10,6 +10,7 @@
 
 package edu.mit.jwi;
 
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.IDataProvider;
 
 /**
@@ -29,5 +30,5 @@ public interface IDataSourceDictionary extends IDictionary
 	 * @return the data provider for this dictionary
 	 * @since JWI 2.0.0
 	 */
-	IDataProvider getDataProvider();
+	@Nullable IDataProvider getDataProvider();
 }

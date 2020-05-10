@@ -10,7 +10,10 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.IContentType;
+import edu.mit.jwi.data.IDataType;
 import edu.mit.jwi.data.WordnetFile;
 import edu.mit.jwi.data.compare.ICommentDetector;
 
@@ -56,12 +59,12 @@ public class Version implements IVersion
 	public static final Version ver31 = getVersion(3, 1, 0);
 
 	// Stanford Augmented Wordnet versions
-	public static final Version ver21swn_10k = getVersion(2, 1, 0, "swn_10k");
-	public static final Version ver21swn_20k = getVersion(2, 1, 0, "swn_20k");
-	public static final Version ver21swn_30k = getVersion(2, 1, 0, "swn_30k");
-	public static final Version ver21swn_40k = getVersion(2, 1, 0, "swn_40k");
-	public static final Version ver21swn_400k_cropped = getVersion(2, 1, 0, "swn_400k_cropped");
-	public static final Version ver21swn_400k_full = getVersion(2, 1, 0, "swn_400k_full");
+	@Nullable public static final Version ver21swn_10k = getVersion(2, 1, 0, "swn_10k");
+	@Nullable public static final Version ver21swn_20k = getVersion(2, 1, 0, "swn_20k");
+	@Nullable public static final Version ver21swn_30k = getVersion(2, 1, 0, "swn_30k");
+	@Nullable public static final Version ver21swn_40k = getVersion(2, 1, 0, "swn_40k");
+	@Nullable public static final Version ver21swn_400k_cropped = getVersion(2, 1, 0, "swn_400k_cropped");
+	@Nullable public static final Version ver21swn_400k_full = getVersion(2, 1, 0, "swn_400k_full");
 
 	/**
 	 * The byte offset of the version indicator in the standard Wordnet file headers.
@@ -174,21 +177,33 @@ public class Version implements IVersion
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(Object obj)
+	@Override public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (!(obj instanceof Version))
+		{
 			return false;
+		}
 		final Version other = (Version) obj;
 		if (major != other.major)
+		{
 			return false;
+		}
 		if (minor != other.minor)
+		{
 			return false;
+		}
 		if (bugfix != other.bugfix)
+		{
 			return false;
+		}
 		return qualifier.equals(other.qualifier);
 	}
 
@@ -197,10 +212,12 @@ public class Version implements IVersion
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		if (toString == null)
+		{
 			toString = makeVersionString(major, minor, bugfix, qualifier);
+		}
 		return toString;
 	}
 
@@ -211,7 +228,7 @@ public class Version implements IVersion
 	 * @return the appropriate deserialized object.
 	 * @since JWI 2.4.0
 	 */
-	protected Object readResolve()
+	@NonNull protected Object readResolve()
 	{
 		return getVersion(major, minor, bugfix, qualifier);
 	}
@@ -228,7 +245,7 @@ public class Version implements IVersion
 	 * @throws IllegalArgumentException if the supplied arguments do not identify a legal version
 	 * @since JWI 2.2.0
 	 */
-	public static String checkVersion(int major, int minor, int bugfix, String qualifier)
+	@NonNull public static String checkVersion(int major, int minor, int bugfix, String qualifier)
 	{
 		checkVersionNumber(major, minor, bugfix);
 		return checkQualifier(qualifier);
@@ -248,7 +265,9 @@ public class Version implements IVersion
 	public static void checkVersionNumber(int major, int minor, int bugfix)
 	{
 		if (isIllegalVersionNumber(major, minor, bugfix))
+		{
 			throw new IllegalArgumentException("Illegal version number: " + makeVersionString(major, minor, bugfix, null));
+		}
 	}
 
 	/**
@@ -260,12 +279,16 @@ public class Version implements IVersion
 	 * @see #isIllegalQualifier(String)
 	 * @since JWI 2.1.0
 	 */
-	public static String checkQualifier(String qualifier)
+	@NonNull public static String checkQualifier(@Nullable String qualifier)
 	{
 		if (qualifier == null)
+		{
 			return "";
+		}
 		if (isIllegalQualifier(qualifier))
+		{
 			throw new IllegalArgumentException("Illegal version qualifier: " + qualifier);
+		}
 		return qualifier;
 	}
 
@@ -281,10 +304,12 @@ public class Version implements IVersion
 	 * <code>false</code> otherwise.
 	 * @since JWI 2.1.0
 	 */
-	public static boolean isIllegalVersion(int major, int minor, int bugfix, String qualifier)
+	public static boolean isIllegalVersion(int major, int minor, int bugfix, @NonNull String qualifier)
 	{
 		if (isIllegalVersionNumber(major, minor, bugfix))
+		{
 			return true;
+		}
 		return isIllegalQualifier(qualifier);
 	}
 
@@ -301,9 +326,13 @@ public class Version implements IVersion
 	public static boolean isIllegalVersionNumber(int major, int minor, int bugfix)
 	{
 		if (major < 0)
+		{
 			return true;
+		}
 		if (minor < 0)
+		{
 			return true;
+		}
 		return bugfix < 0;
 	}
 
@@ -319,16 +348,20 @@ public class Version implements IVersion
 	 * @see Character#isJavaIdentifierPart(char)
 	 * @since JWI 2.2.0
 	 */
-	public static boolean isIllegalQualifier(String qualifier)
+	public static boolean isIllegalQualifier(@NonNull String qualifier)
 	{
 		char c;
 		for (int i = 0; i < qualifier.length(); i++)
 		{
 			c = qualifier.charAt(i);
 			if (Character.isLetterOrDigit(c))
+			{
 				continue;
+			}
 			if (c == '_' || c == '-')
+			{
 				continue;
+			}
 			return true;
 		}
 		return false;
@@ -344,7 +377,7 @@ public class Version implements IVersion
 	 * @return the cached version object corresponding to these numbers
 	 * @since JWI 2.1.0
 	 */
-	public static Version getVersion(int major, int minor, int bugfix)
+	@NonNull public static Version getVersion(int major, int minor, int bugfix)
 	{
 		return getVersion(major, minor, bugfix, null);
 	}
@@ -361,7 +394,7 @@ public class Version implements IVersion
 	 * @throws IllegalArgumentException if the version numbers and qualifier are not legal
 	 * @since JWI 2.2.0
 	 */
-	public static Version getVersion(int major, int minor, int bugfix, String qualifier)
+	@NonNull public static Version getVersion(int major, int minor, int bugfix, String qualifier)
 	{
 		qualifier = checkVersion(major, minor, bugfix, qualifier);
 		int hash = hashCode(major, minor, bugfix, qualifier);
@@ -393,7 +426,7 @@ public class Version implements IVersion
 	 * @throws IllegalArgumentException if illegal argument
 	 * @since JWI 2.2.0
 	 */
-	public static String makeVersionString(int major, int minor, int bugfix, String qualifier)
+	@NonNull public static String makeVersionString(int major, int minor, int bugfix, String qualifier)
 	{
 		qualifier = checkQualifier(qualifier);
 		boolean hasQualifier = qualifier.length() > 0;
@@ -442,15 +475,18 @@ public class Version implements IVersion
 	 * specified content type. If no version can be extracted, returns
 	 * <code>null</code>.
 	 *
-	 * @param type   the content type of the data in the buffer
-	 * @param buffer the buffer containing the data
+	 * @param contentType the content type of the data in the buffer
+	 * @param buffer      the buffer containing the data
 	 * @return the Version that was extracted, or <code>null</code> if none
 	 * @since JWI 2.1.0
 	 */
-	public static Version extractVersion(IContentType<?> type, ByteBuffer buffer)
+	@Nullable public static Version extractVersion(@NonNull IContentType<?> contentType, @NonNull ByteBuffer buffer)
 	{
-		if (!type.getDataType().hasVersion())
+		IDataType<?> dataType = contentType.getDataType();
+		if (!dataType.hasVersion())
+		{
 			return null;
+		}
 
 		// first try direct access
 		char c;
@@ -459,18 +495,24 @@ public class Version implements IVersion
 		{
 			c = (char) buffer.get(i);
 			if (Character.isWhitespace(c))
+			{
 				break;
+			}
 			sb.append(c);
 		}
 		Version version = parseVersionProtected(sb);
 		if (version != null)
+		{
 			return version;
+		}
 
 		// if direct access doesn't work, try walking forward in file
 		// until we find a string that looks like "WordNet 2.1 Copyright"
-		ICommentDetector cd = type.getLineComparator().getCommentDetector();
+		ICommentDetector cd = contentType.getLineComparator().getCommentDetector();
 		if (cd == null)
+		{
 			return null;
+		}
 
 		int origPos = buffer.position();
 
@@ -507,23 +549,31 @@ public class Version implements IVersion
 	 * not a valid version
 	 * @since JWI 2.1.0
 	 */
-	public static Version parseVersionProtected(CharSequence verStr)
+	@Nullable public static Version parseVersionProtected(@Nullable CharSequence verStr)
 	{
 		if (verStr == null)
+		{
 			return null;
+		}
 		String[] parts = periodPattern.split(verStr);
 
 		if (parts.length < 2 || parts.length > 4)
+		{
 			return null;
+		}
 
 		String majorStr = parts[0].trim();
 		if (!digitPattern.matcher(majorStr).matches())
+		{
 			return null;
+		}
 		int major = Integer.parseInt(majorStr);
 
 		String minorStr = parts[1].trim();
 		if (!digitPattern.matcher(minorStr).matches())
+		{
 			return null;
+		}
 		int minor = Integer.parseInt(minorStr);
 
 		int bugfix = 0;
@@ -531,19 +581,25 @@ public class Version implements IVersion
 		{
 			String bugfixStr = parts[2].trim();
 			if (!digitPattern.matcher(bugfixStr).matches())
+			{
 				return null;
+			}
 			bugfix = Integer.parseInt(bugfixStr);
 		}
 
 		if (isIllegalVersionNumber(major, minor, bugfix))
+		{
 			return null;
+		}
 
 		String qualifier = null;
 		if (parts.length == 4)
 		{
 			qualifier = parts[3].trim();
 			if (isIllegalQualifier(qualifier))
+			{
 				return null;
+			}
 		}
 		return getVersion(major, minor, bugfix, qualifier);
 	}
@@ -559,14 +615,18 @@ public class Version implements IVersion
 	 *                                  version
 	 * @since JWI 2.1.0
 	 */
-	public static Version parseVersion(CharSequence verStr)
+	@NonNull public static Version parseVersion(@Nullable CharSequence verStr)
 	{
 		if (verStr == null)
+		{
 			throw new NullPointerException();
+		}
 
 		String[] parts = periodPattern.split(verStr);
 		if (parts.length < 2 || parts.length > 4)
+		{
 			throw new IllegalArgumentException();
+		}
 
 		// parts
 		int major = Integer.parseInt(parts[0].trim());
@@ -594,8 +654,12 @@ public class Version implements IVersion
 			Field[] fields = Version.class.getFields();
 			List<Field> instanceFields = new ArrayList<>();
 			for (Field field : fields)
+			{
 				if (field.getGenericType() == Version.class)
+				{
 					instanceFields.add(field);
+				}
+			}
 
 			// this is the backing set
 			List<Version> hidden = new ArrayList<>(instanceFields.size());
@@ -608,7 +672,9 @@ public class Version implements IVersion
 				{
 					dataType = (Version) field.get(null);
 					if (dataType != null)
+					{
 						hidden.add(dataType);
+					}
 				}
 				catch (IllegalAccessException e)
 				{

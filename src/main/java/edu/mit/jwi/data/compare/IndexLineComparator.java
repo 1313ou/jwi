@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.data.compare;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * <p>
  * A comparator that captures the ordering of lines in Wordnet index files
@@ -42,12 +45,14 @@ public class IndexLineComparator implements ILineComparator
 	public static IndexLineComparator getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new IndexLineComparator(CommentComparator.getInstance());
+		}
 		return instance;
 	}
 
 	// instance fields
-	private final CommentComparator detector;
+	@Nullable private final CommentComparator detector;
 
 	/**
 	 * This constructor is marked protected so that the class may be
@@ -59,10 +64,12 @@ public class IndexLineComparator implements ILineComparator
 	 * @throws NullPointerException if the specified comment comparator is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	protected IndexLineComparator(CommentComparator detector)
+	protected IndexLineComparator(@Nullable CommentComparator detector)
 	{
 		if (detector == null)
+		{
 			throw new NullPointerException();
+		}
 		this.detector = detector;
 	}
 
@@ -71,9 +78,10 @@ public class IndexLineComparator implements ILineComparator
 	 *
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
-	public int compare(String s1, String s2)
+	public int compare(@NonNull String s1, @NonNull String s2)
 	{
 		// check for comments
+		assert detector != null;
 		boolean c1 = detector.isCommentLine(s1), c2 = detector.isCommentLine(s2);
 
 		if (c1 & c2)
@@ -97,9 +105,13 @@ public class IndexLineComparator implements ILineComparator
 		int i1 = s1.indexOf(' ');
 		int i2 = s2.indexOf(' ');
 		if (i1 == -1)
+		{
 			i1 = s1.length();
+		}
 		if (i2 == -1)
+		{
 			i2 = s2.length();
+		}
 
 		String sub1 = s1.substring(0, i1);
 		String sub2 = s2.substring(0, i2);
@@ -125,7 +137,7 @@ public class IndexLineComparator implements ILineComparator
 	 *
 	 * @see edu.mit.jwi.data.compare.ILineComparator#getCommentDetector()
 	 */
-	public ICommentDetector getCommentDetector()
+	@Nullable public ICommentDetector getCommentDetector()
 	{
 		return detector;
 	}

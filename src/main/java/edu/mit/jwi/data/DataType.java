@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.parse.*;
 import edu.mit.jwi.item.*;
 
@@ -40,7 +42,7 @@ public class DataType<T> implements IDataType<T>
 	private final String name;
 	private Set<String> hints;
 	private final boolean hasVersion;
-	private final ILineParser<T> parser;
+	@Nullable private final ILineParser<T> parser;
 
 	/**
 	 * Constructs a new data type. This constructor takes the hints as an
@@ -58,7 +60,7 @@ public class DataType<T> implements IDataType<T>
 	 * @throws NullPointerException if the specified parser is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	public DataType(String userFriendlyName, boolean hasVersion, ILineParser<T> parser, String... hints)
+	public DataType(String userFriendlyName, boolean hasVersion, ILineParser<T> parser, @Nullable String... hints)
 	{
 		this(userFriendlyName, hasVersion, parser, (hints == null) ? null : Arrays.asList(hints));
 	}
@@ -79,10 +81,12 @@ public class DataType<T> implements IDataType<T>
 	 * @throws NullPointerException if the specified parser is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	public DataType(String userFriendlyName, boolean hasVersion, ILineParser<T> parser, Collection<String> hints)
+	public DataType(String userFriendlyName, boolean hasVersion, @Nullable ILineParser<T> parser, @Nullable Collection<String> hints)
 	{
 		if (parser == null)
+		{
 			throw new NullPointerException();
+		}
 		this.name = userFriendlyName;
 		this.parser = parser;
 		this.hasVersion = hasVersion;
@@ -124,7 +128,7 @@ public class DataType<T> implements IDataType<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataType#getParser()
 	 */
-	public ILineParser<T> getParser()
+	@Nullable public ILineParser<T> getParser()
 	{
 		return parser;
 	}
@@ -134,13 +138,13 @@ public class DataType<T> implements IDataType<T>
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		return name;
 	}
 
 	// set of all data types implemented in this class
-	private static Set<DataType<?>> dataTypes = null;
+	@Nullable private static Set<DataType<?>> dataTypes = null;
 
 	/**
 	 * Emulates the Enum.values() function.
@@ -149,7 +153,7 @@ public class DataType<T> implements IDataType<T>
 	 * order they are declared.
 	 * @since JWI 2.0.0
 	 */
-	public static Collection<DataType<?>> values()
+	@Nullable public static Collection<DataType<?>> values()
 	{
 		if (dataTypes == null)
 		{
@@ -157,8 +161,12 @@ public class DataType<T> implements IDataType<T>
 			Field[] fields = DataType.class.getFields();
 			List<Field> instanceFields = new ArrayList<>();
 			for (Field field : fields)
+			{
 				if (field.getGenericType() == DataType.class)
+				{
 					instanceFields.add(field);
+				}
+			}
 
 			// this is the backing set
 			Set<DataType<?>> hidden = new LinkedHashSet<>(instanceFields.size());
@@ -171,7 +179,9 @@ public class DataType<T> implements IDataType<T>
 				{
 					dataType = (DataType<?>) field.get(null);
 					if (dataType != null)
+					{
 						hidden.add(dataType);
+					}
 				}
 				catch (IllegalAccessException e)
 				{
@@ -189,37 +199,45 @@ public class DataType<T> implements IDataType<T>
 	 * Finds the first file that satisfies the naming constraints of both
 	 * the data type and part of speech. Behaviour modified.
 	 *
-	 * @param type  the data type whose resource name hints should be used, may
-	 *              not be <code>null</code>
-	 * @param pos   the part of speech whose resource name hints should be used,
-	 *              may be <code>null</code>
-	 * @param files the files to be search, may be empty but not <code>null</code>
+	 * @param dataType the data type whose resource name hints should be used, may
+	 *                 not be <code>null</code>
+	 * @param pos      the part of speech whose resource name hints should be used,
+	 *                 may be <code>null</code>
+	 * @param files    the files to be search, may be empty but not <code>null</code>
 	 * @return the file that matches both the pos and type naming conventions,
 	 * or <code>null</code> if none is found.
 	 * @throws NullPointerException if the data type or file collection is <code>null</code>
 	 * @since JWI 2.2.0
 	 */
-	public static File find(IDataType<?> type, POS pos, Collection<? extends File> files)
+	@Nullable public static File find(@NonNull IDataType<?> dataType, @Nullable POS pos, @NonNull Collection<? extends File> files)
 	{
-		Set<String> typePatterns = type.getResourceNameHints();
+		Set<String> typePatterns = dataType.getResourceNameHints();
 		Set<String> posPatterns = (pos == null) ? Collections.emptySet() : pos.getResourceNameHints();
 		if (typePatterns == null || typePatterns.isEmpty())
+		{
 			for (File file : files)
 			{
 				String name = file.getName().toLowerCase(); // added toLowerCase() as fix for Bug 017
 				if (containsOneOf(name, posPatterns))
+				{
 					return file;
+				}
 			}
+		}
 		else
+		{
 			for (String typePattern : typePatterns)
 			{
 				for (File file : files)
 				{
 					String name = file.getName().toLowerCase(); // added toLowerCase() as fix for Bug 017
 					if (name.contains(typePattern) && containsOneOf(name, posPatterns))
+					{
 						return file;
+					}
 				}
 			}
+		}
 		return null;
 	}
 
@@ -236,13 +254,19 @@ public class DataType<T> implements IDataType<T>
 	 * <code>false</code> otherwise
 	 * @since JWI 2.2.0
 	 */
-	public static boolean containsOneOf(String target, Set<String> patterns)
+	public static boolean containsOneOf(@NonNull String target, @Nullable Set<String> patterns)
 	{
 		if (patterns == null || patterns.size() == 0)
+		{
 			return true;
+		}
 		for (String pattern : patterns)
+		{
 			if (target.contains(pattern))
+			{
 				return true;
+			}
+		}
 		return false;
 	}
 }

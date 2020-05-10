@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Default implementation of the {@code ISynsetID} interface
  *
@@ -19,6 +22,7 @@ package edu.mit.jwi.item;
  */
 public class SynsetID implements ISynsetID
 {
+
 	/**
 	 * Generated serial version id.
 	 *
@@ -35,7 +39,7 @@ public class SynsetID implements ISynsetID
 
 	// final instance fields
 	private final int offset;
-	private final POS pos;
+	@Nullable private final POS pos;
 
 	/**
 	 * Constructs a new synset id with the specified offset and part of speech.
@@ -46,10 +50,12 @@ public class SynsetID implements ISynsetID
 	 * @throws IllegalArgumentException if the specified offset is not a legal offset
 	 * @since JWI 1.0
 	 */
-	public SynsetID(int offset, POS pos)
+	public SynsetID(int offset, @Nullable POS pos)
 	{
 		if (pos == null)
+		{
 			throw new NullPointerException();
+		}
 		Synset.checkOffset(offset);
 
 		this.offset = offset;
@@ -71,7 +77,7 @@ public class SynsetID implements ISynsetID
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	public POS getPOS()
+	@Nullable public POS getPOS()
 	{
 		return pos;
 	}
@@ -86,6 +92,7 @@ public class SynsetID implements ISynsetID
 		final int PRIME = 31;
 		int result = 1;
 		result = PRIME * result + offset;
+		assert pos != null;
 		result = PRIME * result + pos.hashCode();
 		return result;
 	}
@@ -95,17 +102,26 @@ public class SynsetID implements ISynsetID
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object obj)
+	public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (!(obj instanceof ISynsetID))
+		{
 			return false;
+		}
 		final ISynsetID other = (ISynsetID) obj;
 		if (offset != other.getOffset())
+		{
 			return false;
+		}
+		assert pos != null;
 		return pos.equals(other.getPOS());
 	}
 
@@ -114,8 +130,9 @@ public class SynsetID implements ISynsetID
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
+		assert pos != null;
 		return synsetIDPrefix + Synset.zeroFillOffset(offset) + '-' + Character.toUpperCase(pos.getTag());
 	}
 
@@ -134,17 +151,23 @@ public class SynsetID implements ISynsetID
 	 * @throws IllegalArgumentException if the specified string is not a properly formatted synset id
 	 * @since JWI 1.0
 	 */
-	public static SynsetID parseSynsetID(String value)
+	@NonNull public static SynsetID parseSynsetID(@Nullable String value)
 	{
 		if (value == null)
+		{
 			throw new NullPointerException();
+		}
 
 		value = value.trim();
 		if (value.length() != 14)
+		{
 			throw new IllegalArgumentException();
+		}
 
 		if (!value.startsWith("SID-"))
+		{
 			throw new IllegalArgumentException();
+		}
 
 		// get offset
 		int offset = Integer.parseInt(value.substring(4, 12));
@@ -153,7 +176,9 @@ public class SynsetID implements ISynsetID
 		char tag = Character.toLowerCase(value.charAt(13));
 		POS pos = POS.getPartOfSpeech(tag);
 		if (pos == null)
+		{
 			throw new IllegalArgumentException("unknown part of speech tag: " + tag);
+		}
 		return new SynsetID(offset, pos);
 	}
 }

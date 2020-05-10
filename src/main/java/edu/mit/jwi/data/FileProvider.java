@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.RAMDictionary;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.data.parse.ILineParser;
@@ -63,18 +65,17 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	// final instance fields
 	private final Lock lifecycleLock = new ReentrantLock();
 	private final Lock loadingLock = new ReentrantLock();
-	private final Map<ContentTypeKey, IContentType<?>> prototypeMap;
+	@NonNull private final Map<ContentTypeKey, IContentType<?>> prototypeMap;
 
 	// instance fields 
-	private URL url;
-	private IVersion version = null;
-	private Map<IContentType<?>, ILoadableDataSource<?>> fileMap = null;
+	@Nullable private URL url;
+	@Nullable private IVersion version = null;
+	@Nullable private Map<IContentType<?>, ILoadableDataSource<?>> fileMap = null;
 	private int loadPolicy;
-	private transient JWIBackgroundLoader loader = null;
-
-	private final Collection<? extends IContentType<?>> defaultTypes;
-	private Charset charset = null;
-	private final Map<ContentTypeKey, String> sourceMatcher = new HashMap<>();
+	@Nullable private transient JWIBackgroundLoader loader = null;
+	@NonNull private final Collection<? extends IContentType<?>> defaultContentTypes;
+	@Nullable private Charset charset = null;
+	@NonNull private final Map<ContentTypeKey, String> sourceMatcher = new HashMap<>();
 
 	/**
 	 * Constructs the file provider pointing to the resource indicated by the
@@ -121,7 +122,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * @throws IllegalArgumentException if the set of types is empty
 	 * @since JWI 2.2.0
 	 */
-	public FileProvider(File file, int loadPolicy, Collection<? extends IContentType<?>> types)
+	public FileProvider(File file, int loadPolicy, @NonNull Collection<? extends IContentType<?>> types)
 	{
 		this(toURL(file), loadPolicy, types);
 	}
@@ -161,40 +162,49 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * path, with the specified load policy, looking for the specified content
 	 * type.s
 	 *
-	 * @param url        A file URL in UTF-8 decodable format, may not be
-	 *                   <code>null</code>
-	 * @param loadPolicy the load policy for this provider; this provider supports the
-	 *                   three values defined in <code>ILoadPolicy</code>.
-	 * @param types      the content types this provider will look for when it loads
-	 *                   its data; may not be <code>null</code> or empty
+	 * @param url          A file URL in UTF-8 decodable format, may not be
+	 *                     <code>null</code>
+	 * @param loadPolicy   the load policy for this provider; this provider supports the
+	 *                     three values defined in <code>ILoadPolicy</code>.
+	 * @param contentTypes the content types this provider will look for when it loads
+	 *                     its data; may not be <code>null</code> or empty
 	 * @throws NullPointerException     if the url or content type collection is <code>null</code>
 	 * @throws IllegalArgumentException if the set of types is empty
 	 * @since JWI 2.2.0
 	 */
-	public FileProvider(URL url, int loadPolicy, Collection<? extends IContentType<?>> types)
+	public FileProvider(@Nullable URL url, int loadPolicy, @NonNull Collection<? extends IContentType<?>> contentTypes)
 	{
 		if (url == null)
+		{
 			throw new NullPointerException();
-		if (types.isEmpty())
+		}
+		if (contentTypes.isEmpty())
+		{
 			throw new IllegalArgumentException();
+		}
 		this.url = url;
 		this.loadPolicy = loadPolicy;
-		this.defaultTypes = types;
+		this.defaultContentTypes = contentTypes;
 
-		Map<ContentTypeKey, IContentType<?>> prototypeMap = new LinkedHashMap<>(types.size());
-		for (IContentType<?> type : types)
-			prototypeMap.put(type.getKey(), type);
+		Map<ContentTypeKey, IContentType<?>> prototypeMap = new LinkedHashMap<>(contentTypes.size());
+		for (IContentType<?> contentType : contentTypes)
+		{
+			ContentTypeKey key = contentType.getKey();
+			prototypeMap.put(key, contentType);
+		}
 		this.prototypeMap = prototypeMap;
 	}
 
-	private IContentType<?> getDefault(ContentTypeKey key)
+	@Nullable private IContentType<?> getDefault(ContentTypeKey key)
 	{
-		for (IContentType<?> type : this.defaultTypes)
+		for (IContentType<?> contentType : this.defaultContentTypes)
 		{
-			if (type.getKey().equals(key))
-				return type;
+			if (contentType.getKey().equals(key))
+			{
+				return contentType;
+			}
 		}
-		// this should no happen
+		// this should not happen
 		return null;
 	}
 
@@ -203,7 +213,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#getSource()
 	 */
-	public URL getSource()
+	@Nullable public URL getSource()
 	{
 		return url;
 	}
@@ -223,12 +233,16 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#setSource(java.net.URL)
 	 */
-	public void setSource(URL url)
+	public void setSource(@Nullable URL url)
 	{
 		if (isOpen())
+		{
 			throw new IllegalStateException("provider currently open");
+		}
 		if (url == null)
+		{
 			throw new NullPointerException();
+		}
 		this.url = url;
 	}
 
@@ -255,13 +269,18 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.item.IHasVersion#getVersion()
 	 */
-	public IVersion getVersion()
+	@Nullable public IVersion getVersion()
 	{
 		checkOpen();
 		if (version == null)
+		{
+			assert fileMap != null;
 			version = determineVersion(fileMap.values());
+		}
 		if (version == IVersion.NO_VERSION)
+		{
 			return null;
+		}
 		return version;
 	}
 
@@ -274,14 +293,16 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * {@link IVersion#NO_VERSION} if there is none
 	 * @since JWI 2.1.0
 	 */
-	protected IVersion determineVersion(Collection<? extends IDataSource<?>> srcs)
+	@Nullable protected IVersion determineVersion(@NonNull Collection<? extends IDataSource<?>> srcs)
 	{
 		IVersion ver = IVersion.NO_VERSION;
 		for (IDataSource<?> dataSrc : srcs)
 		{
 			// if no version to set, ignore
 			if (dataSrc.getVersion() == null)
+			{
 				continue;
+			}
 
 			// init version
 			if (ver == IVersion.NO_VERSION)
@@ -292,7 +313,9 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 
 			// if version different from current
 			if (!ver.equals(dataSrc.getVersion()))
+			{
 				return IVersion.NO_VERSION;
+			}
 		}
 		return ver;
 	}
@@ -302,7 +325,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IHasCharset#getCharset()
 	 */
-	public Charset getCharset()
+	@Nullable public Charset getCharset()
 	{
 		return charset;
 	}
@@ -312,7 +335,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#setCharset(java.nio.charset.Charset)
 	 */
-	@SuppressWarnings("rawtypes") public void setCharset(Charset charset)
+	public void setCharset(@Nullable Charset charset)
 	{
 		if (verbose)
 		{
@@ -322,7 +345,9 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 		{
 			lifecycleLock.lock();
 			if (isOpen())
+			{
 				throw new IllegalStateException("provider currently open");
+			}
 			for (Entry<ContentTypeKey, IContentType<?>> e : prototypeMap.entrySet())
 			{
 				ContentTypeKey key = e.getKey();
@@ -353,29 +378,34 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#setComparator(edu.mit.jwi.data.IContentType, edu.mit.jwi.data.compare.ILineComparator)
 	 */
-	@SuppressWarnings("rawtypes") public void setComparator(ContentTypeKey key, ILineComparator comparator)
+	public void setComparator(@NonNull ContentTypeKey key, @Nullable ILineComparator comparator)
 	{
 		if (verbose)
 		{
+			assert comparator != null;
 			System.out.printf("Comparator for %s %s%n", key, comparator.getClass().getName());
 		}
 		try
 		{
 			lifecycleLock.lock();
 			if (isOpen())
+			{
 				throw new IllegalStateException("provider currently open");
-			IContentType<?> v = prototypeMap.get(key);
+			}
+			IContentType<?> value = prototypeMap.get(key);
 			if (comparator == null)
 			{
 				// if we get a null comparator, reset to the prototype but preserve charset
 				IContentType<?> defaultContentType = getDefault(key);
 				assert defaultContentType != null;
-				prototypeMap.put(key, new ContentType(key, defaultContentType.getLineComparator(), v.getCharset()));
+				assert value != null;
+				prototypeMap.put(key, new ContentType(key, defaultContentType.getLineComparator(), value.getCharset()));
 			}
 			else
 			{
 				// if we get a non-null comparator, generate a new type using the new comparator but preserve charset
-				prototypeMap.put(key, new ContentType(key, comparator, v.getCharset()));
+				assert value != null;
+				prototypeMap.put(key, new ContentType(key, comparator, value.getCharset()));
 			}
 		}
 		finally
@@ -389,7 +419,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#setSourceMatcher(edu.mit.data ContentTypeKey, java.lang.String)
 	 */
-	public void setSourceMatcher(ContentTypeKey key, String pattern)
+	public void setSourceMatcher(@NonNull ContentTypeKey key, @Nullable String pattern)
 	{
 		if (verbose)
 		{
@@ -399,11 +429,17 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 		{
 			lifecycleLock.lock();
 			if (isOpen())
+			{
 				throw new IllegalStateException("provider currently open");
+			}
 			if (pattern == null)
+			{
 				this.sourceMatcher.remove(key);
+			}
 			else
+			{
 				this.sourceMatcher.put(key, pattern);
+			}
 		}
 		finally
 		{
@@ -419,8 +455,12 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	@SuppressWarnings("unchecked") public <T> IContentType<T> resolveContentType(IDataType<T> dt, POS pos)
 	{
 		for (Entry<ContentTypeKey, IContentType<?>> e : prototypeMap.entrySet())
+		{
 			if (e.getKey().getDataType().equals(dt) && e.getKey().getPOS() == pos)
+			{
 				return (IContentType<T>) e.getValue();
+			}
+		}
 		return null;
 	}
 
@@ -439,28 +479,41 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			int policy = getLoadPolicy();
 
 			// make sure directory exists
+			assert url != null;
 			File directory = toFile(url);
 			if (!directory.exists())
+			{
 				throw new IOException("Dictionary directory does not exist: " + directory);
+			}
 
 			// get files in directory
 			File[] fileArray = directory.listFiles(File::isFile);
 			if (fileArray == null || fileArray.length == 0)
+			{
 				throw new IOException("No files found in " + directory);
+			}
 			List<File> files = new ArrayList<>(Arrays.asList(fileArray));
 			if (files.isEmpty())
+			{
 				throw new IOException("No files found in " + directory);
+			}
+
+			// sort them
 			files.sort(Comparator.comparing(File::getName));
 
 			// make the source map
 			Map<IContentType<?>, ILoadableDataSource<?>> hiddenMap = createSourceMap(files, policy);
 			if (hiddenMap.isEmpty())
+			{
 				return false;
+			}
 
 			// determine if it's already unmodifiable, wrap if not
 			Map<?, ?> map = Collections.unmodifiableMap(Collections.emptyMap());
 			if (hiddenMap.getClass() != map.getClass())
+			{
 				hiddenMap = Collections.unmodifiableMap(hiddenMap);
+			}
 			this.fileMap = hiddenMap;
 
 			// do load
@@ -520,13 +573,19 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			loadingLock.lock();
 			checkOpen();
 			if (isLoaded())
+			{
 				return;
+			}
 			if (loader != null)
+			{
 				return;
+			}
 			loader = new JWIBackgroundLoader();
 			loader.start();
 			if (block)
+			{
 				loader.join();
+			}
 		}
 		finally
 		{
@@ -542,13 +601,20 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	public boolean isLoaded()
 	{
 		if (!isOpen())
+		{
 			throw new IllegalStateException("provider not open");
+		}
 		try
 		{
 			loadingLock.lock();
+			assert fileMap != null;
 			for (ILoadableDataSource<?> source : fileMap.values())
+			{
 				if (!source.isLoaded())
+				{
 					return false;
+				}
+			}
 			return true;
 		}
 		finally
@@ -571,47 +637,58 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * @throws IOException          if there is a problem creating the data source
 	 * @since JWI 2.2.0
 	 */
-	protected Map<IContentType<?>, ILoadableDataSource<?>> createSourceMap(List<File> files, int policy) throws IOException
+	@NonNull protected Map<IContentType<?>, ILoadableDataSource<?>> createSourceMap(@NonNull List<File> files, int policy) throws IOException
 	{
 		Map<IContentType<?>, ILoadableDataSource<?>> result = new HashMap<>();
-		for (IContentType<?> type : prototypeMap.values())
+		for (IContentType<?> contentType : prototypeMap.values())
 		{
 			File file = null;
 
 			// give first chance to matcher
-			if (sourceMatcher.containsKey(type.getKey()))
+			if (sourceMatcher.containsKey(contentType.getKey()))
 			{
-				file = match(sourceMatcher.get(type.getKey()), files);
+				String regex = sourceMatcher.get(contentType.getKey());
+				assert regex != null;
+				file = match(regex, files);
 			}
 
 			// if it failed fall back on data types
 			if (file == null)
 			{
-				file = DataType.find(type.getDataType(), type.getPOS(), files);
+				IDataType<?> dataType = contentType.getDataType();
+				file = DataType.find(dataType, contentType.getPOS(), files);
 			}
 
 			// if it failed continue
 			if (file == null)
+			{
 				continue;
+			}
 
 			// do not remove file from possible choices as both content types may use the same file
-			if (!type.getKey().equals(ContentTypeKey.SENSE) && !type.getKey().equals(ContentTypeKey.SENSES))
+			if (!contentType.getKey().equals(ContentTypeKey.SENSE) && !contentType.getKey().equals(ContentTypeKey.SENSES))
+			{
 				files.remove(file);
+			}
 
-			result.put(type, createDataSource(file, type, policy));
+			result.put(contentType, createDataSource(file, contentType, policy));
 			if (verbose)
-				System.out.printf("%s %s%n", type, file.getName());
+			{
+				System.out.printf("%s %s%n", contentType, file.getName());
+			}
 		}
 		return result;
 	}
 
-	private File match(String pattern, List<File> files)
+	@Nullable private File match(@NonNull String pattern, @NonNull List<File> files)
 	{
 		for (File file : files)
 		{
 			String name = file.getName();
 			if (name.matches(pattern))
+			{
 				return file;
+			}
 		}
 		return null;
 	}
@@ -619,22 +696,22 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	/**
 	 * Creates the actual data source implementations.
 	 *
-	 * @param <T>    the content type of the data source
-	 * @param file   the file from which the data source should be created, may not
-	 *               be <code>null</code>
-	 * @param type   the content type of the data source
-	 * @param policy the load policy to follow when creating the data source
+	 * @param <T>         the content type of the data source
+	 * @param file        the file from which the data source should be created, may not
+	 *                    be <code>null</code>
+	 * @param contentType the content type of the data source
+	 * @param policy      the load policy to follow when creating the data source
 	 * @return the created data source
 	 * @throws NullPointerException if any argument is <code>null</code>
 	 * @throws IOException          if there is an IO problem when creating the data source
 	 * @since JWI 2.2.0
 	 */
-	protected <T> ILoadableDataSource<T> createDataSource(File file, IContentType<T> type, int policy) throws IOException
+	protected <T> ILoadableDataSource<T> createDataSource(@NonNull File file, @NonNull IContentType<T> contentType, int policy) throws IOException
 	{
 		ILoadableDataSource<T> src;
-		if (type.getDataType() == DataType.DATA)
+		if (contentType.getDataType() == DataType.DATA)
 		{
-			src = createDirectAccess(file, type);
+			src = createDirectAccess(file, contentType);
 			src.open();
 			if (policy == IMMEDIATE_LOAD)
 			{
@@ -656,22 +733,30 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 			Iterator<String> itr = src.iterator();
 			String firstLine = itr.next();
 			if (firstLine == null)
+			{
 				return src;
+			}
 
 			// extract key
-			ILineParser<T> parser = type.getDataType().getParser();
+			ILineParser<T> parser = contentType.getDataType().getParser();
+			assert parser != null;
 			ISynset s = (ISynset) parser.parseLine(firstLine);
+			assert s != null;
 			String key = Synset.zeroFillOffset(s.getOffset());
 
 			// try to find line by direct access
 			String soughtLine = src.getLine(key);
 			if (soughtLine != null)
+			{
 				return src;
+			}
 
-			System.err.println(System.currentTimeMillis() + " - Error on direct access in " + type.getPOS().toString() + " data file: check CR/LF endings");
+			POS pos = contentType.getPOS();
+			assert pos != null;
+			System.err.println(System.currentTimeMillis() + " - Error on direct access in " + pos.toString() + " data file: check CR/LF endings");
 		}
 
-		src = createBinarySearch(file, type);
+		src = createBinarySearch(file, contentType);
 		src.open();
 		if (policy == IMMEDIATE_LOAD)
 		{
@@ -691,36 +776,36 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * Creates a direct access data source for the specified type, using the
 	 * specified file.
 	 *
-	 * @param <T>  the parameter of the content type
-	 * @param file the file on which the data source is based; may not be
-	 *             <code>null</code>
-	 * @param type the data type for the data source; may not be
-	 *             <code>null</code>
+	 * @param <T>         the parameter of the content type
+	 * @param file        the file on which the data source is based; may not be
+	 *                    <code>null</code>
+	 * @param contentType the data type for the data source; may not be
+	 *                    <code>null</code>
 	 * @return the data source
 	 * @throws NullPointerException if either argument is <code>null</code>
 	 * @since JWI 2.2.0
 	 */
-	protected <T> ILoadableDataSource<T> createDirectAccess(File file, IContentType<T> type)
+	@NonNull protected <T> ILoadableDataSource<T> createDirectAccess(@NonNull File file, IContentType<T> contentType)
 	{
-		return new DirectAccessWordnetFile<>(file, type);
+		return new DirectAccessWordnetFile<>(file, contentType);
 	}
 
 	/**
 	 * Creates a binary search data source for the specified type, using the
 	 * specified file.
 	 *
-	 * @param <T>  the parameter of the content type
-	 * @param file the file on which the data source is based; may not be
-	 *             <code>null</code>
-	 * @param type the data type for the data source; may not be
-	 *             <code>null</code>
+	 * @param <T>         the parameter of the content type
+	 * @param file        the file on which the data source is based; may not be
+	 *                    <code>null</code>
+	 * @param contentType the data type for the data source; may not be
+	 *                    <code>null</code>
 	 * @return the data source
 	 * @throws NullPointerException if either argument is <code>null</code>
 	 * @since JWI 2.2.0
 	 */
-	protected <T> ILoadableDataSource<T> createBinarySearch(File file, IContentType<T> type)
+	@NonNull protected <T> ILoadableDataSource<T> createBinarySearch(@NonNull File file, IContentType<T> contentType)
 	{
-		return new BinarySearchWordnetFile<>(file, type);
+		return new BinarySearchWordnetFile<>(file, contentType);
 	}
 
 	/*
@@ -752,11 +837,18 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 		{
 			lifecycleLock.lock();
 			if (!isOpen())
+			{
 				return;
+			}
 			if (loader != null)
+			{
 				loader.cancel();
+			}
+			assert fileMap != null;
 			for (IDataSource<?> source : fileMap.values())
+			{
 				source.close();
+			}
 			fileMap = null;
 		}
 		finally
@@ -774,7 +866,9 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	protected void checkOpen()
 	{
 		if (!isOpen())
+		{
 			throw new ObjectClosedException();
+		}
 	}
 
 	/*
@@ -783,16 +877,19 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * @see edu.mit.jwi.data.IDataProvider#getSource(edu.mit.jwi.data.IContentType)
 	 */
 	// no way to safely cast; must rely on registerSource method to assure compliance
-	@SuppressWarnings("unchecked") public <T> ILoadableDataSource<T> getSource(IContentType<T> type)
+	@Nullable @SuppressWarnings("unchecked") public <T> ILoadableDataSource<T> getSource(@NonNull IContentType<T> contentType)
 	{
 		checkOpen();
 
 		// assume at first this the prototype
-		IContentType<?> actualType = prototypeMap.get(type.getKey());
+		IContentType<?> actualType = prototypeMap.get(contentType.getKey());
 
 		// if this does not map to an adjusted type, we will check under it directly
 		if (actualType == null)
-			actualType = type;
+		{
+			actualType = contentType;
+		}
+		assert fileMap != null;
 		return (ILoadableDataSource<T>) fileMap.get(actualType);
 	}
 
@@ -801,7 +898,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 *
 	 * @see edu.mit.jwi.data.IDataProvider#getTypes()
 	 */
-	public Set<? extends IContentType<?>> getTypes()
+	@NonNull public Set<? extends IContentType<?>> getTypes()
 	{
 		try
 		{
@@ -847,6 +944,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 		{
 			try
 			{
+				assert fileMap != null;
 				for (ILoadableDataSource<?> source : fileMap.values())
 				{
 					if (!cancel && !source.isLoaded())
@@ -898,10 +996,12 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * @throws IllegalArgumentException if the url does not use the 'file' protocol
 	 * @since JWI 1.0
 	 */
-	public static File toFile(URL url)
+	@NonNull public static File toFile(@NonNull URL url)
 	{
 		if (!url.getProtocol().equals("file"))
+		{
 			throw new IllegalArgumentException("URL source must use 'file' protocol");
+		}
 		try
 		{
 			return new File(URLDecoder.decode(url.getPath(), "UTF-8"));
@@ -920,16 +1020,18 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * @throws NullPointerException if the specified file is <code>null</code>
 	 * @since JWI 2.2.0
 	 */
-	public static URL toURL(File file)
+	@Nullable public static URL toURL(@Nullable File file)
 	{
 		if (file == null)
+		{
 			throw new NullPointerException();
+		}
 		try
 		{
 			URI uri = new URI("file", "//", file.toURI().toURL().getPath(), null);
 			return new URL("file", null, uri.getRawPath());
 		}
-		catch (IOException | URISyntaxException e)
+		catch (@NonNull IOException | URISyntaxException e)
 		{
 			e.printStackTrace();
 			return null;
@@ -946,10 +1048,12 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * @throws NullPointerException if the specified url object is <code>null</code>
 	 * @since JWI 2.4.0
 	 */
-	public static boolean isLocalDirectory(URL url)
+	public static boolean isLocalDirectory(@NonNull URL url)
 	{
 		if (!url.getProtocol().equals("file"))
+		{
 			return false;
+		}
 		File file = FileProvider.toFile(url);
 		return isLocalDirectory(file);
 	}
@@ -964,7 +1068,7 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	 * @throws NullPointerException if the specified file object is <code>null</code>
 	 * @since JWI 2.4.0
 	 */
-	public static boolean isLocalDirectory(File dir)
+	public static boolean isLocalDirectory(@NonNull File dir)
 	{
 		return dir.exists() && dir.isDirectory();
 	}

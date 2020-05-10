@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.data.compare;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * <p>
  * A line comparator that captures the ordering of lines in Wordnet data files
@@ -43,12 +46,14 @@ public class DataLineComparator implements ILineComparator
 	public static DataLineComparator getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new DataLineComparator(CommentComparator.getInstance());
+		}
 		return instance;
 	}
 
 	// instance fields
-	private final CommentComparator detector;
+	@Nullable private final CommentComparator detector;
 
 	/**
 	 * This constructor is marked protected so that the class may be
@@ -60,10 +65,12 @@ public class DataLineComparator implements ILineComparator
 	 * @throws NullPointerException if the specified comment comparator is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	protected DataLineComparator(CommentComparator detector)
+	protected DataLineComparator(@Nullable CommentComparator detector)
 	{
 		if (detector == null)
+		{
 			throw new NullPointerException();
+		}
 		this.detector = detector;
 	}
 
@@ -72,8 +79,9 @@ public class DataLineComparator implements ILineComparator
 	 *
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
-	public int compare(String s1, String s2)
+	public int compare(@NonNull String s1, @NonNull String s2)
 	{
+		assert detector != null;
 		boolean c1 = detector.isCommentLine(s1);
 		boolean c2 = detector.isCommentLine(s2);
 
@@ -99,9 +107,13 @@ public class DataLineComparator implements ILineComparator
 		int i2 = s2.indexOf(' ');
 
 		if (i1 == -1)
+		{
 			i1 = s1.length();
+		}
 		if (i2 == -1)
+		{
 			i2 = s2.length();
+		}
 
 		String sub1 = s1.substring(0, i1);
 		String sub2 = s2.substring(0, i2);
@@ -110,9 +122,13 @@ public class DataLineComparator implements ILineComparator
 		int l2 = Integer.parseInt(sub2);
 
 		if (l1 < l2)
+		{
 			return -1;
+		}
 		else if (l1 > l2)
+		{
 			return 1;
+		}
 		return 0;
 	}
 
@@ -121,7 +137,7 @@ public class DataLineComparator implements ILineComparator
 	 *
 	 * @see edu.mit.jwi.data.compare.ILineComparator#getCommentDetector()
 	 */
-	public ICommentDetector getCommentDetector()
+	@Nullable public ICommentDetector getCommentDetector()
 	{
 		return detector;
 	}

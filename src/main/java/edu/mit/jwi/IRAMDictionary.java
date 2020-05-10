@@ -10,6 +10,8 @@
 
 package edu.mit.jwi;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.ILoadPolicy;
 import edu.mit.jwi.data.ILoadable;
 
@@ -75,7 +77,7 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 	class FileInputStreamFactory implements IInputStreamFactory
 	{
 		// instance fields
-		protected final File file;
+		@Nullable protected final File file;
 
 		/**
 		 * Creates a FileInputStreamFactory that uses the specified file.
@@ -85,10 +87,12 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 		 * @throws NullPointerException if the specified file is <code>null</code>
 		 * @since JWI 2.4.0
 		 */
-		public FileInputStreamFactory(File file)
+		public FileInputStreamFactory(@Nullable File file)
 		{
 			if (file == null)
+			{
 				throw new NullPointerException();
+			}
 			this.file = file;
 		}
 
@@ -97,7 +101,7 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 		 *
 		 * @see edu.mit.jwi.IRAMDictionary.IInputStreamFactory#makeInputStream()
 		 */
-		public InputStream makeInputStream() throws IOException
+		@NonNull public InputStream makeInputStream() throws IOException
 		{
 			return new FileInputStream(file);
 		}
@@ -114,7 +118,7 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 	class URLInputStreamFactory implements IInputStreamFactory
 	{
 		// instance fields
-		protected final URL url;
+		@Nullable protected final URL url;
 
 		/**
 		 * Creates a URLInputStreamFactory that uses the specified url.
@@ -124,10 +128,12 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 		 * @throws NullPointerException if the specified url is <code>null</code>
 		 * @since JWI 2.4.0
 		 */
-		public URLInputStreamFactory(URL url)
+		public URLInputStreamFactory(@Nullable URL url)
 		{
 			if (url == null)
+			{
 				throw new NullPointerException();
+			}
 			this.url = url;
 		}
 
@@ -138,6 +144,7 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 		 */
 		public InputStream makeInputStream() throws IOException
 		{
+			assert url != null;
 			return url.openStream();
 		}
 	}

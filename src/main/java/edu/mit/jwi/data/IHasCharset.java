@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data;
 
+import androidx.annotation.Nullable;
+
 import java.nio.charset.Charset;
 
 /**
@@ -27,5 +29,5 @@ public interface IHasCharset
 	 * @return the Charset associated this object, possibly <code>null</code>
 	 * @since JWI 2.3.4
 	 */
-	Charset getCharset();
+	@Nullable Charset getCharset();
 }

@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -106,7 +108,7 @@ public interface IVersion extends Serializable
 		 *
 		 * @see edu.mit.jwi.item.IVersion#getQualifier()
 		 */
-		public String getQualifier()
+		@NonNull public String getQualifier()
 		{
 			throw new UnsupportedOperationException();
 		}
@@ -118,7 +120,7 @@ public interface IVersion extends Serializable
 		 * @return the singleton dummy version object.
 		 * @since JWI 2.4.0
 		 */
-		@SuppressWarnings("SameReturnValue") protected Object readResolve()
+		@NonNull @SuppressWarnings("SameReturnValue") protected Object readResolve()
 		{
 			return IVersion.NO_VERSION;
 		}

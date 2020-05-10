@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.data;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.Comparator;
@@ -28,7 +31,7 @@ import java.util.Comparator;
 public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 {
 	// the comparator
-	protected final Comparator<String> fComparator;
+	@SuppressWarnings("WeakerAccess") protected final Comparator<String> fComparator;
 
 	/**
 	 * Constructs a new binary search wordnet file, on the specified file with
@@ -41,9 +44,10 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 	 *                              is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	public BinarySearchWordnetFile(File file, IContentType<T> contentType)
+	public BinarySearchWordnetFile(@NonNull File file, IContentType<T> contentType)
 	{
 		super(file, contentType);
+		assert getContentType() != null;
 		fComparator = getContentType().getLineComparator();
 	}
 
@@ -54,7 +58,7 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataSource#getLine(java.lang.String)
 	 */
-	public String getLine(String key)
+	@Nullable public String getLine(String key)
 	{
 		ByteBuffer buffer = getBuffer();
 
@@ -62,6 +66,7 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 		{
 			int start = 0;
 			int midpoint;
+			assert buffer != null;
 			int stop = buffer.limit();
 			int cmp;
 			String line;
@@ -75,6 +80,7 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 				rewindToLineStart(buffer);
 
 				// read line
+				assert getContentType() != null;
 				line = getLine(buffer, getContentType().getCharset());
 
 				// if we get a null, we've reached the end of the file
@@ -82,7 +88,9 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 
 				// found our line
 				if (cmp == 0)
+				{
 					return line;
+				}
 
 				if (cmp > 0)
 				{
@@ -104,7 +112,7 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 	 *
 	 * @see edu.mit.jwi.data.WordnetFile#makeIterator(java.nio.ByteBuffer, java.lang.String)
 	 */
-	public LineIterator makeIterator(ByteBuffer buffer, String key)
+	@NonNull public LineIterator makeIterator(@NonNull ByteBuffer buffer, String key)
 	{
 		return new BinarySearchLineIterator(buffer, key);
 	}
@@ -130,7 +138,7 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 		 * @throws NullPointerException if the specified buffer is <code>null</code>
 		 * @since JWI 2.0.0
 		 */
-		public BinarySearchLineIterator(ByteBuffer buffer, String key)
+		public BinarySearchLineIterator(@NonNull ByteBuffer buffer, String key)
 		{
 			super(buffer, key);
 		}
@@ -142,7 +150,7 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 		 *
 		 * @see edu.mit.jwi.data.WordnetFile.LineIterator#findFirstLine(java.lang.String)
 		 */
-		protected void findFirstLine(String key)
+		protected void findFirstLine(@NonNull String key)
 		{
 			synchronized (bufferLock)
 			{
@@ -156,6 +164,7 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 				{
 					midpoint = (start + stop) / 2;
 					itrBuffer.position(midpoint);
+					assert getContentType() != null;
 					getLine(itrBuffer, getContentType().getCharset());
 					offset = itrBuffer.position();
 					line = getLine(itrBuffer, getContentType().getCharset());
@@ -187,7 +196,9 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 					// if the key starts a line, remember it, because
 					// it may be the first occurrence
 					if (line.startsWith(key))
+					{
 						lastOffset = offset;
+					}
 				}
 
 				// Getting here means that we didn't find an exact match

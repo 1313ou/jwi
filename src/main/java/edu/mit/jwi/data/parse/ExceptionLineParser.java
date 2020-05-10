@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data.parse;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.item.ExceptionEntryProxy;
 import edu.mit.jwi.item.IExceptionEntryProxy;
 
@@ -50,7 +52,9 @@ public class ExceptionLineParser implements ILineParser<IExceptionEntryProxy>
 	public static ExceptionLineParser getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new ExceptionLineParser();
+		}
 		return instance;
 	}
 
@@ -73,20 +77,26 @@ public class ExceptionLineParser implements ILineParser<IExceptionEntryProxy>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	public IExceptionEntryProxy parseLine(String line)
+	@NonNull public IExceptionEntryProxy parseLine(@Nullable String line)
 	{
 		if (line == null)
+		{
 			throw new NullPointerException();
+		}
 
 		String[] forms = spacePattern.split(line);
 		if (forms.length < 2)
+		{
 			throw new MisformattedLineException(line);
+		}
 
 		String surface = forms[0].trim();
 
 		String[] trimmed = new String[forms.length - 1];
 		for (int i = 1; i < forms.length; i++)
+		{
 			trimmed[i - 1] = forms[i].trim();
+		}
 		return new ExceptionEntryProxy(surface, trimmed);
 	}
 }

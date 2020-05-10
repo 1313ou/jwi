@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.morph;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.item.POS;
 
 import java.util.*;
@@ -159,7 +161,7 @@ public class SimpleStemmer implements IStemmer
 	 *
 	 * @see edu.mit.jwi.morph.IStemmer#findStems(java.lang.String, edu.mit.jwi.item.POS)
 	 */
-	public List<String> findStems(String word, POS pos)
+	public List<String> findStems(String word, @Nullable POS pos)
 	{
 		word = normalize(word);
 
@@ -168,9 +170,13 @@ public class SimpleStemmer implements IStemmer
 		{
 			Set<String> result = new LinkedHashSet<>();
 			for (POS p : POS.values())
+			{
 				result.addAll(findStems(word, p));
+			}
 			if (result.isEmpty())
+			{
 				return Collections.emptyList();
+			}
 			return new ArrayList<>(result);
 		}
 
@@ -214,7 +220,9 @@ public class SimpleStemmer implements IStemmer
 		// trim off extra whitespace
 		word = word.trim();
 		if (word.length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 
 		// replace all whitespace with underscores
 		word = whitespace.matcher(word).replaceAll(underscore);
@@ -232,10 +240,12 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	protected List<String> stripNounSuffix(final String noun)
+	protected List<String> stripNounSuffix(@NonNull final String noun)
 	{
 		if (noun.length() <= 2)
+		{
 			return Collections.emptyList();
+		}
 
 		// strip off "ful"
 		String word = noun;
@@ -251,11 +261,15 @@ public class SimpleStemmer implements IStemmer
 
 		// apply the rules
 		String root;
-		for (StemmingRule rule : getRuleMap().get(POS.NOUN))
+		List<StemmingRule> rules = getRuleMap().get(POS.NOUN);
+		assert rules != null;
+		for (StemmingRule rule : rules)
 		{
 			root = rule.apply(word, suffix);
 			if (root != null && root.length() > 0)
+			{
 				result.add(root);
+			}
 		}
 		return result.isEmpty() ? Collections.emptyList() : new ArrayList<>(result);
 	}
@@ -269,17 +283,21 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.1.1
 	 */
-	protected List<String> getNounCollocationRoots(String composite)
+	protected List<String> getNounCollocationRoots(@NonNull String composite)
 	{
 		// split into parts
 		String[] parts = composite.split(underscore);
 		if (parts.length < 2)
+		{
 			return Collections.emptyList();
+		}
 
 		// stem each part
 		List<List<String>> rootSets = new ArrayList<>(parts.length);
 		for (String part : parts)
+		{
 			rootSets.add(findStems(part, POS.NOUN));
+		}
 
 		// reassemble all combinations
 		Set<StringBuffer> poss = new HashSet<>();
@@ -293,7 +311,9 @@ public class SimpleStemmer implements IStemmer
 		else
 		{
 			for (Object root : rootSet)
+			{
 				poss.add(new StringBuffer((String) root));
+			}
 		}
 
 		// make all combinations
@@ -330,7 +350,9 @@ public class SimpleStemmer implements IStemmer
 		}
 
 		if (poss.isEmpty())
+		{
 			return Collections.emptyList();
+		}
 
 		// make sure to remove empties
 		Set<String> result = new LinkedHashSet<>();
@@ -339,7 +361,9 @@ public class SimpleStemmer implements IStemmer
 		{
 			root = p.toString().trim();
 			if (root.length() != 0)
+			{
 				result.add(root);
+			}
 		}
 		return new ArrayList<>(result);
 	}
@@ -353,21 +377,27 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	protected List<String> stripVerbSuffix(final String verb)
+	protected List<String> stripVerbSuffix(@NonNull final String verb)
 	{
 		if (verb.length() <= 2)
+		{
 			return Collections.emptyList();
+		}
 
 		// we will return this to the caller
 		Set<String> result = new LinkedHashSet<>();
 
 		// apply the rules
 		String root;
-		for (StemmingRule rule : getRuleMap().get(POS.VERB))
+		List<StemmingRule> rules = getRuleMap().get(POS.VERB);
+		assert rules != null;
+		for (StemmingRule rule : rules)
 		{
 			root = rule.apply(verb);
 			if (root != null && root.length() > 0)
+			{
 				result.add(root);
+			}
 		}
 		return result.isEmpty() ? Collections.emptyList() : new ArrayList<>(result);
 	}
@@ -381,17 +411,21 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.1.1
 	 */
-	protected List<String> getVerbCollocationRoots(String composite)
+	protected List<String> getVerbCollocationRoots(@NonNull String composite)
 	{
 		// split into parts
 		String[] parts = composite.split(underscore);
 		if (parts.length < 2)
+		{
 			return Collections.emptyList();
+		}
 
 		// find the stems of each parts
 		List<List<String>> rootSets = new ArrayList<>(parts.length);
 		for (String part : parts)
+		{
 			rootSets.add(findStems(part, POS.VERB));
+		}
 
 		Set<String> result = new LinkedHashSet<>();
 
@@ -400,7 +434,9 @@ public class SimpleStemmer implements IStemmer
 		for (int i = 0; i < parts.length; i++)
 		{
 			if (rootSets.get(i) == null)
+			{
 				continue;
+			}
 			for (Object partRoot : rootSets.get(i))
 			{
 				rootBuffer.replace(0, rootBuffer.length(), "");
@@ -416,7 +452,9 @@ public class SimpleStemmer implements IStemmer
 						rootBuffer.append(parts[j]);
 					}
 					if (j < parts.length - 1)
+					{
 						rootBuffer.append(underscore);
+					}
 				}
 				result.add(rootBuffer.toString());
 			}
@@ -436,18 +474,22 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	protected List<String> stripAdjectiveSuffix(final String adj)
+	@NonNull protected List<String> stripAdjectiveSuffix(@NonNull final String adj)
 	{
 		// we will return this to the caller
 		Set<String> result = new LinkedHashSet<>();
 
 		// apply the rules
 		String root;
-		for (StemmingRule rule : getRuleMap().get(POS.ADJECTIVE))
+		List<StemmingRule> rules = getRuleMap().get(POS.ADJECTIVE);
+		assert rules != null;
+		for (StemmingRule rule : rules)
 		{
 			root = rule.apply(adj);
 			if (root != null && root.length() > 0)
+			{
 				result.add(root);
+			}
 		}
 		return result.isEmpty() ? Collections.emptyList() : new ArrayList<>(result);
 	}

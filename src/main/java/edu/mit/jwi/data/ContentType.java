@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.compare.*;
 import edu.mit.jwi.item.*;
 
@@ -53,38 +55,40 @@ public class ContentType<T> implements IContentType<T>
 	public static final ContentType<ISenseEntry[]> SENSES = new ContentType<>(ContentTypeKey.SENSES, SenseKeyLineComparator.getInstance());
 
 	// fields set on construction
-	private final ContentTypeKey fKey;
+	@Nullable private final ContentTypeKey fKey;
 	private final ILineComparator fComparator;
-	private final String fString;
+	@NonNull private final String fString;
 	private final Charset fCharset;
 
 	/**
 	 * Constructs a new ContentType
 	 *
-	 * @param proto      content proto type
+	 * @param key        content type key
 	 * @param comparator the line comparator for this content type; may be
 	 *                   <code>null</code> if the lines are not ordered
 	 * @since JWI 2.4.1
 	 */
-	public ContentType(ContentTypeKey proto, ILineComparator comparator)
+	public ContentType(ContentTypeKey key, ILineComparator comparator)
 	{
-		this(proto, comparator, null);
+		this(key, comparator, null);
 	}
 
 	/**
 	 * Constructs a new ContentType
 	 *
-	 * @param key        content proto type
+	 * @param key        content type key
 	 * @param comparator the line comparator for this content type; may be
 	 *                   <code>null</code> if the lines are not ordered
 	 * @param charset    the character set for this content type, may be
 	 *                   <code>null</code>
 	 * @since JWI 2.4.1
 	 */
-	public ContentType(ContentTypeKey key, ILineComparator comparator, Charset charset)
+	public ContentType(@Nullable ContentTypeKey key, ILineComparator comparator, Charset charset)
 	{
 		if (key == null)
+		{
 			throw new NullPointerException();
+		}
 
 		fKey = key;
 		fComparator = comparator;
@@ -105,8 +109,9 @@ public class ContentType<T> implements IContentType<T>
 	 *
 	 * @see edu.mit.jwi.data.IContentType#getKey()
 	 */
-	public ContentTypeKey getKey()
+	@NonNull public ContentTypeKey getKey()
 	{
+		assert fKey != null;
 		return fKey;
 	}
 
@@ -115,8 +120,9 @@ public class ContentType<T> implements IContentType<T>
 	 *
 	 * @see edu.mit.jwi.data.IContentType#getDataType()
 	 */
-	public IDataType<T> getDataType()
+	@NonNull public IDataType<T> getDataType()
 	{
+		assert fKey != null;
 		//noinspection unchecked
 		return (IDataType<T>) fKey.getDataType();
 	}
@@ -126,8 +132,9 @@ public class ContentType<T> implements IContentType<T>
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	public POS getPOS()
+	@Nullable public POS getPOS()
 	{
+		assert fKey != null;
 		return fKey.getPOS();
 	}
 
@@ -156,7 +163,7 @@ public class ContentType<T> implements IContentType<T>
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		return fString;
 	}
@@ -171,8 +178,12 @@ public class ContentType<T> implements IContentType<T>
 		Field[] fields = ContentType.class.getFields();
 		List<Field> instanceFields = new ArrayList<>();
 		for (Field field : fields)
+		{
 			if (field.getType() == ContentType.class)
+			{
 				instanceFields.add(field);
+			}
+		}
 
 		// this is the backing set
 		Set<ContentType<?>> hidden = new LinkedHashSet<>(instanceFields.size());
@@ -185,7 +196,9 @@ public class ContentType<T> implements IContentType<T>
 			{
 				contentType = (ContentType<?>) field.get(null);
 				if (contentType == null)
+				{
 					continue;
+				}
 				hidden.add(contentType);
 			}
 			catch (IllegalAccessException e)
@@ -220,10 +233,12 @@ public class ContentType<T> implements IContentType<T>
 	 * @throws NullPointerException if the specified part of speech is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	public static IContentType<IIndexWord> getIndexContentType(POS pos)
+	@NonNull public static IContentType<IIndexWord> getIndexContentType(@Nullable POS pos)
 	{
 		if (pos == null)
+		{
 			throw new NullPointerException();
+		}
 		switch (pos)
 		{
 			case NOUN:
@@ -248,10 +263,12 @@ public class ContentType<T> implements IContentType<T>
 	 * @throws NullPointerException if the specified part of speech is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	public static IContentType<ISynset> getDataContentType(POS pos)
+	@NonNull public static IContentType<ISynset> getDataContentType(@Nullable POS pos)
 	{
 		if (pos == null)
+		{
 			throw new NullPointerException();
+		}
 		switch (pos)
 		{
 			case NOUN:
@@ -276,10 +293,12 @@ public class ContentType<T> implements IContentType<T>
 	 * @throws NullPointerException if the specified part of speech is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	public static IContentType<IExceptionEntryProxy> getExceptionContentType(POS pos)
+	@NonNull public static IContentType<IExceptionEntryProxy> getExceptionContentType(@Nullable POS pos)
 	{
 		if (pos == null)
+		{
 			throw new NullPointerException();
+		}
 		switch (pos)
 		{
 			case NOUN:

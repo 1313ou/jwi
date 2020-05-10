@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -32,10 +35,10 @@ public class Word implements IWord
 	private static final long serialVersionUID = 240;
 
 	// final instance fields
-	private final IWordID id;
-	private final ISynset synset;
-	private final ISenseKey senseKey;
-	private final AdjMarker adjMarker;
+	@Nullable private final IWordID id;
+	@Nullable private final ISynset synset;
+	@NonNull private final ISenseKey senseKey;
+	@Nullable private final AdjMarker adjMarker;
 	private final int lexID;
 	private final List<IVerbFrame> frames;
 	private final List<IWordID> allWords;
@@ -56,7 +59,7 @@ public class Word implements IWord
 	 *                                  not an adjective
 	 * @since JWI 1.0
 	 */
-	public Word(ISynset synset, int number, String lemma, int lexID, AdjMarker adjMarker, List<IVerbFrame> frames,
+	public Word(@NonNull ISynset synset, int number, @NonNull String lemma, int lexID, AdjMarker adjMarker, List<IVerbFrame> frames,
 			Map<IPointer, ? extends List<IWordID>> pointers)
 	{
 		this(synset, new WordID(synset.getID(), number, lemma), lexID, adjMarker, frames, pointers);
@@ -77,16 +80,23 @@ public class Word implements IWord
 	 *                                  not an adjective
 	 * @since JWI 1.0
 	 */
-	public Word(ISynset synset, IWordID id, int lexID, AdjMarker adjMarker, List<IVerbFrame> frames, Map<IPointer, ? extends List<IWordID>> pointers)
+	public Word(@Nullable ISynset synset, @Nullable IWordID id, int lexID, @Nullable AdjMarker adjMarker, @Nullable List<IVerbFrame> frames,
+			@Nullable Map<IPointer, ? extends List<IWordID>> pointers)
 	{
 		// check arguments
 		if (synset == null)
+		{
 			throw new NullPointerException();
+		}
 		if (id == null)
+		{
 			throw new NullPointerException();
+		}
 		checkLexicalID(lexID);
 		if (synset.getPOS() != POS.ADJECTIVE && adjMarker != null)
+		{
 			throw new IllegalArgumentException();
+		}
 
 		// fill synset map
 		Set<IWordID> hiddenSet = null;
@@ -96,11 +106,13 @@ public class Word implements IWord
 			hiddenSet = new LinkedHashSet<>();
 			hiddenMap = new HashMap<>(pointers.size());
 			for (Entry<IPointer, ? extends List<IWordID>> entry : pointers.entrySet())
+			{
 				if (entry.getValue() != null && !entry.getValue().isEmpty())
 				{
 					hiddenMap.put(entry.getKey(), Collections.unmodifiableList(new ArrayList<>(entry.getValue())));
 					hiddenSet.addAll(entry.getValue());
 				}
+			}
 		}
 
 		// field assignments
@@ -108,7 +120,9 @@ public class Word implements IWord
 		this.id = id;
 		this.lexID = lexID;
 		this.adjMarker = adjMarker;
-		this.senseKey = new SenseKey(id.getLemma(), lexID, synset);
+		String lemma = id.getLemma();
+		assert lemma != null;
+		this.senseKey = new SenseKey(lemma, lexID, synset);
 		this.allWords = (hiddenSet != null && !hiddenSet.isEmpty()) ? Collections.unmodifiableList(new ArrayList<>(hiddenSet)) : Collections.emptyList();
 		this.wordMap = (hiddenMap != null && !hiddenMap.isEmpty()) ? Collections.unmodifiableMap(hiddenMap) : Collections.emptyMap();
 		this.frames = (frames == null || frames.isEmpty()) ? Collections.emptyList() : Collections.unmodifiableList(new ArrayList<>(frames));
@@ -119,7 +133,7 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IItem#getID()
 	 */
-	public IWordID getID()
+	@Nullable public IWordID getID()
 	{
 		return id;
 	}
@@ -129,8 +143,9 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getLemma()
 	 */
-	public String getLemma()
+	@Nullable public String getLemma()
 	{
+		assert id != null;
 		return id.getLemma();
 	}
 
@@ -141,7 +156,10 @@ public class Word implements IWord
 	 */
 	public POS getPOS()
 	{
-		return id.getSynsetID().getPOS();
+		assert id != null;
+		ISynsetID sid = id.getSynsetID();
+		assert sid != null;
+		return sid.getPOS();
 	}
 
 	/*
@@ -149,7 +167,7 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getSynset()
 	 */
-	public ISynset getSynset()
+	@Nullable public ISynset getSynset()
 	{
 		return synset;
 	}
@@ -169,7 +187,7 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getAdjectiveMarker()
 	 */
-	public AdjMarker getAdjectiveMarker()
+	@Nullable public AdjMarker getAdjectiveMarker()
 	{
 		return adjMarker;
 	}
@@ -179,7 +197,7 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getSenseKey()
 	 */
-	public ISenseKey getSenseKey()
+	@NonNull public ISenseKey getSenseKey()
 	{
 		return senseKey;
 	}
@@ -199,9 +217,9 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getRelatedWords(edu.mit.jwi.item.IPointer)
 	 */
-	public List<IWordID> getRelatedWords(IPointer type)
+	@Nullable public List<IWordID> getRelatedWords(IPointer ptrType)
 	{
-		List<IWordID> result = wordMap.get(type);
+		List<IWordID> result = wordMap.get(ptrType);
 		return (result == null) ? Collections.emptyList() : result;
 	}
 
@@ -230,15 +248,18 @@ public class Word implements IWord
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@Override public String toString()
+	@NonNull @Override public String toString()
 	{
+		assert id != null;
+		ISynsetID sid = id.getSynsetID();
+		assert sid != null;
 		if (id.getWordNumber() == 0)
 		{
-			return "W-" + id.getSynsetID().toString().substring(4) + "-?-" + id.getLemma();
+			return "W-" + sid.toString().substring(4) + "-?-" + id.getLemma();
 		}
 		else
 		{
-			return "W-" + id.getSynsetID().toString().substring(4) + "-" + id.getWordNumber() + "-" + id.getLemma();
+			return "W-" + sid.toString().substring(4) + "-" + id.getWordNumber() + "-" + id.getLemma();
 		}
 	}
 
@@ -253,6 +274,7 @@ public class Word implements IWord
 		int result;
 		result = PRIME + frames.hashCode();
 		result = PRIME * result + wordMap.hashCode();
+		assert id != null;
 		result = PRIME * result + id.hashCode();
 		result = PRIME * result + lexID;
 		result = PRIME * result + ((adjMarker == null) ? 0 : adjMarker.hashCode());
@@ -264,39 +286,56 @@ public class Word implements IWord
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(Object obj)
+	@Override public boolean equals(@Nullable Object obj)
 	{
 		// check nulls
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 
 		// check interface
 		if (!(obj instanceof Word))
+		{
 			return false;
+		}
 		final Word that = (Word) obj;
 
 		// check id
+		assert this.id != null;
 		if (!this.id.equals(that.id))
+		{
 			return false;
+		}
 
 		// check lexical id
 		if (this.lexID != that.lexID)
+		{
 			return false;
+		}
 
 		// check adjective marker
 		if (this.adjMarker == null)
 		{
 			if (that.adjMarker != null)
+			{
 				return false;
+			}
 		}
 		else if (!adjMarker.equals(that.adjMarker))
+		{
 			return false;
+		}
 
 		// check maps
 		if (!frames.equals(that.frames))
+		{
 			return false;
+		}
 		return wordMap.equals(that.wordMap);
 	}
 
@@ -311,7 +350,9 @@ public class Word implements IWord
 	public static void checkWordNumber(int num)
 	{
 		if (isIllegalWordNumber(num))
+		{
 			throw new IllegalArgumentException("'" + num + " is an illegal word number: word numbers are in the closed range [1,255]");
+		}
 	}
 
 	/**
@@ -350,7 +391,9 @@ public class Word implements IWord
 	public static void checkLexicalID(int id)
 	{
 		if (checkLexicalID && isIllegalLexicalID(id))
+		{
 			throw new IllegalArgumentException("'" + id + " is an illegal lexical id: lexical ids are in the closed range [0,15]");
+		}
 	}
 
 	/**
@@ -366,7 +409,9 @@ public class Word implements IWord
 	public static boolean isIllegalLexicalID(int id)
 	{
 		if (id < 0)
+		{
 			return true;
+		}
 		return id > 15;
 	}
 
@@ -383,7 +428,9 @@ public class Word implements IWord
 	public static boolean isIllegalWordNumber(int num)
 	{
 		if (num < 1)
+		{
 			return true;
+		}
 		return num > 255;
 	}
 
@@ -397,7 +444,7 @@ public class Word implements IWord
 	 * @throws IllegalArgumentException if the specified integer is not a valid lexical id.
 	 * @since JWI 2.1.0
 	 */
-	public static String getLexicalIDForDataFile(int lexID)
+	@NonNull public static String getLexicalIDForDataFile(int lexID)
 	{
 		checkLexicalID(lexID);
 		return Integer.toHexString(lexID);
@@ -416,7 +463,7 @@ public class Word implements IWord
 	 * @throws IllegalArgumentException if the specified integer is not a valid lexical id.
 	 * @since JWI 2.1.0
 	 */
-	public static String getLexicalIDForSenseKey(int lexID)
+	@NonNull public static String getLexicalIDForSenseKey(int lexID)
 	{
 		checkLexicalID(lexID);
 		return (lexID < 10) ? lexIDNumStrs[lexID] : Integer.toString(lexID);
@@ -433,16 +480,20 @@ public class Word implements IWord
 	 * @throws IllegalArgumentException if the specified number is not a legal word number
 	 * @since JWI 2.1.0
 	 */
-	public static String zeroFillWordNumber(int num)
+	@NonNull public static String zeroFillWordNumber(int num)
 	{
 		checkWordNumber(num);
 		StringBuilder sb = new StringBuilder(2);
 		String str = Integer.toHexString(num);
 		int numZeros = 2 - str.length();
 		for (int i = 0; i < numZeros; i++)
+		{
 			sb.append('0');
+		}
 		for (int i = 0; i < str.length(); i++)
+		{
 			sb.append(Character.toUpperCase(str.charAt(i)));
+		}
 		return sb.toString();
 	}
 }

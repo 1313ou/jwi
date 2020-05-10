@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.regex.Pattern;
 
 /**
@@ -37,7 +40,7 @@ public class IndexWordID implements IIndexWordID
 
 	// immutable instance fields
 	private final String lemma;
-	private final POS pos;
+	@Nullable private final POS pos;
 
 	/**
 	 * Constructs an index word id object with the specified lemma and part of
@@ -50,13 +53,17 @@ public class IndexWordID implements IIndexWordID
 	 * @throws IllegalArgumentException if the lemma is empty or all whitespace
 	 * @since JWI 1.0
 	 */
-	public IndexWordID(String lemma, POS pos)
+	public IndexWordID(String lemma, @Nullable POS pos)
 	{
 		if (pos == null)
+		{
 			throw new NullPointerException();
+		}
 		lemma = lemma.toLowerCase().trim();
 		if (lemma.length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		this.lemma = whitespace.matcher(lemma).replaceAll("_");
 		this.pos = pos;
 	}
@@ -76,7 +83,7 @@ public class IndexWordID implements IIndexWordID
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	public POS getPOS()
+	@Nullable public POS getPOS()
 	{
 		return pos;
 	}
@@ -91,6 +98,7 @@ public class IndexWordID implements IIndexWordID
 		final int PRIME = 31;
 		int result = 1;
 		result = PRIME * result + lemma.hashCode();
+		assert pos != null;
 		result = PRIME * result + pos.hashCode();
 		return result;
 	}
@@ -100,17 +108,26 @@ public class IndexWordID implements IIndexWordID
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object obj)
+	public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (!(obj instanceof IIndexWordID))
+		{
 			return false;
+		}
 		final IIndexWordID other = (IIndexWordID) obj;
 		if (!lemma.equals(other.getLemma()))
+		{
 			return false;
+		}
+		assert pos != null;
 		return pos.equals(other.getPOS());
 	}
 
@@ -119,8 +136,9 @@ public class IndexWordID implements IIndexWordID
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
+		assert pos != null;
 		return "XID-" + lemma + "-" + pos.getTag();
 	}
 
@@ -135,16 +153,22 @@ public class IndexWordID implements IIndexWordID
 	 *                                  string
 	 * @since JWI 1.0
 	 */
-	public static IndexWordID parseIndexWordID(String value)
+	@NonNull public static IndexWordID parseIndexWordID(@Nullable String value)
 	{
 		if (value == null)
+		{
 			throw new NullPointerException();
+		}
 
 		if (!value.startsWith("XID-"))
+		{
 			throw new IllegalArgumentException();
+		}
 
 		if (value.charAt(value.length() - 2) != '-')
+		{
 			throw new IllegalArgumentException();
+		}
 
 		POS pos = POS.getPartOfSpeech(value.charAt(value.length() - 1));
 		return new IndexWordID(value.substring(4, value.length() - 2), pos);

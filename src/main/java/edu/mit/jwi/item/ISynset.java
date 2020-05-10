@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +41,7 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * this synset is stored
 	 * @since JWI 2.1.0
 	 */
-	ILexFile getLexicalFile();
+	@Nullable ILexFile getLexicalFile();
 
 	/**
 	 * Returns the type of the synset, encoded as follows: 1=Noun, 2=Verb,
@@ -56,7 +58,7 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * @return String Returns the non-<code>null</code>, non-empty gloss.
 	 * @since JWI 1.0
 	 */
-	String getGloss();
+	@Nullable String getGloss();
 
 	/**
 	 * Returns an immutable list of the word objects (synset, index word pairs)
@@ -125,7 +127,7 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * are no such synsets, returns the empty list
 	 * @since JWI 2.0.0
 	 */
-	List<ISynsetID> getRelatedSynsets(IPointer ptr);
+	@Nullable List<ISynsetID> getRelatedSynsets(IPointer ptr);
 
 	/**
 	 * Returns an immutable list of synset ids for all synsets that are

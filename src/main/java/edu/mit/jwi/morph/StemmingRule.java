@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.morph;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.item.POS;
 
 import java.util.Collections;
@@ -25,9 +27,9 @@ import java.util.Set;
  */
 public class StemmingRule implements IStemmingRule
 {
-	private final POS pos;
-	private final String suffix;
-	private final String ending;
+	@Nullable private final POS pos;
+	@Nullable private final String suffix;
+	@Nullable private final String ending;
 	private final Set<String> ignoreSet;
 
 	/**
@@ -49,14 +51,20 @@ public class StemmingRule implements IStemmingRule
 	 *                              set contains a string which is empty or all whitespace
 	 * @since JWI 2.3.1
 	 */
-	public StemmingRule(String suffix, String ending, POS pos, String... ignore)
+	public StemmingRule(@Nullable String suffix, @Nullable String ending, @Nullable POS pos, @Nullable String... ignore)
 	{
 		if (suffix == null)
+		{
 			throw new NullPointerException();
+		}
 		if (ending == null)
+		{
 			throw new NullPointerException();
+		}
 		if (pos == null)
+		{
 			throw new NullPointerException();
+		}
 
 		// allocate avoid set
 		Set<String> ignoreSet;
@@ -66,10 +74,14 @@ public class StemmingRule implements IStemmingRule
 			for (String avoidStr : ignore)
 			{
 				if (avoidStr == null)
+				{
 					throw new NullPointerException();
+				}
 				avoidStr = avoidStr.trim();
 				if (avoidStr.length() == 0)
+				{
 					throw new IllegalArgumentException();
+				}
 				ignoreSet.add(avoidStr);
 			}
 			ignoreSet = Collections.unmodifiableSet(ignoreSet);
@@ -82,10 +94,14 @@ public class StemmingRule implements IStemmingRule
 		suffix = suffix.trim();
 		ending = ending.trim();
 		if (suffix.length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 
 		if (ignoreSet.contains(suffix))
+		{
 			throw new IllegalArgumentException();
+		}
 
 		this.pos = pos;
 		this.suffix = suffix;
@@ -98,7 +114,7 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.morph.IStemmingRule#getSuffix()
 	 */
-	public String getSuffix()
+	@Nullable public String getSuffix()
 	{
 		return suffix;
 	}
@@ -108,7 +124,7 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.morph.IStemmingRule#getEnding()
 	 */
-	public String getEnding()
+	@Nullable public String getEnding()
 	{
 		return ending;
 	}
@@ -128,7 +144,7 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	public POS getPOS()
+	@Nullable public POS getPOS()
 	{
 		return pos;
 	}
@@ -138,7 +154,7 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.morph.IStemmingRule#apply(java.lang.String)
 	 */
-	public String apply(String word)
+	@Nullable public String apply(@NonNull String word)
 	{
 		return apply(word, null);
 	}
@@ -148,28 +164,39 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.morph.IStemmingRule#apply(java.lang.String, java.lang.String)
 	 */
-	public String apply(String word, String suffix)
+	@Nullable public String apply(@NonNull String word, @Nullable String suffix)
 	{
 		// see if the suffix is present
+		assert getSuffix() != null;
 		if (!word.endsWith(getSuffix()))
+		{
 			return null;
+		}
 
 		// process ignore set
 		for (String ignoreSuffix : getSuffixIgnoreSet())
+		{
 			if (word.endsWith(ignoreSuffix))
+			{
 				return null;
+			}
+		}
 
 		// apply the rule
 		// we loop directly over characters here to avoid two loops
 		StringBuilder sb = new StringBuilder();
 		int len = word.length() - getSuffix().length();
 		for (int i = 0; i < len; i++)
+		{
 			sb.append(word.charAt(i));
+		}
 		sb.append(getEnding());
 
 		// append optional suffix
 		if (suffix != null)
+		{
 			sb.append(suffix.trim());
+		}
 		return sb.toString();
 	}
 }

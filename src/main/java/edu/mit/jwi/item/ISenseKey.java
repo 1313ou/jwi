@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.parse.SenseKeyParser;
 
 import java.io.Serializable;
@@ -36,7 +38,7 @@ public interface ISenseKey extends IHasPOS, Comparable<ISenseKey>, Serializable
 	 * @return the lemma for this key
 	 * @since JWI 2.1.0
 	 */
-	String getLemma();
+	@NonNull String getLemma();
 
 	/**
 	 * Returns the synset type for the key. The synset type is a one digit
@@ -73,7 +75,7 @@ public interface ISenseKey extends IHasPOS, Comparable<ISenseKey>, Serializable
 	 * @return the lexical file associated with this sense key
 	 * @since JWI 2.1.0
 	 */
-	ILexFile getLexicalFile();
+	@Nullable ILexFile getLexicalFile();
 
 	/**
 	 * Returns the lexical id for this sense key, which is a non-negative
@@ -97,7 +99,7 @@ public interface ISenseKey extends IHasPOS, Comparable<ISenseKey>, Serializable
 	 * satellite
 	 * @since JWI 2.1.0
 	 */
-	String getHeadWord();
+	@Nullable String getHeadWord();
 
 	/**
 	 * Returns the head id for this sense key. The head id is only present if

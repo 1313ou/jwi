@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -111,13 +114,17 @@ public class VerbFrame implements IVerbFrame
 	 *
 	 * @see edu.mit.jwi.item.IVerbFrame#instantiateTemplate(java.lang.String)
 	 */
-	public String instantiateTemplate(String verb)
+	@NonNull public String instantiateTemplate(@Nullable String verb)
 	{
 		if (verb == null)
+		{
 			throw new NullPointerException();
+		}
 		int index = template.indexOf("----");
 		if (index == -1)
+		{
 			return "";
+		}
 		return template.substring(0, index) + verb + template.substring(index + 5);
 	}
 
@@ -126,7 +133,7 @@ public class VerbFrame implements IVerbFrame
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		return "[" + num + " : " + template + " ]";
 	}
@@ -138,7 +145,7 @@ public class VerbFrame implements IVerbFrame
 	 * @return the appropriate deserialized object.
 	 * @since JWI 2.4.0
 	 */
-	protected Object readResolve()
+	@NonNull protected Object readResolve()
 	{
 		VerbFrame staticFrame = getFrame(num);
 		return (staticFrame == null) ? this : staticFrame;
@@ -153,8 +160,12 @@ public class VerbFrame implements IVerbFrame
 		Field[] fields = VerbFrame.class.getFields();
 		List<Field> instanceFields = new ArrayList<>();
 		for (Field field : fields)
+		{
 			if (field.getGenericType() == VerbFrame.class)
+			{
 				instanceFields.add(field);
+			}
+		}
 
 		// this is our backing collection
 		Map<Integer, VerbFrame> hidden = new LinkedHashMap<>(instanceFields.size());
@@ -167,7 +178,9 @@ public class VerbFrame implements IVerbFrame
 			{
 				frame = (VerbFrame) field.get(null);
 				if (frame != null)
+				{
 					hidden.put(frame.getNumber(), frame);
+				}
 			}
 			catch (IllegalAccessException e)
 			{
@@ -187,7 +200,7 @@ public class VerbFrame implements IVerbFrame
 	 * @return an unmodifiable collection of verb frames defined in this class
 	 * @since JWI 2.1.0
 	 */
-	public static Collection<VerbFrame> values()
+	@NonNull public static Collection<VerbFrame> values()
 	{
 		return verbFrameMap.values();
 	}
@@ -201,7 +214,7 @@ public class VerbFrame implements IVerbFrame
 	 * none
 	 * @since JWI 2.1.0
 	 */
-	public static VerbFrame getFrame(int number)
+	@Nullable public static VerbFrame getFrame(int number)
 	{
 		return verbFrameMap.get(number);
 	}

@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -73,11 +76,11 @@ public enum POS
 	private final Set<String> filenameHints;
 
 	// private constructor
-	POS(String name, char tag, int type, String... patterns)
+	POS(String name, char tag, int num, String... patterns)
 	{
 		this.name = name;
 		this.tag = tag;
-		this.num = type;
+		this.num = num;
 		this.filenameHints = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(patterns)));
 	}
 
@@ -121,7 +124,7 @@ public enum POS
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		return name;
 	}
@@ -164,7 +167,7 @@ public enum POS
 	 * or <code>null</code> if none is found
 	 * @since JWI 2.0.0
 	 */
-	public static POS getPartOfSpeech(int num)
+	@Nullable public static POS getPartOfSpeech(int num)
 	{
 		switch (num)
 		{
@@ -190,7 +193,7 @@ public enum POS
 	 * or null if none is found
 	 * @since JWI 2.0.0
 	 */
-	public static POS getPartOfSpeech(char tag)
+	@Nullable public static POS getPartOfSpeech(char tag)
 	{
 		switch (tag)
 		{

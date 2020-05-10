@@ -10,6 +10,7 @@
 
 package edu.mit.jwi.data;
 
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.data.parse.ILineParser;
 
@@ -47,7 +48,7 @@ public interface IDataType<T>
 	 * retrieved from an {@code IDataSource} file with this type.
 	 * @since JWI 2.0.0
 	 */
-	ILineParser<T> getParser();
+	@Nullable ILineParser<T> getParser();
 
 	/**
 	 * Indicates whether this content type usually has wordnet version

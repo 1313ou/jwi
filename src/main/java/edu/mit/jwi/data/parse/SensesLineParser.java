@@ -10,6 +10,7 @@
 
 package edu.mit.jwi.data.parse;
 
+import androidx.annotation.Nullable;
 import edu.mit.jwi.item.ISenseEntry;
 import edu.mit.jwi.item.ISenseKey;
 
@@ -45,12 +46,14 @@ public class SensesLineParser implements ILineParser<ISenseEntry[]>
 	public static SensesLineParser getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new SensesLineParser();
+		}
 		return instance;
 	}
 
 	// instance fields
-	protected final ILineParser<ISenseKey> keyParser;
+	@Nullable protected final ILineParser<ISenseKey> keyParser;
 
 	/**
 	 * This constructor is marked protected so that the class may be
@@ -73,10 +76,12 @@ public class SensesLineParser implements ILineParser<ISenseEntry[]>
 	 * @throws NullPointerException if the specified key parser is <code>null</code>
 	 * @since JWI 2.2.0
 	 */
-	protected SensesLineParser(ILineParser<ISenseKey> keyParser)
+	protected SensesLineParser(@Nullable ILineParser<ISenseKey> keyParser)
 	{
 		if (keyParser == null)
+		{
 			throw new NullPointerException();
+		}
 		this.keyParser = keyParser;
 	}
 
@@ -85,10 +90,12 @@ public class SensesLineParser implements ILineParser<ISenseEntry[]>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	public ISenseEntry[] parseLine(String line)
+	public ISenseEntry[] parseLine(@Nullable String line)
 	{
 		if (line == null)
+		{
 			throw new NullPointerException();
+		}
 
 		List<ISenseEntry> senseEntries = new ArrayList<>();
 		try
@@ -96,6 +103,7 @@ public class SensesLineParser implements ILineParser<ISenseEntry[]>
 			// get sense key
 			int end = line.indexOf(' ');
 			String keyStr = line.substring(0, end);
+			assert keyParser != null;
 			ISenseKey senseKey = keyParser.parseLine(keyStr);
 
 			// get sense entry
@@ -103,7 +111,9 @@ public class SensesLineParser implements ILineParser<ISenseEntry[]>
 			StringTokenizer tokenizer = new StringTokenizer(tail);
 
 			while (tokenizer.hasMoreTokens())
+			{
 				senseEntries.add(SenseLineParser.parseSenseEntry(tokenizer, senseKey));
+			}
 
 			return senseEntries.toArray(new ISenseEntry[0]);
 		}

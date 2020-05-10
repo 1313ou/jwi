@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -31,9 +34,9 @@ public class Synset implements ISynset
 	 */
 	private static final long serialVersionUID = 240;
 
-	private final ISynsetID id;
-	private final String gloss;
-	private final ILexFile lexFile;
+	@Nullable private final ISynsetID id;
+	@Nullable private final String gloss;
+	@Nullable private final ILexFile lexFile;
 	private final List<IWord> words;
 	private final boolean isAdjSat;
 	private final boolean isAdjHead;
@@ -63,23 +66,37 @@ public class Synset implements ISynset
 	 *                                  are set, and the lexical file number is not zero
 	 * @since JWI 1.0
 	 */
-	public Synset(ISynsetID id, ILexFile lexFile, boolean isAdjSat, boolean isAdjHead, String gloss, List<IWordBuilder> wordBuilders,
-			Map<IPointer, ? extends List<ISynsetID>> ids)
+	public Synset(@Nullable ISynsetID id, @Nullable ILexFile lexFile, boolean isAdjSat, boolean isAdjHead, @Nullable String gloss,
+			@Nullable List<IWordBuilder> wordBuilders, @Nullable Map<IPointer, ? extends List<ISynsetID>> ids)
 	{
 		if (id == null)
+		{
 			throw new NullPointerException();
+		}
 		if (lexFile == null)
+		{
 			throw new NullPointerException();
+		}
 		if (gloss == null)
+		{
 			throw new NullPointerException();
+		}
 		if (wordBuilders == null)
+		{
 			throw new NullPointerException();
+		}
 		if (wordBuilders.isEmpty())
+		{
 			throw new IllegalArgumentException();
+		}
 		if (isAdjSat && isAdjHead)
+		{
 			throw new IllegalArgumentException();
+		}
 		if ((isAdjSat || isAdjHead) && lexFile.getNumber() != 0)
+		{
 			throw new IllegalArgumentException();
+		}
 
 		this.id = id;
 		this.lexFile = lexFile;
@@ -90,7 +107,9 @@ public class Synset implements ISynset
 		// words
 		List<IWord> words = new ArrayList<>(wordBuilders.size());
 		for (IWordBuilder wordBuilder : wordBuilders)
+		{
 			words.add(wordBuilder.toWord(this));
+		}
 		this.words = Collections.unmodifiableList(words);
 
 		Set<ISynsetID> hiddenSet = null;
@@ -103,7 +122,9 @@ public class Synset implements ISynset
 			for (Entry<IPointer, ? extends List<ISynsetID>> entry : ids.entrySet())
 			{
 				if (entry.getValue() == null || entry.getValue().isEmpty())
+				{
 					continue;
+				}
 				hiddenMap.put(entry.getKey(), Collections.unmodifiableList(new ArrayList<>(entry.getValue())));
 				hiddenSet.addAll(entry.getValue());
 			}
@@ -117,7 +138,7 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.IItem#getID()
 	 */
-	public ISynsetID getID()
+	@Nullable public ISynsetID getID()
 	{
 		return id;
 	}
@@ -129,6 +150,7 @@ public class Synset implements ISynset
 	 */
 	public int getOffset()
 	{
+		assert id != null;
 		return id.getOffset();
 	}
 
@@ -139,6 +161,7 @@ public class Synset implements ISynset
 	 */
 	public POS getPOS()
 	{
+		assert id != null;
 		return id.getPOS();
 	}
 
@@ -146,7 +169,10 @@ public class Synset implements ISynset
 	{
 		POS pos = getPOS();
 		if (pos != POS.ADJECTIVE)
+		{
+			assert pos != null;
 			return pos.getNumber();
+		}
 		return isAdjectiveSatellite() ? 5 : 3;
 	}
 
@@ -155,7 +181,7 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getGloss()
 	 */
-	public String getGloss()
+	@Nullable public String getGloss()
 	{
 		return gloss;
 	}
@@ -185,7 +211,7 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getLexicalFile()
 	 */
-	public ILexFile getLexicalFile()
+	@Nullable public ILexFile getLexicalFile()
 	{
 		return lexFile;
 	}
@@ -205,11 +231,13 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getRelatedSynsets(edu.mit.jwi.item.IPointer)
 	 */
-	public List<ISynsetID> getRelatedSynsets(IPointer type)
+	@Nullable public List<ISynsetID> getRelatedSynsets(IPointer ptrType)
 	{
 		if (relatedMap == null)
+		{
 			return Collections.emptyList();
-		List<ISynsetID> result = relatedMap.get(type);
+		}
+		List<ISynsetID> result = relatedMap.get(ptrType);
 		return result != null ? result : Collections.emptyList();
 	}
 
@@ -252,8 +280,10 @@ public class Synset implements ISynset
 	{
 		final int PRIME = 31;
 		int result = 1;
+		assert gloss != null;
 		result = PRIME * result + gloss.hashCode();
 		result = PRIME * result + (isAdjSat ? 1231 : 1237);
+		assert id != null;
 		result = PRIME * result + id.hashCode();
 		result = PRIME * result + words.hashCode();
 		result = PRIME * result + relatedMap.hashCode();
@@ -265,23 +295,39 @@ public class Synset implements ISynset
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object obj)
+	public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (!(obj instanceof Synset))
+		{
 			return false;
+		}
 		final Synset other = (Synset) obj;
+		assert id != null;
 		if (!id.equals(other.getID()))
+		{
 			return false;
+		}
 		if (!words.equals(other.getWords()))
+		{
 			return false;
+		}
+		assert gloss != null;
 		if (!gloss.equals(other.getGloss()))
+		{
 			return false;
+		}
 		if (isAdjSat != other.isAdjectiveSatellite())
+		{
 			return false;
+		}
 		return relatedMap.equals(other.getRelatedMap());
 	}
 
@@ -290,10 +336,11 @@ public class Synset implements ISynset
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("SYNSET{");
+		assert id != null;
 		sb.append(id.toString());
 		sb.append(" : Words[");
 		for (IWord word : words)
@@ -317,14 +364,16 @@ public class Synset implements ISynset
 	 *                                  [0,99999999]
 	 * @since JWI 2.1.0
 	 */
-	public static String zeroFillOffset(int offset)
+	@NonNull public static String zeroFillOffset(int offset)
 	{
 		checkOffset(offset);
 		StringBuilder sb = new StringBuilder(8);
 		String offsetStr = Integer.toString(offset);
 		int numZeros = 8 - offsetStr.length();
 		for (int i = 0; i < numZeros; i++)
+		{
 			sb.append('0');
+		}
 		sb.append(offsetStr);
 		return sb.toString();
 	}
@@ -342,7 +391,9 @@ public class Synset implements ISynset
 	@SuppressWarnings("UnusedReturnValue") public static int checkOffset(int offset)
 	{
 		if (!isLegalOffset(offset))
+		{
 			throw new IllegalArgumentException("'" + offset + "' is not a valid offset; offsets must be in the closed range [0,99999999]");
+		}
 		return offset;
 	}
 
@@ -358,7 +409,9 @@ public class Synset implements ISynset
 	public static boolean isLegalOffset(int offset)
 	{
 		if (offset < 0)
+		{
 			return false;
+		}
 		return offset <= 99999999;
 	}
 
@@ -381,7 +434,7 @@ public class Synset implements ISynset
 		 * @return the created word
 		 * @since JWI 2.2.0
 		 */
-		IWord toWord(ISynset synset);
+		@NonNull IWord toWord(ISynset synset);
 
 		/**
 		 * Adds the specified verb frame to this word.
@@ -395,12 +448,12 @@ public class Synset implements ISynset
 		/**
 		 * Adds a pointer from this word to another word with the specified id.
 		 *
-		 * @param type the pointer type, may not be <code>null</code>
-		 * @param id   the word id, may not be <code>null</code>
+		 * @param ptrType the pointer type, may not be <code>null</code>
+		 * @param id      the word id, may not be <code>null</code>
 		 * @throws NullPointerException if either argument is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		void addRelatedWord(IPointer type, IWordID id);
+		void addRelatedWord(IPointer ptrType, IWordID id);
 	}
 
 	/**
@@ -443,13 +496,17 @@ public class Synset implements ISynset
 		 *
 		 * @see edu.mit.jwi.item.Synset.IWordBuilder#addRelatedWord(edu.mit.jwi.item.IPointer, edu.mit.jwi.item.IWordID)
 		 */
-		public void addRelatedWord(IPointer type, IWordID id)
+		public void addRelatedWord(@Nullable IPointer ptrType, @Nullable IWordID id)
 		{
-			if (type == null)
+			if (ptrType == null)
+			{
 				throw new NullPointerException();
+			}
 			if (id == null)
+			{
 				throw new NullPointerException();
-			ArrayList<IWordID> words = relatedWords.computeIfAbsent(type, k -> new ArrayList<>());
+			}
+			ArrayList<IWordID> words = relatedWords.computeIfAbsent(ptrType, k -> new ArrayList<>());
 			words.add(id);
 		}
 
@@ -458,10 +515,12 @@ public class Synset implements ISynset
 		 *
 		 * @see edu.mit.jwi.item.Synset.IWordBuilder#addVerbFrame(edu.mit.jwi.item.IVerbFrame)
 		 */
-		public void addVerbFrame(IVerbFrame frame)
+		public void addVerbFrame(@Nullable IVerbFrame frame)
 		{
 			if (frame == null)
+			{
 				throw new NullPointerException();
+			}
 			verbFrames.add(frame);
 		}
 
@@ -470,7 +529,7 @@ public class Synset implements ISynset
 		 *
 		 * @see edu.mit.jwi.item.Synset.IWordBuilder#toWord(edu.mit.jwi.item.ISynset)
 		 */
-		public IWord toWord(ISynset synset)
+		@NonNull public IWord toWord(@NonNull ISynset synset)
 		{
 			return new Word(synset, num, lemma, lexID, marker, verbFrames, relatedWords);
 		}

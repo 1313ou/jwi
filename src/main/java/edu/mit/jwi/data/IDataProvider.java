@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.item.IHasVersion;
 import edu.mit.jwi.item.POS;
@@ -52,7 +54,7 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * not be <code>null</code>
 	 * @since JWI 1.0
 	 */
-	URL getSource();
+	@Nullable URL getSource();
 
 	/**
 	 * Sets the character set associated with this dictionary. The character set
@@ -63,7 +65,7 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws IllegalStateException if the provider is currently open
 	 * @since JWI 2.3.4
 	 */
-	void setCharset(Charset charset);
+	void setCharset(@Nullable Charset charset);
 
 	/**
 	 * Sets the comparator associated with this content type in this dictionary.
@@ -76,7 +78,7 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws IllegalStateException if the provider is currently open
 	 * @since JWI 2.4.1
 	 */
-	void setComparator(ContentTypeKey contentTypeKey, ILineComparator comparator);
+	void setComparator(@NonNull ContentTypeKey contentTypeKey, @Nullable ILineComparator comparator);
 
 	/**
 	 * Sets pattern attached to content type key, that source files have to
@@ -86,10 +88,10 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 *
 	 * @param contentTypeKey the <code>non-null</code> content type key for which
 	 *                       the matcher is to be set.
-	 * @param pattern        regexpr pattern
+	 * @param pattern        regexp pattern
 	 * @since JWI 2.4.1
 	 */
-	void setSourceMatcher(ContentTypeKey contentTypeKey, String pattern);
+	void setSourceMatcher(@NonNull ContentTypeKey contentTypeKey, @Nullable String pattern);
 
 	/**
 	 * Returns a set containing all the content types this provider looks for at
@@ -102,7 +104,7 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * provider
 	 * @since JWI 2.2.0
 	 */
-	Set<? extends IContentType<?>> getTypes();
+	@NonNull Set<? extends IContentType<?>> getTypes();
 
 	/**
 	 * Returns the first content type, if any, that matches the specified data
@@ -117,19 +119,19 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * part of speech.
 	 * @since JWI 2.3.4
 	 */
-	<T> IContentType<T> resolveContentType(IDataType<T> dt, POS pos);
+	@Nullable <T> IContentType<T> resolveContentType(IDataType<T> dt, POS pos);
 
 	/**
 	 * Returns a data source object for the specified content type, if one is
 	 * available; otherwise returns <code>null</code>.
 	 *
-	 * @param <T>  the content type of the data source
-	 * @param type the content type of the data source to be retrieved
+	 * @param <T>         the content type of the data source
+	 * @param contentType the content type of the data source to be retrieved
 	 * @return the data source for the specified content type, or
 	 * <code>null</code> if this provider has no such data source
 	 * @throws NullPointerException  if the type is <code>null</code>
 	 * @throws ObjectClosedException if the provider is not open when this call is made
 	 * @since JWI 2.0.0
 	 */
-	<T> IDataSource<T> getSource(IContentType<T> type);
+	@Nullable <T> IDataSource<T> getSource(IContentType<T> contentType);
 }

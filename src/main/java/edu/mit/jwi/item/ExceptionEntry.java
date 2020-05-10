@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Default implementation of {@code IExceptionEntry}
  *
@@ -29,8 +32,8 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	private static final long serialVersionUID = 240;
 
 	// immutable instance fields
-	private final POS pos;
-	private final IExceptionEntryID id;
+	@Nullable private final POS pos;
+	@NonNull private final IExceptionEntryID id;
 
 	/**
 	 * Creates a new exception entry for the specified part of speech using the
@@ -41,11 +44,13 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	 * @throws NullPointerException if either argument is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	public ExceptionEntry(IExceptionEntryProxy proxy, POS pos)
+	public ExceptionEntry(IExceptionEntryProxy proxy, @Nullable POS pos)
 	{
 		super(proxy);
 		if (pos == null)
+		{
 			throw new NullPointerException();
+		}
 		this.pos = pos;
 		this.id = new ExceptionEntryID(getSurfaceForm(), pos);
 	}
@@ -60,11 +65,13 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	 * @throws NullPointerException if either argument is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	public ExceptionEntry(String surfaceForm, POS pos, String... rootForms)
+	public ExceptionEntry(String surfaceForm, @Nullable POS pos, String... rootForms)
 	{
 		super(surfaceForm, rootForms);
 		if (pos == null)
+		{
 			throw new NullPointerException();
+		}
 		this.id = new ExceptionEntryID(getSurfaceForm(), pos);
 		this.pos = pos;
 	}
@@ -74,7 +81,7 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	public POS getPOS()
+	@Nullable public POS getPOS()
 	{
 		return pos;
 	}
@@ -84,7 +91,7 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	 *
 	 * @see edu.mit.jwi.item.IItem#getID()
 	 */
-	public IExceptionEntryID getID()
+	@NonNull public IExceptionEntryID getID()
 	{
 		return id;
 	}
@@ -94,8 +101,9 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	 *
 	 * @see edu.mit.jwi.item.ExceptionEntryProxy#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
+		assert pos != null;
 		return super.toString() + "-" + pos.toString();
 	}
 }

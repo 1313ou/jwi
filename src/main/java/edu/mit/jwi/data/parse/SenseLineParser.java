@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data.parse;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.item.ISenseEntry;
 import edu.mit.jwi.item.ISenseKey;
 import edu.mit.jwi.item.SenseEntry;
@@ -44,12 +46,14 @@ public class SenseLineParser implements ILineParser<ISenseEntry>
 	public static SenseLineParser getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new SenseLineParser();
+		}
 		return instance;
 	}
 
 	// instance fields
-	protected final ILineParser<ISenseKey> keyParser;
+	@Nullable protected final ILineParser<ISenseKey> keyParser;
 
 	/**
 	 * This constructor is marked protected so that the class may be
@@ -72,10 +76,12 @@ public class SenseLineParser implements ILineParser<ISenseEntry>
 	 * @throws NullPointerException if the specified key parser is <code>null</code>
 	 * @since JWI 2.2.0
 	 */
-	protected SenseLineParser(ILineParser<ISenseKey> keyParser)
+	protected SenseLineParser(@Nullable ILineParser<ISenseKey> keyParser)
 	{
 		if (keyParser == null)
+		{
 			throw new NullPointerException();
+		}
 		this.keyParser = keyParser;
 	}
 
@@ -84,16 +90,19 @@ public class SenseLineParser implements ILineParser<ISenseEntry>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	public ISenseEntry parseLine(String line)
+	@NonNull public ISenseEntry parseLine(@Nullable String line)
 	{
 		if (line == null)
+		{
 			throw new NullPointerException();
+		}
 
 		try
 		{
 			// get sense key
 			int end = line.indexOf(' ');
 			String keyStr = line.substring(0, end);
+			assert keyParser != null;
 			ISenseKey senseKey = keyParser.parseLine(keyStr);
 
 			// get sense entry
@@ -107,7 +116,7 @@ public class SenseLineParser implements ILineParser<ISenseEntry>
 		}
 	}
 
-	protected static SenseEntry parseSenseEntry(StringTokenizer tokenizer, ISenseKey senseKey)
+	@NonNull protected static SenseEntry parseSenseEntry(@NonNull StringTokenizer tokenizer, ISenseKey senseKey)
 	{
 		// get offset
 		int synsetOffset = Integer.parseInt(tokenizer.nextToken());

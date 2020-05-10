@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.Nullable;
+
 /**
  * A unique identifier sufficient to retrieve a particular word from the Wordnet
  * database. Consists of a synset id, sense number, and lemma.
@@ -26,7 +28,7 @@ public interface IWordID extends IHasPOS, IItemID<IWord>
 	 * @return the synset id for this word; never <code>null</code>
 	 * @since JWI 1.0
 	 */
-	ISynsetID getSynsetID();
+	@Nullable ISynsetID getSynsetID();
 
 	/**
 	 * Returns the word number, which is a number from 1 to 255 that indicates
@@ -51,5 +53,5 @@ public interface IWordID extends IHasPOS, IItemID<IWord>
 	 * <code>null</code> if the lemma has not been specified.
 	 * @since JWI 1.0
 	 */
-	String getLemma();
+	@Nullable String getLemma();
 }

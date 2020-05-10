@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -157,7 +160,7 @@ public class LexFile implements ILexFile
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		return name;
 	}
@@ -179,37 +182,55 @@ public class LexFile implements ILexFile
 	}
 
 	/* (non-Javadoc) @see java.lang.Object#equals(java.lang.Object) */
-	@Override public boolean equals(Object obj)
+	@Override public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (getClass() != obj.getClass())
+		{
 			return false;
+		}
 		final ILexFile other = (ILexFile) obj;
 		if (desc == null)
 		{
 			if (other.getDescription() != null)
+			{
 				return false;
+			}
 		}
 		else if (!desc.equals(other.getDescription()))
+		{
 			return false;
+		}
 		if (name == null)
 		{
 			if (other.getName() != null)
+			{
 				return false;
+			}
 		}
 		else if (!name.equals(other.getName()))
+		{
 			return false;
+		}
 		if (num != other.getNumber())
+		{
 			return false;
+		}
 		if (pos == null)
 		{
 			return other.getPOS() == null;
 		}
 		else
+		{
 			return pos.equals(other.getPOS());
+		}
 	}
 
 	/**
@@ -219,7 +240,7 @@ public class LexFile implements ILexFile
 	 * @return the appropriate deserialized object.
 	 * @since JWI 2.4.0
 	 */
-	protected Object readResolve()
+	@NonNull protected Object readResolve()
 	{
 		LexFile lexFile = getLexicalFile(num);
 		return this.equals(lexFile) ? lexFile : this;
@@ -239,7 +260,9 @@ public class LexFile implements ILexFile
 	{
 		str = str.trim();
 		if (str.length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		return str;
 	}
 
@@ -255,7 +278,9 @@ public class LexFile implements ILexFile
 	public static void checkLexicalFileNumber(int num)
 	{
 		if (isIllegalLexicalFileNumber(num))
+		{
 			throw new IllegalArgumentException("'" + num + " is an illegal lexical file number: Lexical file numbers must be in the closed range [0,99]");
+		}
 	}
 
 	/**
@@ -290,7 +315,9 @@ public class LexFile implements ILexFile
 	{
 		checkLexicalFileNumber(num);
 		if (num < 10)
+		{
 			return lexFileNumStrs[num];
+		}
 		return Integer.toString(num);
 	}
 
@@ -302,8 +329,12 @@ public class LexFile implements ILexFile
 		Field[] fields = LexFile.class.getFields();
 		List<Field> instanceFields = new ArrayList<>();
 		for (Field field : fields)
+		{
 			if (field.getGenericType() == LexFile.class)
+			{
 				instanceFields.add(field);
+			}
+		}
 
 		// backing map
 		Map<Integer, LexFile> hidden = new LinkedHashMap<>(instanceFields.size());
@@ -316,7 +347,9 @@ public class LexFile implements ILexFile
 			{
 				lexFile = (LexFile) field.get(null);
 				if (lexFile != null)
+				{
 					hidden.put(lexFile.getNumber(), lexFile);
+				}
 			}
 			catch (IllegalAccessException e)
 			{
@@ -337,7 +370,7 @@ public class LexFile implements ILexFile
 	 * description declared in this class
 	 * @since JWI 2.1.0
 	 */
-	public static Collection<LexFile> values()
+	@NonNull public static Collection<LexFile> values()
 	{
 		return lexFileMap.values();
 	}
@@ -352,7 +385,7 @@ public class LexFile implements ILexFile
 	 * null if none is found
 	 * @since JWI 2.1.0
 	 */
-	public static LexFile getLexicalFile(int num)
+	@Nullable public static LexFile getLexicalFile(int num)
 	{
 		return lexFileMap.get(num);
 	}

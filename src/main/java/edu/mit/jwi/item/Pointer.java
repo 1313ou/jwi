@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -69,9 +72,9 @@ public class Pointer implements IPointer
 	public static final Pointer IS_ENTAILED = new Pointer("*^", "Is entailed by");
 
 	// final instance fields
-	private final String symbol;
-	private final String name;
-	private final String toString;
+	@NonNull private final String symbol;
+	@NonNull private final String name;
+	@NonNull private final String toString;
 
 	/**
 	 * Constructs a new pointer object with the specified symbol and name.
@@ -82,7 +85,7 @@ public class Pointer implements IPointer
 	 *               whitespace
 	 * @since JWI 2.1.0
 	 */
-	public Pointer(String symbol, String name)
+	public Pointer(String symbol, @NonNull String name)
 	{
 		this.symbol = checkString(symbol);
 		this.name = checkString(name);
@@ -94,7 +97,7 @@ public class Pointer implements IPointer
 	 *
 	 * @see edu.mit.jwi.item.IPointer#getSymbol()
 	 */
-	public String getSymbol()
+	@NonNull public String getSymbol()
 	{
 		return symbol;
 	}
@@ -104,7 +107,7 @@ public class Pointer implements IPointer
 	 *
 	 * @see edu.mit.jwi.item.IPointer#getName()
 	 */
-	public String getName()
+	@NonNull public String getName()
 	{
 		return name;
 	}
@@ -114,7 +117,7 @@ public class Pointer implements IPointer
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		return toString;
 	}
@@ -126,17 +129,21 @@ public class Pointer implements IPointer
 	 * @return the appropriate deserialized object.
 	 * @since JWI 2.4.0
 	 */
-	protected Object readResolve()
+	@Nullable protected Object readResolve()
 	{
 		// check and see if this symbol matches DERIVED_FROM_ADJ (which is
 		// excluded from the pointer map because it is ambiguous)
 		if (DERIVED_FROM_ADJ.getSymbol().equals(symbol) && DERIVED_FROM_ADJ.getName().equals(name))
+		{
 			return DERIVED_FROM_ADJ;
+		}
 
 		// otherwise, try to find a match symbol
 		Pointer pointer = pointerMap.get(symbol);
 		if (pointer != null && pointer.getSymbol().equals(symbol) && pointer.getName().equals(name))
+		{
 			return pointer;
+		}
 
 		// nothing matches, just return the deserialized object
 		return this;
@@ -156,7 +163,9 @@ public class Pointer implements IPointer
 	{
 		str = str.trim();
 		if (str.length() == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		return str;
 	}
 
@@ -170,8 +179,12 @@ public class Pointer implements IPointer
 		Field[] fields = Pointer.class.getFields();
 		List<Field> instanceFields = new ArrayList<>();
 		for (Field field : fields)
+		{
 			if (field.getGenericType() == Pointer.class)
+			{
 				instanceFields.add(field);
+			}
+		}
 
 		// these are our backing collections
 		Set<Pointer> hiddenSet = new LinkedHashSet<>(instanceFields.size());
@@ -184,10 +197,14 @@ public class Pointer implements IPointer
 			{
 				ptr = (Pointer) field.get(null);
 				if (ptr == null)
+				{
 					continue;
+				}
 				hiddenSet.add(ptr);
 				if (ptr != DERIVED_FROM_ADJ)
+				{
 					hiddenMap.put(ptr.getSymbol(), ptr);
+				}
 			}
 			catch (IllegalAccessException e)
 			{
@@ -227,13 +244,17 @@ public class Pointer implements IPointer
 	 * @throws IllegalArgumentException if the symbol does not correspond to a known pointer.
 	 * @since JWI 2.1.0
 	 */
-	public static Pointer getPointerType(String symbol, POS pos)
+	@Nullable public static Pointer getPointerType(@NonNull String symbol, POS pos)
 	{
 		if (pos == POS.ADVERB && symbol.equals(ambiguousSymbol))
+		{
 			return DERIVED_FROM_ADJ;
+		}
 		Pointer pointerType = pointerMap.get(symbol);
 		if (pointerType == null)
+		{
 			throw new IllegalArgumentException("No pointer type corresponding to symbol '" + symbol + "'");
+		}
 		return pointerType;
 	}
 }

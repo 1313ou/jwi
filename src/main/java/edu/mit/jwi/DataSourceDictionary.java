@@ -10,6 +10,8 @@
 
 package edu.mit.jwi;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.*;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.data.parse.ILineParser;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Basic implementation of the {@code IDictionary} interface. A path to the
@@ -31,7 +34,14 @@ import java.util.Iterator;
  */
 public class DataSourceDictionary implements IDataSourceDictionary
 {
-	private final IDataProvider provider;
+	@NonNull private static <T> T requireNonNull(@Nullable T t)
+	{
+		if (t == null)
+			throw new NullPointerException();
+		return t;
+	}
+
+	@Nullable private final IDataProvider provider;
 
 	/**
 	 * Constructs a dictionary with a caller-specified {@code IDataProvider}.
@@ -39,10 +49,12 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 * @param provider data provider
 	 * @throws NullPointerException if the specified data provider is <code>null</code>
 	 */
-	public DataSourceDictionary(IDataProvider provider)
+	public DataSourceDictionary(@Nullable IDataProvider provider)
 	{
 		if (provider == null)
+		{
 			throw new NullPointerException();
+		}
 		this.provider = provider;
 	}
 
@@ -51,7 +63,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDataSourceDictionary#getDataProvider()
 	 */
-	public IDataProvider getDataProvider()
+	@Nullable public IDataProvider getDataProvider()
 	{
 		return provider;
 	}
@@ -61,9 +73,10 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.item.IHasVersion#getVersion()
 	 */
-	public IVersion getVersion()
+	@Nullable public IVersion getVersion()
 	{
 		checkOpen();
+		assert provider != null;
 		return provider.getVersion();
 	}
 
@@ -74,6 +87,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 */
 	public boolean open() throws IOException
 	{
+		assert provider != null;
 		return provider.open();
 	}
 
@@ -84,6 +98,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 */
 	public void close()
 	{
+		assert provider != null;
 		provider.close();
 	}
 
@@ -94,6 +109,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 */
 	public boolean isOpen()
 	{
+		assert provider != null;
 		return provider.isOpen();
 	}
 
@@ -107,7 +123,9 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	protected void checkOpen()
 	{
 		if (!isOpen())
+		{
 			throw new ObjectClosedException();
+		}
 	}
 
 	/*
@@ -115,8 +133,9 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.data.IHasCharset#getCharset()
 	 */
-	public Charset getCharset()
+	@Nullable public Charset getCharset()
 	{
+		assert provider != null;
 		return provider.getCharset();
 	}
 
@@ -127,6 +146,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 */
 	public void setCharset(Charset charset)
 	{
+		assert provider != null;
 		provider.setCharset(charset);
 	}
 
@@ -135,8 +155,9 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.data.IDictionary#setComparator(edu.mit.jwi.data.ContentTypeKey, edu.mit.jwi.data.compare.ILineComparator)
 	 */
-	public void setComparator(ContentTypeKey contentTypeKey, ILineComparator comparator)
+	public void setComparator(@NonNull ContentTypeKey contentTypeKey, ILineComparator comparator)
 	{
+		assert provider != null;
 		provider.setComparator(contentTypeKey, comparator);
 	}
 
@@ -145,8 +166,9 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.data.IDictionary#setSourceMatcher(edu.mit.data ContentTypeKey, java.lang.String)
 	 */
-	public void setSourceMatcher(ContentTypeKey contentTypeKey, String pattern)
+	public void setSourceMatcher(@NonNull ContentTypeKey contentTypeKey, String pattern)
 	{
+		assert provider != null;
 		provider.setSourceMatcher(contentTypeKey, pattern);
 	}
 
@@ -156,7 +178,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 * @see edu.mit.jwi.IDictionary#getIndexWord(java.lang.String,
 	 *      edu.mit.jwi.item.POS)
 	 */
-	public IIndexWord getIndexWord(String lemma, POS pos)
+	@Nullable public IIndexWord getIndexWord(String lemma, POS pos)
 	{
 		checkOpen();
 		return getIndexWord(new IndexWordID(lemma, pos));
@@ -167,15 +189,23 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getIndexWord(edu.mit.jwi.item.IIndexWordID)
 	 */
-	public IIndexWord getIndexWord(IIndexWordID id)
+	@Nullable public IIndexWord getIndexWord(@NonNull IIndexWordID id)
 	{
 		checkOpen();
+		assert provider != null;
 		IContentType<IIndexWord> content = provider.resolveContentType(DataType.INDEX, id.getPOS());
 		IDataSource<?> file = provider.getSource(content);
+		assert file != null;
 		String line = file.getLine(id.getLemma());
 		if (line == null)
+		{
 			return null;
-		return content.getDataType().getParser().parseLine(line);
+		}
+		assert content != null;
+		IDataType<IIndexWord> dataType = content.getDataType();
+		ILineParser<IIndexWord> parser = dataType.getParser();
+		assert parser != null;
+		return parser.parseLine(line);
 	}
 
 	/*
@@ -183,13 +213,16 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getWord(edu.mit.jwi.item.IWordID)
 	 */
-	public IWord getWord(IWordID id)
+	@Nullable public IWord getWord(@NonNull IWordID id)
 	{
 		checkOpen();
-
-		ISynset synset = getSynset(id.getSynsetID());
+		ISynsetID sid = id.getSynsetID();
+		assert sid != null;
+		ISynset synset = getSynset(sid);
 		if (synset == null)
+		{
 			return null;
+		}
 
 		// One or the other of the WordID number or lemma may not exist,
 		// depending on whence the word id came, so we have to check 
@@ -202,8 +235,12 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		{
 			for (IWord word : synset.getWords())
 			{
-				if (word.getLemma().equalsIgnoreCase(id.getLemma()))
+				String lemma = word.getLemma();
+				assert lemma != null;
+				if (lemma.equalsIgnoreCase(id.getLemma()))
+				{
 					return word;
+				}
 			}
 			return null;
 		}
@@ -218,7 +255,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getWord(edu.mit.jwi.item.ISenseKey)
 	 */
-	public IWord getWord(ISenseKey key)
+	@Nullable public IWord getWord(@NonNull ISenseKey key)
 	{
 		checkOpen();
 
@@ -229,9 +266,15 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		{
 			ISynset synset = getSynset(new SynsetID(entry.getOffset(), entry.getPOS()));
 			if (synset != null)
+			{
 				for (IWord synonym : synset.getWords())
+				{
 					if (synonym.getSenseKey().equals(key))
+					{
 						return synonym;
+					}
+				}
+			}
 		}
 
 		IWord word = null;
@@ -250,15 +293,25 @@ public class DataSourceDictionary implements IDataSourceDictionary
 			{
 				possibleWord = getWord(wordID);
 				if (possibleWord != null)
-					for (IWord synonym : possibleWord.getSynset().getWords())
+				{
+					ISynset synset = possibleWord.getSynset();
+					assert synset != null;
+					List<IWord> words = synset.getWords();
+					assert words != null;
+					for (IWord synonym : words)
 					{
 						if (synonym.getSenseKey().equals(key))
 						{
 							word = synonym;
-							if (synonym.getLemma().equals(key.getLemma()))
+							String lemma = synonym.getLemma();
+							assert lemma != null;
+							if (lemma.equals(key.getLemma()))
+							{
 								return synonym;
+							}
 						}
 					}
+				}
 			}
 		}
 		return word;
@@ -269,15 +322,23 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntry(edu.mit.jwi.item.ISenseKey)
 	 */
-	public ISenseEntry getSenseEntry(ISenseKey key)
+	@Nullable public ISenseEntry getSenseEntry(@NonNull ISenseKey key)
 	{
 		checkOpen();
+		assert provider != null;
 		IContentType<ISenseEntry> content = provider.resolveContentType(DataType.SENSE, null);
 		IDataSource<ISenseEntry> file = provider.getSource(content);
+		assert file != null;
 		String line = file.getLine(key.toString());
 		if (line == null)
+		{
 			return null;
-		return content.getDataType().getParser().parseLine(line);
+		}
+		assert content != null;
+		IDataType<ISenseEntry> dataType = content.getDataType();
+		ILineParser<ISenseEntry> parser = dataType.getParser();
+		assert parser != null;
+		return parser.parseLine(line);
 	}
 
 	/*
@@ -285,15 +346,23 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntries(edu.mit.jwi.item.ISenseKey)
 	 */
-	public ISenseEntry[] getSenseEntries(ISenseKey key)
+	@Nullable public ISenseEntry[] getSenseEntries(@NonNull ISenseKey key)
 	{
 		checkOpen();
+		assert provider != null;
 		IContentType<ISenseEntry[]> content = provider.resolveContentType(DataType.SENSES, null);
 		IDataSource<ISenseEntry[]> file = provider.getSource(content);
+		assert file != null;
 		String line = file.getLine(key.toString());
 		if (line == null)
+		{
 			return null;
-		return content.getDataType().getParser().parseLine(line);
+		}
+		assert content != null;
+		IDataType<ISenseEntry[]> dataType = content.getDataType();
+		ILineParser<ISenseEntry[]> parser = dataType.getParser();
+		assert parser != null;
+		return parser.parseLine(line);
 	}
 
 	/*
@@ -301,18 +370,28 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.wordnet.core.dict.IDictionary#getSynset(edu.mit.wordnet.core.data.ISynsetID)
 	 */
-	public ISynset getSynset(ISynsetID id)
+	@Nullable public ISynset getSynset(@NonNull ISynsetID id)
 	{
 		checkOpen();
+		assert provider != null;
 		IContentType<ISynset> content = provider.resolveContentType(DataType.DATA, id.getPOS());
 		IDataSource<ISynset> file = provider.getSource(content);
 		String zeroFilledOffset = Synset.zeroFillOffset(id.getOffset());
+		assert file != null;
 		String line = file.getLine(zeroFilledOffset);
 		if (line == null)
+		{
 			return null;
-		ISynset result = content.getDataType().getParser().parseLine(line);
+		}
+		assert content != null;
+		IDataType<ISynset> dataType = content.getDataType();
+		ILineParser<ISynset> parser = dataType.getParser();
+		assert parser != null;
+		ISynset result = parser.parseLine(line);
 		if (result != null)
+		{
 			setHeadWord(result);
+		}
 		return result;
 	}
 
@@ -324,19 +403,24 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @param synset synset
 	 */
-	protected void setHeadWord(ISynset synset)
+	protected void setHeadWord(@NonNull ISynset synset)
 	{
 		// head words are only needed for adjective satellites
 		if (!synset.isAdjectiveSatellite())
+		{
 			return;
+		}
 
 		// go find the head word
 		ISynset headSynset;
 		IWord headWord = null;
-		for (ISynsetID simID : synset.getRelatedSynsets(Pointer.SIMILAR_TO))
+		List<ISynsetID> related = synset.getRelatedSynsets(Pointer.SIMILAR_TO);
+		assert related != null;
+		for (ISynsetID simID : related)
 		{
 			headSynset = getSynset(simID);
 			// assume first 'similar' adjective head is the right one
+			assert headSynset != null;
 			if (headSynset.isAdjectiveHead())
 			{
 				headWord = headSynset.getWords().get(0);
@@ -344,7 +428,9 @@ public class DataSourceDictionary implements IDataSourceDictionary
 			}
 		}
 		if (headWord == null)
+		{
 			return;
+		}
 
 		// set head word, if we found it
 		String headLemma = headWord.getLemma();
@@ -354,13 +440,17 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		IVersion ver = getVersion();
 		boolean isVer16 = (ver != null) && (ver.getMajorVersion() == 1 && ver.getMinorVersion() == 6);
 		if (isVer16 && headWord.getAdjectiveMarker() != null)
+		{
 			headLemma += headWord.getAdjectiveMarker().getSymbol();
+		}
 
 		// set the head word for each word
 		for (IWord word : synset.getWords())
 		{
 			if (word.getSenseKey().needsHeadSet())
+			{
 				word.getSenseKey().setHead(headLemma, headWord.getLexicalID());
+			}
 		}
 	}
 
@@ -370,7 +460,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntry(java.lang.String,
 	 *      edu.mit.jwi.item.POS)
 	 */
-	public IExceptionEntry getExceptionEntry(String surfaceForm, POS pos)
+	@Nullable public IExceptionEntry getExceptionEntry(String surfaceForm, POS pos)
 	{
 		return getExceptionEntry(new ExceptionEntryID(surfaceForm, pos));
 	}
@@ -380,20 +470,31 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntry(edu.mit.jwi.item.IExceptionEntryID)
 	 */
-	public IExceptionEntry getExceptionEntry(IExceptionEntryID id)
+	@Nullable public IExceptionEntry getExceptionEntry(@NonNull IExceptionEntryID id)
 	{
 		checkOpen();
+		assert provider != null;
 		IContentType<IExceptionEntryProxy> content = provider.resolveContentType(DataType.EXCEPTION, id.getPOS());
 		IDataSource<IExceptionEntryProxy> file = provider.getSource(content);
 		// fix for bug 010
 		if (file == null)
+		{
 			return null;
+		}
 		String line = file.getLine(id.getSurfaceForm());
 		if (line == null)
+		{
 			return null;
-		IExceptionEntryProxy proxy = content.getDataType().getParser().parseLine(line);
+		}
+		assert content != null;
+		IDataType<IExceptionEntryProxy> dataType = content.getDataType();
+		ILineParser<IExceptionEntryProxy> parser = dataType.getParser();
+		assert parser != null;
+		IExceptionEntryProxy proxy = parser.parseLine(line);
 		if (proxy == null)
+		{
 			return null;
+		}
 		return new ExceptionEntry(proxy, id.getPOS());
 	}
 
@@ -402,7 +503,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getIndexWordIterator(edu.mit.jwi.item.POS)
 	 */
-	public Iterator<IIndexWord> getIndexWordIterator(POS pos)
+	@NonNull public Iterator<IIndexWord> getIndexWordIterator(POS pos)
 	{
 		checkOpen();
 		return new IndexFileIterator(pos);
@@ -413,7 +514,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSynsetIterator(edu.mit.jwi.item.POS)
 	 */
-	public Iterator<ISynset> getSynsetIterator(POS pos)
+	@NonNull public Iterator<ISynset> getSynsetIterator(POS pos)
 	{
 		checkOpen();
 		return new DataFileIterator(pos);
@@ -424,7 +525,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntryIterator(edu.mit.jwi.item.POS)
 	 */
-	public Iterator<IExceptionEntry> getExceptionEntryIterator(POS pos)
+	@NonNull public Iterator<IExceptionEntry> getExceptionEntryIterator(POS pos)
 	{
 		checkOpen();
 		return new ExceptionFileIterator(pos);
@@ -435,7 +536,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntryIterator()
 	 */
-	public Iterator<ISenseEntry> getSenseEntryIterator()
+	@NonNull public Iterator<ISenseEntry> getSenseEntryIterator()
 	{
 		checkOpen();
 		return new SenseEntryFileIterator();
@@ -446,7 +547,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntriesIterator()
 	 */
-	public Iterator<ISenseEntry[]> getSenseEntriesIterator()
+	@NonNull public Iterator<ISenseEntry[]> getSenseEntriesIterator()
 	{
 		checkOpen();
 		return new SenseEntriesFileIterator();
@@ -457,20 +558,22 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 */
 	public abstract class FileIterator<T, N> implements Iterator<N>, IHasPOS
 	{
-		protected final IDataSource<T> fFile;
+		@Nullable protected final IDataSource<T> fFile;
 		protected final Iterator<String> iterator;
-		protected final ILineParser<T> fParser;
+		@Nullable protected final ILineParser<T> fParser;
 		protected String currentLine;
 
-		public FileIterator(IContentType<T> content)
+		public FileIterator(@NonNull IContentType<T> content)
 		{
 			this(content, null);
 		}
 
-		public FileIterator(IContentType<T> content, String startKey)
+		public FileIterator(@NonNull IContentType<T> content, String startKey)
 		{
+			assert provider != null;
 			this.fFile = provider.getSource(content);
-			this.fParser = content.getDataType().getParser();
+			IDataType<T> dataType = content.getDataType();
+			this.fParser = dataType.getParser();
 			if (fFile == null)
 			{
 				// Fix for Bug018
@@ -498,9 +601,12 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 *
 		 * @see edu.mit.wordnet.data.IHasPartOfSpeech#getPartOfSpeech()
 		 */
-		public POS getPOS()
+		@Nullable public POS getPOS()
 		{
-			return fFile.getContentType().getPOS();
+			assert fFile != null;
+			IContentType<T> contentType = fFile.getContentType();
+			assert contentType != null;
+			return contentType.getPOS();
 		}
 
 		/*
@@ -518,7 +624,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 *
 		 * @see java.util.Iterator#next()
 		 */
-		public N next()
+		@Nullable public N next()
 		{
 			currentLine = iterator.next();
 			return parseLine(currentLine);
@@ -540,7 +646,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 * @param line line
 		 * @return parsed object
 		 */
-		public abstract N parseLine(String line);
+		@Nullable public abstract N parseLine(String line);
 	}
 
 	/**
@@ -558,7 +664,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 * @param content content type
 		 * @since JWI 2.1.5
 		 */
-		public FileIterator2(IContentType<T> content)
+		public FileIterator2(@NonNull IContentType<T> content)
 		{
 			super(content);
 		}
@@ -570,7 +676,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 * @param startKey start key
 		 * @since JWI 2.1.5
 		 */
-		public FileIterator2(IContentType<T> content, String startKey)
+		public FileIterator2(@NonNull IContentType<T> content, String startKey)
 		{
 			super(content, startKey);
 		}
@@ -588,7 +694,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 
 		public IndexFileIterator(POS pos, String pattern)
 		{
-			super(provider.resolveContentType(DataType.INDEX, pos), pattern);
+			super(requireNonNull(requireNonNull(provider).resolveContentType(DataType.INDEX, pos)), pattern);
 		}
 
 		/*
@@ -598,6 +704,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 */
 		public IIndexWord parseLine(String line)
 		{
+			assert fParser != null;
 			return fParser.parseLine(line);
 		}
 	}
@@ -609,7 +716,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	{
 		public SenseEntryFileIterator()
 		{
-			super(provider.resolveContentType(DataType.SENSE, null));
+			super(requireNonNull(requireNonNull(provider).resolveContentType(DataType.SENSE, null)));
 		}
 
 		/*
@@ -619,6 +726,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 */
 		public ISenseEntry parseLine(String line)
 		{
+			assert fParser != null;
 			return fParser.parseLine(line);
 		}
 	}
@@ -630,7 +738,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	{
 		public SenseEntriesFileIterator()
 		{
-			super(provider.resolveContentType(DataType.SENSES, null));
+			super(requireNonNull(requireNonNull(provider).resolveContentType(DataType.SENSES, null)));
 		}
 
 		/*
@@ -640,6 +748,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 */
 		public ISenseEntry[] parseLine(String line)
 		{
+			assert fParser != null;
 			return fParser.parseLine(line);
 		}
 	}
@@ -651,7 +760,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	{
 		public DataFileIterator(POS pos)
 		{
-			super(provider.resolveContentType(DataType.DATA, pos));
+			super(requireNonNull(requireNonNull(provider).resolveContentType(DataType.DATA, pos)));
 		}
 
 		/*
@@ -663,12 +772,15 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		{
 			if (getPOS() == POS.ADJECTIVE)
 			{
+				assert fParser != null;
 				ISynset synset = fParser.parseLine(line);
+				assert synset != null;
 				setHeadWord(synset);
 				return synset;
 			}
 			else
 			{
+				assert fParser != null;
 				return fParser.parseLine(line);
 			}
 		}
@@ -681,7 +793,7 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	{
 		public ExceptionFileIterator(POS pos)
 		{
-			super(provider.resolveContentType(DataType.EXCEPTION, pos));
+			super(requireNonNull(requireNonNull(provider).resolveContentType(DataType.EXCEPTION, pos)));
 		}
 
 		/*
@@ -689,8 +801,9 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 *
 		 * @see edu.mit.wordnet.dict.Dictionary.FileIterator#parseLine(java.lang.String)
 		 */
-		public IExceptionEntry parseLine(String line)
+		@Nullable public IExceptionEntry parseLine(String line)
 		{
+			assert fParser != null;
 			IExceptionEntryProxy proxy = fParser.parseLine(line);
 			return (proxy == null) ? null : new ExceptionEntry(proxy, getPOS());
 		}

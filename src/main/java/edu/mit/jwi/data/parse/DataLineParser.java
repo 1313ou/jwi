@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data.parse;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.item.*;
 import edu.mit.jwi.item.Synset.IWordBuilder;
 import edu.mit.jwi.item.Synset.WordBuilder;
@@ -47,7 +49,9 @@ public class DataLineParser implements ILineParser<ISynset>
 	public static DataLineParser getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new DataLineParser();
+		}
 		return instance;
 	}
 
@@ -67,10 +71,12 @@ public class DataLineParser implements ILineParser<ISynset>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	public ISynset parseLine(String line)
+	@NonNull public ISynset parseLine(@Nullable String line)
 	{
 		if (line == null)
+		{
 			throw new NullPointerException();
+		}
 
 		try
 		{
@@ -118,14 +124,17 @@ public class DataLineParser implements ILineParser<ISynset>
 				// if it is an adjective, it may be followed by a marker
 				marker = null;
 				if (synset_pos == POS.ADJECTIVE)
+				{
 					for (AdjMarker adjMarker : AdjMarker.values())
 					{
+						assert adjMarker.getSymbol() != null;
 						if (lemma.endsWith(adjMarker.getSymbol()))
 						{
 							marker = adjMarker;
 							lemma = lemma.substring(0, lemma.length() - adjMarker.getSymbol().length());
 						}
 					}
+				}
 
 				// parse lex_id
 				lexID = Integer.parseInt(tokenizer.nextToken(), 16);
@@ -150,6 +159,7 @@ public class DataLineParser implements ILineParser<ISynset>
 			{
 				// get pointer symbol
 				pointer_type = resolvePointer(tokenizer.nextToken(), synset_pos);
+				assert pointer_type != null;
 
 				// get synset target offset
 				target_offset = Integer.parseInt(tokenizer.nextToken());
@@ -166,7 +176,9 @@ public class DataLineParser implements ILineParser<ISynset>
 				if (source_target_num == 0)
 				{
 					if (synsetPointerMap == null)
+					{
 						synsetPointerMap = new HashMap<>();
+					}
 					pointerList = synsetPointerMap.computeIfAbsent(pointer_type, k -> new ArrayList<>());
 					pointerList.add(target_synset_id);
 				}
@@ -182,8 +194,12 @@ public class DataLineParser implements ILineParser<ISynset>
 
 			// trim pointer lists
 			if (synsetPointerMap != null)
+			{
 				for (ArrayList<ISynsetID> list : synsetPointerMap.values())
+				{
 					list.trimToSize();
+				}
+			}
 
 			// parse verb frames
 			// do not make the field compulsory for verbs with a '00' when no frame is present
@@ -205,11 +221,15 @@ public class DataLineParser implements ILineParser<ISynset>
 						// Get word number
 						word_num = Integer.parseInt(tokenizer.nextToken(), 16);
 						if (word_num > 0)
+						{
 							wordProxies[word_num - 1].addVerbFrame(frame);
+						}
 						else
 						{
 							for (IWordBuilder proxy : wordProxies)
+							{
 								proxy.addVerbFrame(frame);
+							}
 						}
 					}
 				}
@@ -219,13 +239,15 @@ public class DataLineParser implements ILineParser<ISynset>
 			String gloss = "";
 			int index = line.indexOf('|');
 			if (index > 0)
+			{
 				gloss = line.substring(index + 2).trim();
+			}
 
 			// create synset and words
 			List<IWordBuilder> words = Arrays.asList(wordProxies);
 			return new Synset(synsetID, lexFile, isAdjSat, isAdjHead, gloss, words, synsetPointerMap);
 		}
-		catch (NumberFormatException | NoSuchElementException e)
+		catch (@NonNull NumberFormatException | NoSuchElementException e)
 		{
 			throw new MisformattedLineException(line, e);
 		}
@@ -244,7 +266,7 @@ public class DataLineParser implements ILineParser<ISynset>
 	 * <code>null</code> if there is none
 	 * @since JWI 2.1.0
 	 */
-	protected IVerbFrame resolveVerbFrame(int frameNum)
+	@Nullable protected IVerbFrame resolveVerbFrame(int frameNum)
 	{
 		return VerbFrame.getFrame(frameNum);
 	}
@@ -264,11 +286,13 @@ public class DataLineParser implements ILineParser<ISynset>
 	 * @return the lexical file corresponding to the specified frame number
 	 * @since JWI 2.1.0
 	 */
-	protected ILexFile resolveLexicalFile(int lexFileNum)
+	@Nullable protected ILexFile resolveLexicalFile(int lexFileNum)
 	{
 		ILexFile lexFile = LexFile.getLexicalFile(lexFileNum);
 		if (lexFile == null)
+		{
 			lexFile = UnknownLexFile.getUnknownLexicalFile(lexFileNum);
+		}
 		return lexFile;
 	}
 
@@ -290,7 +314,7 @@ public class DataLineParser implements ILineParser<ISynset>
 	 *                                  correspond to a known pointer
 	 * @since JWI 2.1.0
 	 */
-	protected IPointer resolvePointer(String symbol, POS pos)
+	@Nullable protected IPointer resolvePointer(@NonNull String symbol, POS pos)
 	{
 		return Pointer.getPointerType(symbol, pos);
 	}

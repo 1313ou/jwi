@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +31,7 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return the non-<code>null</code>, non-empty root form of this word
 	 * @since JWI 1.0
 	 */
-	String getLemma();
+	@Nullable String getLemma();
 
 	/**
 	 * Returns the synset uniquely identified by this word. The returned synset
@@ -37,7 +40,7 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return the non-<code>null</code> synset identified by this word.
 	 * @since JWI 2.1.0
 	 */
-	ISynset getSynset();
+	@Nullable ISynset getSynset();
 
 	/**
 	 * Returns the sense key for this word. Will never return <code>null</code>;
@@ -50,7 +53,7 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @see ISenseKey#setHead(String, int)
 	 * @since JWI 2.1.0
 	 */
-	ISenseKey getSenseKey();
+	@NonNull ISenseKey getSenseKey();
 
 	/**
 	 * A integer in the closed range [0,15] that, when appended onto lemma,
@@ -92,7 +95,7 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * list if none.
 	 * @since JWI 2.0.0
 	 */
-	List<IWordID> getRelatedWords(IPointer ptr);
+	@Nullable List<IWordID> getRelatedWords(IPointer ptr);
 
 	/**
 	 * Returns an immutable list of all word ids related to this word by
@@ -124,5 +127,5 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return the adjective marker for this word, or <code>null</code> if none.
 	 * @since JWI 2.1.0
 	 */
-	AdjMarker getAdjectiveMarker();
+	@Nullable AdjMarker getAdjectiveMarker();
 }

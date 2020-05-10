@@ -10,6 +10,9 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.*;
 
 /**
@@ -31,7 +34,7 @@ public class IndexWord implements IIndexWord
 	private static final long serialVersionUID = 240;
 
 	// immutable instance fields
-	private final IIndexWordID id;
+	@Nullable private final IIndexWordID id;
 	private final int tagSenseCount;
 	private final Set<IPointer> pointers;
 	private final List<IWordID> wordIDs;
@@ -105,17 +108,27 @@ public class IndexWord implements IIndexWord
 	 *                                  empty
 	 * @since JWI 2.3.0
 	 */
-	public IndexWord(IIndexWordID id, int tagSenseCnt, IPointer[] ptrs, IWordID... words)
+	public IndexWord(@Nullable IIndexWordID id, int tagSenseCnt, @Nullable IPointer[] ptrs, @NonNull IWordID... words)
 	{
 		if (id == null)
+		{
 			throw new NullPointerException();
+		}
 		if (tagSenseCnt < 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		if (words.length == 0)
+		{
 			throw new IllegalArgumentException();
+		}
 		for (IWordID wid : words)
+		{
 			if (wid == null)
+			{
 				throw new NullPointerException();
+			}
+		}
 
 		// do pointers as of v2.3.0
 		Set<IPointer> pointers;
@@ -127,6 +140,7 @@ public class IndexWord implements IIndexWord
 		{
 			pointers = new HashSet<>(ptrs.length);
 			for (IPointer p : ptrs)
+			{
 				if (p == null)
 				{
 					throw new NullPointerException();
@@ -135,6 +149,7 @@ public class IndexWord implements IIndexWord
 				{
 					pointers.add(p);
 				}
+			}
 		}
 
 		this.id = id;
@@ -150,6 +165,7 @@ public class IndexWord implements IIndexWord
 	 */
 	public String getLemma()
 	{
+		assert id != null;
 		return id.getLemma();
 	}
 
@@ -188,7 +204,7 @@ public class IndexWord implements IIndexWord
 	 *
 	 * @see edu.mit.jwi.item.IItem#getID()
 	 */
-	public IIndexWordID getID()
+	@Nullable public IIndexWordID getID()
 	{
 		return id;
 	}
@@ -198,8 +214,9 @@ public class IndexWord implements IIndexWord
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	public POS getPOS()
+	@Nullable public POS getPOS()
 	{
+		assert id != null;
 		return id.getPOS();
 	}
 
@@ -208,10 +225,11 @@ public class IndexWord implements IIndexWord
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString()
+	@NonNull public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append('[');
+		assert id != null;
 		sb.append(id.getLemma());
 		sb.append(" (");
 		sb.append(id.getPOS());
@@ -220,7 +238,9 @@ public class IndexWord implements IIndexWord
 		{
 			sb.append(i.next().toString());
 			if (i.hasNext())
+			{
 				sb.append(", ");
+			}
 		}
 		sb.append(']');
 		return sb.toString();
@@ -235,6 +255,7 @@ public class IndexWord implements IIndexWord
 	{
 		final int prime = 31;
 		int result = 1;
+		assert id != null;
 		result = prime * result + id.hashCode();
 		result = prime * result + tagSenseCount;
 		result = prime * result + wordIDs.hashCode();
@@ -247,21 +268,34 @@ public class IndexWord implements IIndexWord
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object obj)
+	public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
+		{
 			return true;
+		}
 		if (obj == null)
+		{
 			return false;
+		}
 		if (!(obj instanceof IIndexWord))
+		{
 			return false;
+		}
 		final IIndexWord other = (IndexWord) obj;
+		assert id != null;
 		if (!id.equals(other.getID()))
+		{
 			return false;
+		}
 		if (tagSenseCount != other.getTagSenseCount())
+		{
 			return false;
+		}
 		if (!wordIDs.equals(other.getWordIDs()))
+		{
 			return false;
+		}
 		return pointers.equals(other.getPointers());
 	}
 }

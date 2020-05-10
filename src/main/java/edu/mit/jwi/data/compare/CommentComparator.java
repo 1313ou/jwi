@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data.compare;
 
+import androidx.annotation.NonNull;
+
 import java.util.Comparator;
 
 /**
@@ -45,7 +47,9 @@ public class CommentComparator implements Comparator<String>, ICommentDetector
 	public static CommentComparator getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new CommentComparator();
+		}
 		return instance;
 	}
 
@@ -73,17 +77,25 @@ public class CommentComparator implements Comparator<String>, ICommentDetector
 		int idx1 = s1.indexOf(' ');
 		int idx2 = s2.indexOf(' ');
 		if (idx1 == -1)
+		{
 			idx1 = s1.length();
+		}
 		if (idx2 == -1)
+		{
 			idx2 = s2.length();
+		}
 
 		int num1 = Integer.parseInt(s1.substring(0, idx1));
 		int num2 = Integer.parseInt(s2.substring(0, idx2));
 
 		if (num1 < num2)
+		{
 			return -1;
+		}
 		else if (num1 > num2)
+		{
 			return 1;
+		}
 		return 0;
 	}
 
@@ -92,7 +104,7 @@ public class CommentComparator implements Comparator<String>, ICommentDetector
 	 *
 	 * @see edu.mit.jwi.data.compare.ICommentDetector#isCommentLine(java.lang.String)
 	 */
-	public boolean isCommentLine(String line)
+	public boolean isCommentLine(@NonNull String line)
 	{
 		return line.length() >= 2 && line.charAt(0) == ' ' && line.charAt(1) == ' ';
 	}

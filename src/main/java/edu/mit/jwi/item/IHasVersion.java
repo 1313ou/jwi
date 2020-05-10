@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.Nullable;
+
 /**
  * An object that potentially has an associated version.
  *
@@ -27,5 +29,5 @@ public interface IHasVersion
 	 * @return The associated version, or <code>null</code> if none.
 	 * @since JWI 2.1.0
 	 */
-	IVersion getVersion();
+	@Nullable IVersion getVersion();
 }

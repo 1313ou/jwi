@@ -1,5 +1,7 @@
 package edu.mit.jwi.data.compare;
 
+import androidx.annotation.NonNull;
+
 public class Comparators
 {
 	/**
@@ -9,7 +11,7 @@ public class Comparators
 	{
 		private static final CaseSensitiveIndexLineComparator INSTANCE = new CaseSensitiveIndexLineComparator();
 
-		public static CaseSensitiveIndexLineComparator getInstance()
+		@NonNull public static CaseSensitiveIndexLineComparator getInstance()
 		{
 			return INSTANCE;
 		}
@@ -19,7 +21,7 @@ public class Comparators
 			super(CommentComparator.getInstance());
 		}
 
-		@Override protected int compareLemmas(String lemma1, String lemma2)
+		@Override protected int compareLemmas(@NonNull String lemma1, @NonNull String lemma2)
 		{
 			return lemma1.compareTo(lemma2);
 		}
@@ -29,7 +31,7 @@ public class Comparators
 	{
 		private static final CaseSensitiveSenseKeyLineComparator INSTANCE = new CaseSensitiveSenseKeyLineComparator();
 
-		public static CaseSensitiveSenseKeyLineComparator getInstance()
+		@NonNull public static CaseSensitiveSenseKeyLineComparator getInstance()
 		{
 			return INSTANCE;
 		}
@@ -39,7 +41,7 @@ public class Comparators
 			super();
 		}
 
-		@Override protected int compareSenseKeys(String senseKey1, String senseKey2)
+		@Override protected int compareSenseKeys(@NonNull String senseKey1, @NonNull String senseKey2)
 		{
 			return senseKey1.compareTo(senseKey2);
 		}
@@ -53,7 +55,7 @@ public class Comparators
 	{
 		private static final LexicographicOrderSenseKeyLineComparator INSTANCE = new LexicographicOrderSenseKeyLineComparator();
 
-		public static LexicographicOrderSenseKeyLineComparator getInstance()
+		@NonNull public static LexicographicOrderSenseKeyLineComparator getInstance()
 		{
 			return INSTANCE;
 		}
@@ -63,11 +65,13 @@ public class Comparators
 			super();
 		}
 
-		@Override protected int compareSenseKeys(String senseKey1, String senseKey2)
+		@Override protected int compareSenseKeys(@NonNull String senseKey1, @NonNull String senseKey2)
 		{
 			int c = senseKey1.compareToIgnoreCase(senseKey2);
 			if (c != 0)
+			{
 				return c;
+			}
 			return -senseKey1.compareTo(senseKey2);
 		}
 	}

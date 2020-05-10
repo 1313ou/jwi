@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.item;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -50,5 +52,5 @@ public interface IVerbFrame extends Serializable
 	 * @throws NullPointerException if the specified string is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	String instantiateTemplate(String verb);
+	@NonNull String instantiateTemplate(String verb);
 }

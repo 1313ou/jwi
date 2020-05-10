@@ -10,6 +10,7 @@
 
 package edu.mit.jwi;
 
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.IHasCharset;
 import edu.mit.jwi.data.IHasLifecycle;
@@ -40,7 +41,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 *                decoding files.
 	 * @since JWI 2.3.4
 	 */
-	void setCharset(Charset charset);
+	void setCharset(@Nullable Charset charset);
 
 	/**
 	 * Sets the comparator associated with this content type in this dictionary.
@@ -53,7 +54,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws IllegalStateException if the provider is currently open
 	 * @since JWI 2.4.1
 	 */
-	void setComparator(ContentTypeKey contentTypeKey, ILineComparator comparator);
+	void setComparator(ContentTypeKey contentTypeKey, @Nullable ILineComparator comparator);
 
 	/**
 	 * Sets pattern attached to content type key, that source files have to
@@ -63,10 +64,10 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 *
 	 * @param contentTypeKey the <code>non-null</code> content type key for which
 	 *                       the matcher is to be set.
-	 * @param pattern        regexpr pattern
+	 * @param pattern        regexp pattern
 	 * @since JWI 2.4.1
 	 */
-	void setSourceMatcher(ContentTypeKey contentTypeKey, String pattern);
+	void setSourceMatcher(ContentTypeKey contentTypeKey, @Nullable String pattern);
 
 	/**
 	 * This method is identical to <code>getIndexWord(IIndexWordID)</code> and
@@ -81,7 +82,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws IllegalArgumentException if the specified lemma is empty or all whitespace
 	 * @since JWI 1.0
 	 */
-	IIndexWord getIndexWord(String lemma, POS pos);
+	@Nullable IIndexWord getIndexWord(String lemma, POS pos);
 
 	/**
 	 * Retrieves the specified index word object from the database. If the
@@ -102,7 +103,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws NullPointerException if the argument is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	IIndexWord getIndexWord(IIndexWordID id);
+	@Nullable IIndexWord getIndexWord(IIndexWordID id);
 
 	/**
 	 * Returns an iterator that will iterate over all index words of the
@@ -126,7 +127,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws NullPointerException if the argument is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	IWord getWord(IWordID id);
+	@Nullable IWord getWord(IWordID id);
 
 	/**
 	 * Retrieves the word with the specified sense key from the database. If the
@@ -138,7 +139,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws NullPointerException if the argument is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	IWord getWord(ISenseKey key);
+	@Nullable IWord getWord(ISenseKey key);
 
 	/**
 	 * Retrieves the synset with the specified id from the database. If the
@@ -150,7 +151,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws NullPointerException if the argument is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	ISynset getSynset(ISynsetID id);
+	@Nullable ISynset getSynset(ISynsetID id);
 
 	/**
 	 * Returns an iterator that will iterate over all synsets of the specified
@@ -176,7 +177,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws NullPointerException if the argument is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	ISenseEntry getSenseEntry(ISenseKey key);
+	@Nullable ISenseEntry getSenseEntry(ISenseKey key);
 
 	/**
 	 * Returns an iterator that will iterate over all sense entries in the
@@ -199,7 +200,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws NullPointerException if the argument is <code>null</code>
 	 * @since JWI 2.4.1
 	 */
-	ISenseEntry[] getSenseEntries(ISenseKey key);
+	@Nullable ISenseEntry[] getSenseEntries(ISenseKey key);
 
 	/**
 	 * Returns an iterator that will iterate over all sense entry pools in the
@@ -223,7 +224,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws IllegalArgumentException if the specified surface form is empty or all whitespace
 	 * @since JWI 1.0
 	 */
-	IExceptionEntry getExceptionEntry(String surfaceForm, POS pos);
+	@Nullable IExceptionEntry getExceptionEntry(String surfaceForm, POS pos);
 
 	/**
 	 * Retrieves the exception entry for the specified id from the database. If
@@ -234,7 +235,7 @@ public interface IDictionary extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @return the exception entry for the specified id
 	 * @since JWI 1.1
 	 */
-	IExceptionEntry getExceptionEntry(IExceptionEntryID id);
+	@Nullable IExceptionEntry getExceptionEntry(IExceptionEntryID id);
 
 	/**
 	 * Returns an iterator that will iterate over all exception entries of the

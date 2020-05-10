@@ -10,6 +10,8 @@
 
 package edu.mit.jwi;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.FileProvider;
 import edu.mit.jwi.data.ILoadPolicy;
@@ -47,6 +49,13 @@ import java.util.zip.GZIPOutputStream;
  */
 public class RAMDictionary implements IRAMDictionary
 {
+	@NonNull private static <T> T requireNonNull(@Nullable T t)
+	{
+		if (t == null)
+			throw new NullPointerException();
+		return t;
+	}
+
 	/**
 	 * The default load policy of a {@link RAMDictionary} is to load data in the
 	 * background when opened.
@@ -56,16 +65,16 @@ public class RAMDictionary implements IRAMDictionary
 	public static final int defaultLoadPolicy = ILoadPolicy.BACKGROUND_LOAD;
 
 	// immutable fields
-	protected final IDictionary backing;
-	protected final IInputStreamFactory factory;
+	@Nullable protected final IDictionary backing;
+	@Nullable protected final IInputStreamFactory factory;
 	protected final Lock lifecycleLock = new ReentrantLock();
 	protected final Lock loadLock = new ReentrantLock();
 
 	// instance fields
-	protected volatile LifecycleState state = LifecycleState.CLOSED;
-	protected transient Thread loader;
+	@NonNull protected volatile LifecycleState state = LifecycleState.CLOSED;
+	@Nullable protected transient Thread loader;
 	protected int loadPolicy;
-	protected DictionaryData data;
+	@Nullable protected DictionaryData data;
 
 	/**
 	 * Constructs a new wrapper RAM dictionary that will load the contents the
@@ -78,7 +87,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @throws NullPointerException if the specified file is <code>null</code>
 	 * @since JWI 2.4.0
 	 */
-	public RAMDictionary(File file)
+	public RAMDictionary(@NonNull File file)
 	{
 		this(file, defaultLoadPolicy);
 	}
@@ -94,7 +103,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @throws NullPointerException if the specified url is <code>null</code>
 	 * @since JWI 2.4.0
 	 */
-	public RAMDictionary(URL url)
+	public RAMDictionary(@NonNull URL url)
 	{
 		this(url, defaultLoadPolicy);
 	}
@@ -116,7 +125,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @see ILoadPolicy
 	 * @since JWI 2.2.0
 	 */
-	public RAMDictionary(File file, int loadPolicy)
+	public RAMDictionary(@NonNull File file, int loadPolicy)
 	{
 		this(createBackingDictionary(file), createInputStreamFactory(file), loadPolicy);
 	}
@@ -138,7 +147,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @see ILoadPolicy
 	 * @since JWI 2.2.0
 	 */
-	public RAMDictionary(URL url, int loadPolicy)
+	public RAMDictionary(@NonNull URL url, int loadPolicy)
 	{
 		this(createBackingDictionary(url), createInputStreamFactory(url), loadPolicy);
 	}
@@ -183,12 +192,16 @@ public class RAMDictionary implements IRAMDictionary
 	 * @param loadPolicy the load policy
 	 * @since JWI 2.4.0
 	 */
-	protected RAMDictionary(IDictionary backing, IInputStreamFactory factory, int loadPolicy)
+	protected RAMDictionary(@Nullable IDictionary backing, @Nullable IInputStreamFactory factory, int loadPolicy)
 	{
 		if (backing == null && factory == null)
+		{
 			throw new NullPointerException();
+		}
 		if (backing != null && factory != null)
+		{
 			throw new IllegalStateException("Both backing dictionary and input stream factory may not be non-null");
+		}
 
 		this.backing = backing;
 		this.factory = factory;
@@ -201,7 +214,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @return the dictionary that backs this instance; may be <code>null</code>.
 	 * @since JWI 2.2.0
 	 */
-	public IDictionary getBackingDictionary()
+	@Nullable public IDictionary getBackingDictionary()
 	{
 		return backing;
 	}
@@ -214,7 +227,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * <code>null</code>
 	 * @since JWI 2.4.0
 	 */
-	public IInputStreamFactory getStreamFactory()
+	@Nullable public IInputStreamFactory getStreamFactory()
 	{
 		return factory;
 	}
@@ -227,7 +240,10 @@ public class RAMDictionary implements IRAMDictionary
 	public void setCharset(Charset charset)
 	{
 		if (isOpen())
+		{
 			throw new ObjectOpenException();
+		}
+		assert backing != null;
 		backing.setCharset(charset);
 	}
 
@@ -236,7 +252,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.data.IHasCharset#getCharset()
 	 */
-	public Charset getCharset()
+	@Nullable public Charset getCharset()
 	{
 		return (backing == null) ? null : backing.getCharset();
 	}
@@ -249,7 +265,10 @@ public class RAMDictionary implements IRAMDictionary
 	public void setComparator(ContentTypeKey contentTypeKey, ILineComparator comparator)
 	{
 		if (isOpen())
+		{
 			throw new ObjectOpenException();
+		}
+		assert backing != null;
 		backing.setComparator(contentTypeKey, comparator);
 	}
 
@@ -261,7 +280,10 @@ public class RAMDictionary implements IRAMDictionary
 	public void setSourceMatcher(ContentTypeKey contentTypeKey, String pattern)
 	{
 		if (isOpen())
+		{
 			throw new ObjectOpenException();
+		}
+		assert backing != null;
 		backing.setSourceMatcher(contentTypeKey, pattern);
 	}
 
@@ -283,7 +305,9 @@ public class RAMDictionary implements IRAMDictionary
 	public void setLoadPolicy(int policy)
 	{
 		if (isOpen())
+		{
 			throw new ObjectOpenException();
+		}
 		// if the dictionary uses an input stream factory
 		// the load policy is effectively IMMEDIATE_LOAD
 		// so the load policy is set to this for information purposes
@@ -325,23 +349,31 @@ public class RAMDictionary implements IRAMDictionary
 	public void load(boolean block) throws InterruptedException
 	{
 		if (loader != null)
+		{
 			return;
+		}
 		try
 		{
 			loadLock.lock();
 
 			// if we are closed or in the process of closing, do nothing
 			if (state == LifecycleState.CLOSED || state == LifecycleState.CLOSING)
+			{
 				return;
+			}
 
 			if (loader != null)
+			{
 				return;
+			}
 			loader = new Thread(new JWIBackgroundDataLoader());
 			loader.setName(JWIBackgroundDataLoader.class.getSimpleName());
 			loader.setDaemon(true);
 			loader.start();
 			if (block)
+			{
 				loader.join();
+			}
 		}
 		finally
 		{
@@ -362,11 +394,15 @@ public class RAMDictionary implements IRAMDictionary
 
 			// if the dictionary is already open, return true
 			if (state == LifecycleState.OPEN)
+			{
 				return true;
+			}
 
 			// if the dictionary is not closed, return false;
 			if (state != LifecycleState.CLOSED)
+			{
 				return false;
+			}
 
 			// indicate the start of opening
 			state = LifecycleState.OPENING;
@@ -454,11 +490,15 @@ public class RAMDictionary implements IRAMDictionary
 
 			// if we are already closed, do nothing
 			if (state == LifecycleState.CLOSED)
+			{
 				return;
+			}
 
 			// if we are already closing, do nothing
 			if (state != LifecycleState.CLOSING)
+			{
 				return;
+			}
 
 			state = LifecycleState.CLOSING;
 
@@ -479,7 +519,9 @@ public class RAMDictionary implements IRAMDictionary
 
 			// next close backing dictionary if it exists
 			if (backing != null)
+			{
 				backing.close();
+			}
 
 			// null out backing data
 			data = null;
@@ -499,7 +541,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * open; otherwise the lifecycle state object representing closed
 	 * @since JWI 2.4.0
 	 */
-	protected final LifecycleState assertLifecycleState()
+	@NonNull protected final LifecycleState assertLifecycleState()
 	{
 		try
 		{
@@ -507,11 +549,15 @@ public class RAMDictionary implements IRAMDictionary
 
 			// if the data object is present, then we are open
 			if (data != null)
+			{
 				return LifecycleState.OPEN;
+			}
 
 			// if the backing dictionary is present and open, then we are open
 			if (backing != null && backing.isOpen())
+			{
 				return LifecycleState.OPEN;
+			}
 
 			// otherwise we are closed
 			return LifecycleState.CLOSED;
@@ -533,7 +579,9 @@ public class RAMDictionary implements IRAMDictionary
 		{
 			loadLock.lock();
 			if (!isLoaded())
+			{
 				throw new IllegalStateException("RAMDictionary not loaded into memory");
+			}
 
 			out = new GZIPOutputStream(out);
 			out = new BufferedOutputStream(out);
@@ -554,12 +602,16 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.item.IHasVersion#getVersion()
 	 */
-	public IVersion getVersion()
+	@Nullable public IVersion getVersion()
 	{
 		if (backing != null)
+		{
 			return backing.getVersion();
+		}
 		if (data != null)
+		{
 			return data.version;
+		}
 		return null;
 	}
 
@@ -568,7 +620,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getIndexWord(java.lang.String, edu.mit.jwi.item.POS)
 	 */
-	public IIndexWord getIndexWord(String lemma, POS pos)
+	@Nullable public IIndexWord getIndexWord(String lemma, POS pos)
 	{
 		return getIndexWord(new IndexWordID(lemma, pos));
 	}
@@ -578,14 +630,17 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getIndexWord(edu.mit.jwi.item.IIndexWordID)
 	 */
-	public IIndexWord getIndexWord(IIndexWordID id)
+	@Nullable public IIndexWord getIndexWord(@NonNull IIndexWordID id)
 	{
 		if (data != null)
 		{
-			return data.idxWords.get(id.getPOS()).get(id);
+			Map<IIndexWordID, IIndexWord> m = data.idxWords.get(id.getPOS());
+			assert m != null;
+			return m.get(id);
 		}
 		else
 		{
+			assert backing != null;
 			return backing.getIndexWord(id);
 		}
 	}
@@ -595,7 +650,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getIndexWordIterator(edu.mit.jwi.item.POS)
 	 */
-	public Iterator<IIndexWord> getIndexWordIterator(POS pos)
+	@NonNull public Iterator<IIndexWord> getIndexWordIterator(POS pos)
 	{
 		return new HotSwappableIndexWordIterator(pos);
 	}
@@ -605,15 +660,19 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getWord(edu.mit.jwi.item.IWordID)
 	 */
-	public IWord getWord(IWordID id)
+	@Nullable public IWord getWord(@NonNull IWordID id)
 	{
 		if (data != null)
 		{
-			ISynset synset = data.synsets.get(id.getPOS()).get(id.getSynsetID());
+			Map<ISynsetID, ISynset> m = data.synsets.get(id.getPOS());
+			assert m != null;
+			ISynset synset = m.get(id.getSynsetID());
 
 			// no synset found
 			if (synset == null)
+			{
 				return null;
+			}
 
 			// Fix for BUG One or the other of the WordID number or lemma may not exist,
 			// depending on whence the word id came, so we have to check 
@@ -626,8 +685,12 @@ public class RAMDictionary implements IRAMDictionary
 			{
 				for (IWord word : synset.getWords())
 				{
-					if (word.getLemma().equalsIgnoreCase(id.getLemma()))
+					String lemma = word.getLemma();
+					assert lemma != null;
+					if (lemma.equalsIgnoreCase(id.getLemma()))
+					{
 						return word;
+					}
 				}
 				return null;
 			}
@@ -638,6 +701,7 @@ public class RAMDictionary implements IRAMDictionary
 		}
 		else
 		{
+			assert backing != null;
 			return backing.getWord(id);
 		}
 	}
@@ -647,7 +711,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getWord(edu.mit.jwi.item.ISenseKey)
 	 */
-	public IWord getWord(ISenseKey key)
+	@Nullable public IWord getWord(ISenseKey key)
 	{
 		if (data != null)
 		{
@@ -655,6 +719,7 @@ public class RAMDictionary implements IRAMDictionary
 		}
 		else
 		{
+			assert backing != null;
 			return backing.getWord(key);
 		}
 	}
@@ -664,14 +729,17 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSynset(edu.mit.jwi.item.ISynsetID)
 	 */
-	public ISynset getSynset(ISynsetID id)
+	@Nullable public ISynset getSynset(@NonNull ISynsetID id)
 	{
 		if (data != null)
 		{
-			return data.synsets.get(id.getPOS()).get(id);
+			Map<ISynsetID, ISynset> m = data.synsets.get(id.getPOS());
+			assert m != null;
+			return m.get(id);
 		}
 		else
 		{
+			assert backing != null;
 			return backing.getSynset(id);
 		}
 	}
@@ -681,7 +749,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSynsetIterator(edu.mit.jwi.item.POS)
 	 */
-	public Iterator<ISynset> getSynsetIterator(POS pos)
+	@NonNull public Iterator<ISynset> getSynsetIterator(POS pos)
 	{
 		return new HotSwappableSynsetIterator(pos);
 	}
@@ -691,7 +759,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntry(edu.mit.jwi.item.ISenseKey)
 	 */
-	public ISenseEntry getSenseEntry(ISenseKey key)
+	@Nullable public ISenseEntry getSenseEntry(ISenseKey key)
 	{
 		if (data != null)
 		{
@@ -699,6 +767,7 @@ public class RAMDictionary implements IRAMDictionary
 		}
 		else
 		{
+			assert backing != null;
 			return backing.getSenseEntry(key);
 		}
 	}
@@ -708,7 +777,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntries(edu.mit.jwi.item.ISenseKey)
 	 */
-	public ISenseEntry[] getSenseEntries(ISenseKey key)
+	@Nullable public ISenseEntry[] getSenseEntries(ISenseKey key)
 	{
 		if (data != null)
 		{
@@ -716,6 +785,7 @@ public class RAMDictionary implements IRAMDictionary
 		}
 		else
 		{
+			assert backing != null;
 			return backing.getSenseEntries(key);
 		}
 	}
@@ -725,7 +795,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntryIterator()
 	 */
-	public Iterator<ISenseEntry> getSenseEntryIterator()
+	@NonNull public Iterator<ISenseEntry> getSenseEntryIterator()
 	{
 		return new HotSwappableSenseEntryIterator();
 	}
@@ -735,7 +805,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntriesIterator()
 	 */
-	public Iterator<ISenseEntry[]> getSenseEntriesIterator()
+	@NonNull public Iterator<ISenseEntry[]> getSenseEntriesIterator()
 	{
 		return new HotSwappableSenseEntriesIterator();
 	}
@@ -745,7 +815,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntry(java.lang.String, edu.mit.jwi.item.POS)
 	 */
-	public IExceptionEntry getExceptionEntry(String surfaceForm, POS pos)
+	@Nullable public IExceptionEntry getExceptionEntry(String surfaceForm, POS pos)
 	{
 		return getExceptionEntry(new ExceptionEntryID(surfaceForm, pos));
 	}
@@ -755,14 +825,17 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntry(edu.mit.jwi.item.IExceptionEntryID)
 	 */
-	public IExceptionEntry getExceptionEntry(IExceptionEntryID id)
+	@Nullable public IExceptionEntry getExceptionEntry(@NonNull IExceptionEntryID id)
 	{
 		if (data != null)
 		{
-			return data.exceptions.get(id.getPOS()).get(id);
+			Map<IExceptionEntryID, IExceptionEntry> m = data.exceptions.get(id.getPOS());
+			assert m != null;
+			return m.get(id);
 		}
 		else
 		{
+			assert backing != null;
 			return backing.getExceptionEntry(id);
 		}
 	}
@@ -772,7 +845,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntryIterator(edu.mit.jwi.item.POS)
 	 */
-	public Iterator<IExceptionEntry> getExceptionEntryIterator(POS pos)
+	@NonNull public Iterator<IExceptionEntry> getExceptionEntryIterator(POS pos)
 	{
 		return new HotSwappableExceptionEntryIterator(pos);
 	}
@@ -787,9 +860,9 @@ public class RAMDictionary implements IRAMDictionary
 	 */
 	protected abstract class HotSwappableIterator<E> implements Iterator<E>
 	{
-		private Iterator<E> itr;
+		@Nullable private Iterator<E> itr;
 		private boolean checkForLoad;
-		private E last = null;
+		@Nullable private E last = null;
 
 		/**
 		 * Constructs a new hot swappable iterator.
@@ -801,10 +874,12 @@ public class RAMDictionary implements IRAMDictionary
 		 * @throws NullPointerException if the specified iterator is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		public HotSwappableIterator(Iterator<E> itr, boolean checkForLoad)
+		public HotSwappableIterator(@Nullable Iterator<E> itr, boolean checkForLoad)
 		{
 			if (itr == null)
+			{
 				throw new NullPointerException();
+			}
 			this.itr = itr;
 			this.checkForLoad = checkForLoad;
 		}
@@ -817,7 +892,10 @@ public class RAMDictionary implements IRAMDictionary
 		public boolean hasNext()
 		{
 			if (checkForLoad)
+			{
 				checkForLoad();
+			}
+			assert itr != null;
 			return itr.hasNext();
 		}
 
@@ -826,16 +904,18 @@ public class RAMDictionary implements IRAMDictionary
 		 *
 		 * @see java.util.Iterator#next()
 		 */
-		public E next()
+		@Nullable public E next()
 		{
 			if (checkForLoad)
 			{
 				checkForLoad();
+				assert itr != null;
 				last = itr.next();
 				return last;
 			}
 			else
 			{
+				assert itr != null;
 				return itr.next();
 			}
 		}
@@ -850,7 +930,9 @@ public class RAMDictionary implements IRAMDictionary
 		protected void checkForLoad()
 		{
 			if (data == null)
+			{
 				return;
+			}
 			checkForLoad = false;
 			itr = makeIterator();
 			if (last != null)
@@ -860,7 +942,9 @@ public class RAMDictionary implements IRAMDictionary
 				{
 					consume = itr.next();
 					if (last.equals(consume))
+					{
 						return;
+					}
 				}
 				throw new IllegalStateException();
 			}
@@ -872,7 +956,7 @@ public class RAMDictionary implements IRAMDictionary
 		 * @return the new iterator to be swapped in when loading is done
 		 * @since JWI 2.2.0
 		 */
-		protected abstract Iterator<E> makeIterator();
+		@NonNull protected abstract Iterator<E> makeIterator();
 
 		/*
 		 * (non-Javadoc)
@@ -904,7 +988,8 @@ public class RAMDictionary implements IRAMDictionary
 		 */
 		public HotSwappableIndexWordIterator(POS pos)
 		{
-			super((data == null) ? backing.getIndexWordIterator(pos) : data.idxWords.get(pos).values().iterator(), data == null);
+			super((data == null) ? requireNonNull(backing).getIndexWordIterator(pos) : requireNonNull(data.idxWords.get(pos)).values().iterator(),
+					data == null);
 			this.pos = pos;
 		}
 
@@ -913,9 +998,12 @@ public class RAMDictionary implements IRAMDictionary
 		 *
 		 * @see edu.mit.jwi.RAMDictionary.HotSwappableIterator#makeIterator()
 		 */
-		@Override protected Iterator<IIndexWord> makeIterator()
+		@NonNull @Override protected Iterator<IIndexWord> makeIterator()
 		{
-			return data.idxWords.get(pos).values().iterator();
+			assert data != null;
+			Map<IIndexWordID, IIndexWord> m = data.idxWords.get(pos);
+			assert m != null;
+			return m.values().iterator();
 		}
 	}
 
@@ -938,7 +1026,7 @@ public class RAMDictionary implements IRAMDictionary
 		 */
 		public HotSwappableSynsetIterator(POS pos)
 		{
-			super((data == null) ? backing.getSynsetIterator(pos) : data.synsets.get(pos).values().iterator(), data == null);
+			super((data == null) ? requireNonNull(backing).getSynsetIterator(pos) : requireNonNull(data.synsets.get(pos)).values().iterator(), data == null);
 			this.pos = pos;
 		}
 
@@ -947,9 +1035,12 @@ public class RAMDictionary implements IRAMDictionary
 		 *
 		 * @see edu.mit.jwi.RAMDictionary.HotSwappableIterator#makeIterator()
 		 */
-		@Override protected Iterator<ISynset> makeIterator()
+		@NonNull @Override protected Iterator<ISynset> makeIterator()
 		{
-			return data.synsets.get(pos).values().iterator();
+			assert data != null;
+			Map<ISynsetID, ISynset> m = data.synsets.get(pos);
+			assert m != null;
+			return m.values().iterator();
 		}
 	}
 
@@ -976,7 +1067,8 @@ public class RAMDictionary implements IRAMDictionary
 		 */
 		public HotSwappableExceptionEntryIterator(POS pos)
 		{
-			super((data == null) ? backing.getExceptionEntryIterator(pos) : data.exceptions.get(pos).values().iterator(), data == null);
+			super((data == null) ? requireNonNull(backing).getExceptionEntryIterator(pos) : requireNonNull(data.exceptions.get(pos)).values().iterator(),
+					data == null);
 			this.pos = pos;
 		}
 
@@ -985,9 +1077,12 @@ public class RAMDictionary implements IRAMDictionary
 		 *
 		 * @see edu.mit.jwi.RAMDictionary.HotSwappableIterator#makeIterator()
 		 */
-		@Override protected Iterator<IExceptionEntry> makeIterator()
+		@NonNull @Override protected Iterator<IExceptionEntry> makeIterator()
 		{
-			return data.exceptions.get(pos).values().iterator();
+			assert data != null;
+			Map<IExceptionEntryID, IExceptionEntry> m = data.exceptions.get(pos);
+			assert m != null;
+			return m.values().iterator();
 		}
 	}
 
@@ -1008,7 +1103,7 @@ public class RAMDictionary implements IRAMDictionary
 		 */
 		public HotSwappableSenseEntryIterator()
 		{
-			super((data == null) ? backing.getSenseEntryIterator() : data.senses.values().iterator(), data == null);
+			super((data == null) ? requireNonNull(backing).getSenseEntryIterator() : data.senses.values().iterator(), data == null);
 		}
 
 		/*
@@ -1016,8 +1111,9 @@ public class RAMDictionary implements IRAMDictionary
 		 *
 		 * @see edu.mit.jwi.RAMDictionary.HotSwappableIterator#makeIterator()
 		 */
-		@Override protected Iterator<ISenseEntry> makeIterator()
+		@NonNull @Override protected Iterator<ISenseEntry> makeIterator()
 		{
+			assert data != null;
 			return data.senses.values().iterator();
 		}
 	}
@@ -1039,7 +1135,7 @@ public class RAMDictionary implements IRAMDictionary
 		 */
 		public HotSwappableSenseEntriesIterator()
 		{
-			super((data == null) ? backing.getSenseEntriesIterator() : data.sensePools.values().iterator(), data == null);
+			super((data == null) ? requireNonNull(backing).getSenseEntriesIterator() : data.sensePools.values().iterator(), data == null);
 		}
 
 		/*
@@ -1047,8 +1143,9 @@ public class RAMDictionary implements IRAMDictionary
 		 *
 		 * @see edu.mit.jwi.RAMDictionary.HotSwappableIterator#makeIterator()
 		 */
-		@Override protected Iterator<ISenseEntry[]> makeIterator()
+		@NonNull @Override protected Iterator<ISenseEntry[]> makeIterator()
 		{
+			assert data != null;
 			return data.sensePools.values().iterator();
 		}
 	}
@@ -1076,6 +1173,7 @@ public class RAMDictionary implements IRAMDictionary
 					// if there is no backing dictionary from
 					// which to load our data, load it from the 
 					// stream factory
+					assert factory != null;
 					InputStream in = factory.makeInputStream();
 					in = new GZIPInputStream(in);
 					in = new BufferedInputStream(in);
@@ -1120,7 +1218,7 @@ public class RAMDictionary implements IRAMDictionary
 		/**
 		 * the source of the dictionary data
 		 */
-		private final IDictionary source;
+		@Nullable private final IDictionary source;
 
 		/**
 		 * Constructs a new data loader object, that uses the specified
@@ -1130,10 +1228,12 @@ public class RAMDictionary implements IRAMDictionary
 		 * @throws NullPointerException if the specified dictionary is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		public DataLoader(IDictionary source)
+		public DataLoader(@Nullable IDictionary source)
 		{
 			if (source == null)
+			{
 				throw new NullPointerException();
+			}
 			this.source = source;
 		}
 
@@ -1142,10 +1242,11 @@ public class RAMDictionary implements IRAMDictionary
 		 *
 		 * @see java.util.concurrent.Callable#call()
 		 */
-		public DictionaryData call()
+		@Nullable public DictionaryData call()
 		{
 			DictionaryData result = new DictionaryData();
 
+			assert source != null;
 			result.version = source.getVersion();
 
 			Map<IIndexWordID, IIndexWord> idxWords;
@@ -1165,32 +1266,49 @@ public class RAMDictionary implements IRAMDictionary
 				for (Iterator<IIndexWord> i = source.getIndexWordIterator(pos); i.hasNext(); )
 				{
 					idxWord = i.next();
-					idxWords.put(idxWord.getID(), idxWord);
+					assert idxWords != null;
+					IIndexWordID id = idxWord.getID();
+					assert id != null;
+					idxWords.put(id, idxWord);
 				}
 				if (t.isInterrupted())
+				{
 					return null;
+				}
 
 				// synsets and words
 				synsets = result.synsets.get(pos);
+				assert synsets != null;
 				for (Iterator<ISynset> i = source.getSynsetIterator(pos); i.hasNext(); )
 				{
 					synset = i.next();
-					synsets.put(synset.getID(), synset);
+					ISynsetID id = synset.getID();
+					assert id != null;
+					synsets.put(id, synset);
 					for (IWord word : synset.getWords())
+					{
 						result.words.put(word.getSenseKey(), word);
+					}
 				}
 				if (t.isInterrupted())
+				{
 					return null;
+				}
 
 				// exceptions
 				exceptions = result.exceptions.get(pos);
+				assert exceptions != null;
 				for (Iterator<IExceptionEntry> i = source.getExceptionEntryIterator(pos); i.hasNext(); )
 				{
 					exception = i.next();
+					IExceptionEntryID id = exception.getID();
+					assert id != null;
 					exceptions.put(exception.getID(), exception);
 				}
 				if (t.isInterrupted())
+				{
 					return null;
+				}
 			}
 
 			// sense entries
@@ -1201,19 +1319,27 @@ public class RAMDictionary implements IRAMDictionary
 				entry = i.next();
 				word = result.words.get(entry.getSenseKey());
 				if (word == null)
+				{
 					throw new NullPointerException();
+				}
 				result.senses.put(word.getSenseKey(), makeSenseEntry(word.getSenseKey(), entry));
 			}
 			if (t.isInterrupted())
+			{
 				return null;
+			}
 
 			result.compactSize();
 			if (t.isInterrupted())
+			{
 				return null;
+			}
 
 			result.compactObjects();
 			if (t.isInterrupted())
+			{
 				return null;
+			}
 			return result;
 		}
 
@@ -1228,7 +1354,7 @@ public class RAMDictionary implements IRAMDictionary
 		 * @throws NullPointerException if either argument is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		protected ISenseEntry makeSenseEntry(ISenseKey key, ISenseEntry old)
+		@NonNull protected ISenseEntry makeSenseEntry(ISenseKey key, @NonNull ISenseEntry old)
 		{
 			return new SenseEntry(key, old.getOffset(), old.getSenseNumber(), old.getTagCount());
 		}
@@ -1252,10 +1378,10 @@ public class RAMDictionary implements IRAMDictionary
 		private static final long serialVersionUID = 240;
 
 		// data
-		protected IVersion version;
-		protected final Map<POS, Map<IIndexWordID, IIndexWord>> idxWords;
-		protected final Map<POS, Map<ISynsetID, ISynset>> synsets;
-		protected final Map<POS, Map<IExceptionEntryID, IExceptionEntry>> exceptions;
+		@Nullable protected IVersion version;
+		@NonNull protected final Map<POS, Map<IIndexWordID, IIndexWord>> idxWords;
+		@NonNull protected final Map<POS, Map<ISynsetID, ISynset>> synsets;
+		@NonNull protected final Map<POS, Map<IExceptionEntryID, IExceptionEntry>> exceptions;
 		protected Map<ISenseKey, IWord> words;
 		protected Map<ISenseKey, ISenseEntry> senses;
 		protected Map<ISenseKey, ISenseEntry[]> sensePools;
@@ -1285,11 +1411,13 @@ public class RAMDictionary implements IRAMDictionary
 		 * @return a map with an empty sub-map for every part of speech.
 		 * @since JWI 2.2.0
 		 */
-		protected <K, V> Map<POS, Map<K, V>> makePOSMap()
+		@NonNull protected <K, V> Map<POS, Map<K, V>> makePOSMap()
 		{
 			Map<POS, Map<K, V>> result = new HashMap<>(POS.values().length);
 			for (POS pos : POS.values())
+			{
 				result.put(pos, this.makeMap(4096, null));
+			}
 			return result;
 		}
 
@@ -1311,7 +1439,7 @@ public class RAMDictionary implements IRAMDictionary
 		 *                                  specified contents are <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		protected <K, V> Map<K, V> makeMap(int initialSize, Map<K, V> contents)
+		@NonNull protected <K, V> Map<K, V> makeMap(int initialSize, @Nullable Map<K, V> contents)
 		{
 			return (contents == null) ? new LinkedHashMap<>(initialSize) : new LinkedHashMap<>(contents);
 		}
@@ -1352,7 +1480,7 @@ public class RAMDictionary implements IRAMDictionary
 		 * @param <V> value type
 		 * @since JWI 2.2.0
 		 */
-		protected <K, V> void compactPOSMap(Map<POS, Map<K, V>> map)
+		protected <K, V> void compactPOSMap(@NonNull Map<POS, Map<K, V>> map)
 		{
 			for (Entry<POS, Map<K, V>> entry : map.entrySet())
 			{
@@ -1370,10 +1498,12 @@ public class RAMDictionary implements IRAMDictionary
 		 * @throws NullPointerException if the specified map is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		protected <K, V> Map<K, V> compactMap(Map<K, V> map)
+		@NonNull protected <K, V> Map<K, V> compactMap(@Nullable Map<K, V> map)
 		{
 			if (map == null)
+			{
 				throw new NullPointerException();
+			}
 			return makeMap(-1, map);
 		}
 
@@ -1386,10 +1516,18 @@ public class RAMDictionary implements IRAMDictionary
 		{
 			for (POS pos : POS.values())
 			{
-				for (Entry<ISynsetID, ISynset> entry : synsets.get(pos).entrySet())
+				Map<ISynsetID, ISynset> sMap = synsets.get(pos);
+				assert sMap != null;
+				for (Entry<ISynsetID, ISynset> entry : sMap.entrySet())
+				{
 					entry.setValue(makeSynset(entry.getValue()));
-				for (Entry<IIndexWordID, IIndexWord> entry : idxWords.get(pos).entrySet())
+				}
+				Map<IIndexWordID, IIndexWord> iMap = idxWords.get(pos);
+				assert iMap != null;
+				for (Entry<IIndexWordID, IIndexWord> entry : iMap.entrySet())
+				{
 					entry.setValue(makeIndexWord(entry.getValue()));
+				}
 			}
 		}
 
@@ -1403,7 +1541,7 @@ public class RAMDictionary implements IRAMDictionary
 		 * @throws NullPointerException if the specified synset is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		protected ISynset makeSynset(ISynset old)
+		@Nullable protected ISynset makeSynset(@NonNull ISynset old)
 		{
 			Map<IPointer, List<ISynsetID>> oldIDs = old.getRelatedMap();
 			Map<IPointer, List<ISynsetID>> newIDs = new HashMap<>(oldIDs.size());
@@ -1415,7 +1553,10 @@ public class RAMDictionary implements IRAMDictionary
 				newList = new ArrayList<>(entry.getValue().size());
 				for (ISynsetID otherID : entry.getValue())
 				{
-					otherSynset = synsets.get(otherID.getPOS()).get(otherID);
+					Map<ISynsetID, ISynset> m = synsets.get(otherID.getPOS());
+					assert m != null;
+					otherSynset = m.get(otherID);
+					assert otherSynset != null;
 					newList.add(otherSynset.getID());
 				}
 				newIDs.put(entry.getKey(), newList);
@@ -1425,7 +1566,9 @@ public class RAMDictionary implements IRAMDictionary
 			List<IWord> oldWords = old.getWords();
 			List<IWordBuilder> newWords = new ArrayList<>(oldWords.size());
 			for (IWord oldWord : old.getWords())
+			{
 				newWords.add(new WordBuilder(old, oldWord));
+			}
 			return new Synset(old.getID(), old.getLexicalFile(), old.isAdjectiveSatellite(), old.isAdjectiveHead(), old.getGloss(), newWords, newIDs);
 		}
 
@@ -1441,7 +1584,7 @@ public class RAMDictionary implements IRAMDictionary
 		 * @throws NullPointerException if any argument is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		protected IWord makeWord(ISynset newSynset, ISynset oldSynset, IWord old)
+		@NonNull protected IWord makeWord(ISynset newSynset, ISynset oldSynset, @NonNull IWord old)
 		{
 			Map<IPointer, List<IWordID>> oldPtrs = old.getRelatedMap();
 			Map<IPointer, List<IWordID>> newPtrs = new HashMap<>(oldPtrs.size());
@@ -1452,7 +1595,10 @@ public class RAMDictionary implements IRAMDictionary
 				newList = new ArrayList<>(entry.getValue().size());
 				for (IWordID otherID : entry.getValue())
 				{
-					otherSynset = synsets.get(otherID.getPOS()).get(otherID.getSynsetID());
+					Map<ISynsetID, ISynset> m = synsets.get(otherID.getPOS());
+					assert m != null;
+					otherSynset = m.get(otherID.getSynsetID());
+					assert otherSynset != null;
 					newList.add(otherSynset.getWord(otherID.getWordNumber()).getID());
 				}
 				newPtrs.put(entry.getKey(), newList);
@@ -1478,7 +1624,7 @@ public class RAMDictionary implements IRAMDictionary
 		 * @throws NullPointerException if the specified index word is <code>null</code>
 		 * @since JWI 2.2.0
 		 */
-		protected IIndexWord makeIndexWord(IIndexWord old)
+		@NonNull protected IIndexWord makeIndexWord(@NonNull IIndexWord old)
 		{
 			List<IWordID> oldIDs = old.getWordIDs();
 			IWordID[] newIDs = new IWordID[oldIDs.size()];
@@ -1487,16 +1633,25 @@ public class RAMDictionary implements IRAMDictionary
 			for (int i = 0; i < oldIDs.size(); i++)
 			{
 				oldID = oldIDs.get(i);
-				synset = synsets.get(oldID.getPOS()).get(oldID.getSynsetID());
+				Map<ISynsetID, ISynset> m = synsets.get(oldID.getPOS());
+				assert m != null;
+				synset = m.get(oldID.getSynsetID());
+				assert synset != null;
 				for (IWord newWord : synset.getWords())
 				{
-					if (!newWord.getID().equals(oldID))
+					IWordID id = newWord.getID();
+					assert id != null;
+					if (!id.equals(oldID))
+					{
 						continue;
+					}
 					newIDs[i] = newWord.getID();
 					break;
 				}
 				if (newIDs[i] == null)
+				{
 					throw new IllegalStateException();
+				}
 			}
 			return new IndexWord(old.getID(), old.getTagSenseCount(), newIDs);
 		}
@@ -1511,8 +1666,8 @@ public class RAMDictionary implements IRAMDictionary
 		public class WordBuilder implements IWordBuilder
 		{
 			// final instance fields
-			private final ISynset oldSynset;
-			private final IWord oldWord;
+			@Nullable private final ISynset oldSynset;
+			@Nullable private final IWord oldWord;
 
 			/**
 			 * Constructs a new word builder object out of the specified old
@@ -1525,12 +1680,16 @@ public class RAMDictionary implements IRAMDictionary
 			 * @throws NullPointerException if either argument is <code>null</code>
 			 * @since 2.2.0
 			 */
-			public WordBuilder(ISynset oldSynset, IWord oldWord)
+			public WordBuilder(@Nullable ISynset oldSynset, @Nullable IWord oldWord)
 			{
 				if (oldSynset == null)
+				{
 					throw new NullPointerException();
+				}
 				if (oldWord == null)
+				{
 					throw new NullPointerException();
+				}
 				this.oldSynset = oldSynset;
 				this.oldWord = oldWord;
 			}
@@ -1540,8 +1699,9 @@ public class RAMDictionary implements IRAMDictionary
 			 *
 			 * @see edu.mit.jwi.item.Synset.IWordBuilder#toWord(edu.mit.jwi.item.ISynset)
 			 */
-			public IWord toWord(ISynset synset)
+			@NonNull public IWord toWord(ISynset synset)
 			{
+				assert oldWord != null;
 				return makeWord(synset, oldSynset, oldWord);
 			}
 
@@ -1560,7 +1720,7 @@ public class RAMDictionary implements IRAMDictionary
 			 *
 			 * @see edu.mit.jwi.item.Synset.IWordBuilder#addRelatedWord(edu.mit.jwi.item.IPointer, edu.mit.jwi.item.IWordID)
 			 */
-			public void addRelatedWord(IPointer type, IWordID id)
+			public void addRelatedWord(IPointer ptrType, IWordID id)
 			{
 				throw new UnsupportedOperationException();
 			}
@@ -1578,7 +1738,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @throws NullPointerException if the specified file is <code>null</code>
 	 * @since JWI 2.4.0
 	 */
-	public static IInputStreamFactory createInputStreamFactory(File file)
+	@Nullable public static IInputStreamFactory createInputStreamFactory(@NonNull File file)
 	{
 		return FileProvider.isLocalDirectory(file) ? null : new FileInputStreamFactory(file);
 	}
@@ -1594,7 +1754,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @throws NullPointerException if the specified url is <code>null</code>
 	 * @since JWI 2.4.0
 	 */
-	public static IInputStreamFactory createInputStreamFactory(URL url)
+	@Nullable public static IInputStreamFactory createInputStreamFactory(@NonNull URL url)
 	{
 		return FileProvider.isLocalDirectory(url) ? null : new URLInputStreamFactory(url);
 	}
@@ -1610,7 +1770,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @throws NullPointerException if the specified file is <code>null</code>
 	 * @since JWI 2.4.0
 	 */
-	public static IDictionary createBackingDictionary(File file)
+	@Nullable public static IDictionary createBackingDictionary(@NonNull File file)
 	{
 		return FileProvider.isLocalDirectory(file) ? new DataSourceDictionary(new FileProvider(file)) : null;
 	}
@@ -1626,7 +1786,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @throws NullPointerException if the specified url is <code>null</code>
 	 * @since JWI 2.4.0
 	 */
-	public static IDictionary createBackingDictionary(URL url)
+	@Nullable public static IDictionary createBackingDictionary(@NonNull URL url)
 	{
 		return FileProvider.isLocalDirectory(url) ? new DataSourceDictionary(new FileProvider(url)) : null;
 	}
@@ -1647,7 +1807,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *                              dictionary.
 	 * @since JWI 2.4.0
 	 */
-	public static boolean export(File in, OutputStream out) throws IOException
+	public static boolean export(@NonNull File in, OutputStream out) throws IOException
 	{
 		return export(new RAMDictionary(in, ILoadPolicy.IMMEDIATE_LOAD), out);
 	}
@@ -1668,7 +1828,7 @@ public class RAMDictionary implements IRAMDictionary
 	 *                              dictionary.
 	 * @since JWI 2.4.0
 	 */
-	public static boolean export(URL in, OutputStream out) throws IOException
+	public static boolean export(@NonNull URL in, OutputStream out) throws IOException
 	{
 		return export(new RAMDictionary(in, ILoadPolicy.IMMEDIATE_LOAD), out);
 	}
@@ -1704,7 +1864,7 @@ public class RAMDictionary implements IRAMDictionary
 	 * @throws IOException if there was a IO problem during export
 	 * @since JWI 2.4.0
 	 */
-	@SuppressWarnings("SameReturnValue") protected static boolean export(IRAMDictionary dict, OutputStream out) throws IOException
+	@SuppressWarnings("SameReturnValue") protected static boolean export(@NonNull IRAMDictionary dict, OutputStream out) throws IOException
 	{
 		// load initial data into memory
 		System.out.print("Performing load...");
