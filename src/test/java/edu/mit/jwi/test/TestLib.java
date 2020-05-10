@@ -16,6 +16,7 @@ public class TestLib
 	public static boolean sensekeyFromStringIsLive(@NonNull JWI jwi, String skStr)
 	{
 		ISenseKey sk = SenseKeyParser.getInstance().parseLine(skStr);
+		assert sk != null;
 		assertEquals(sk.toString(), skStr);
 		return sensekeyIsLive(jwi, sk);
 	}

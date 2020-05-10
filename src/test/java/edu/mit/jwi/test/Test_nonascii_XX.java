@@ -22,16 +22,19 @@ public class Test_nonascii_XX
 	@Test public void nonascii()
 	{
 		final IIndexWord idx = jwi.getDict().getIndexWord("Wałęsa", POS.NOUN);
+		assert idx != null;
 		final List<IWordID> senseids = idx.getWordIDs();
 		for (final IWordID senseid : senseids) // synset id, sense number, and lemma
 		{
 			// sense
 			final IWord sense = jwi.getDict().getWord(senseid);
+			assert sense != null;
 			System.out.println("● sense = " + sense.toString() + " sensekey=" + sense.getSenseKey());
 
 			// synset
 			final ISynsetID synsetid = senseid.getSynsetID();
 			final ISynset synset = jwi.getDict().getSynset(synsetid);
+			assert synset != null;
 			final String members = JWI.getMembers(synset);
 			System.out.println("● synset = " + members + synset.getGloss());
 			assertTrue(members.contains("Wałęsa"));

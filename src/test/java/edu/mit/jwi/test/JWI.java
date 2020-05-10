@@ -459,11 +459,13 @@ public class JWI
 
 		// sense=(senseid, lexid, sensekey, synset)
 		IWord sense = this.dict.getWord(senseid);
+		assert sense != null;
 		walk(sense);
 
 		// synset
 		final ISynsetID synsetid = senseid.getSynsetID();
 		final ISynset synset = this.dict.getSynset(synsetid);
+		assert synset != null;
 		System.out.printf("● synset = %s%n", toString(synset));
 
 		walk(synset, 1);
@@ -483,8 +485,11 @@ public class JWI
 		ISenseEntry senseEntry = this.dict.getSenseEntry(senseKey);
 		if (senseEntry == null)
 		{
-			System.err.printf("⚠ Missing sensekey %s for sense at offset %d with pos %s%n", senseKey.toString(), sense.getSynset().getOffset(),
-					sense.getPOS().toString());
+			ISynset synset = sense.getSynset();
+			assert synset != null;
+			POS pos = sense.getPOS();
+			assert pos != null;
+			System.err.printf("⚠ Missing sensekey %s for sense at offset %d with pos %s%n", senseKey.toString(), synset.getOffset(), pos.toString());
 			// throw new IllegalArgumentException(String.format("%s at offset %d with pos %s%n", senseKey.toString(), sense.getSynset().getOffset(),sense.getPOS().toString()));
 		}
 
@@ -510,7 +515,10 @@ public class JWI
 				for (IWordID relatedId : entry.getValue())
 				{
 					IWord related = this.dict.getWord(relatedId);
-					System.out.printf("  related %s lemma:%s synset:%s%n", pointer, related.getLemma(), related.getSynset().toString());
+					assert related != null;
+					ISynset relatedSynset = related.getSynset();
+					assert relatedSynset != null;
+					System.out.printf("  related %s lemma:%s synset:%s%n", pointer, related.getLemma(), relatedSynset.toString());
 				}
 			}
 		}
@@ -543,6 +551,7 @@ public class JWI
 		for (final ISynsetID synsetid2 : relations2)
 		{
 			final ISynset synset2 = this.dict.getSynset(synsetid2);
+			assert synset2 != null;
 			System.out.printf("%s%s%n", indentSpace, toString(synset2));
 
 			walk(synset2, p, level + 1);
@@ -553,9 +562,11 @@ public class JWI
 	{
 		final String indentSpace = new String(new char[level]).replace('\0', '\t');
 		final List<ISynsetID> relations2 = synset.getRelatedSynsets(p);
+		assert relations2 != null;
 		for (final ISynsetID synsetid2 : relations2)
 		{
 			final ISynset synset2 = this.dict.getSynset(synsetid2);
+			assert synset2 != null;
 			System.out.printf("%s%s%n", indentSpace, toString(synset2));
 			if (canRecurse(p))
 				walk(synset2, p, level + 1);
@@ -564,7 +575,7 @@ public class JWI
 
 	// H E L P E R S
 
-	@Nullable public static String toString(@NonNull final ISynset synset)
+	@NonNull public static String toString(@NonNull final ISynset synset)
 	{
 		return getMembers(synset) + synset.getGloss();
 	}

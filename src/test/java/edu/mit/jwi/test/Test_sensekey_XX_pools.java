@@ -67,7 +67,11 @@ public class Test_sensekey_XX_pools
 		jwi.forAllSenseEntryPools((ses) -> {
 			assertNotNull(ses);
 			if (ses.length > 1)
-				System.out.printf("● pool:%s%n", ses[0].getSenseKey().toString());
+			{
+				ISenseKey sk = ses[0].getSenseKey();
+				assert sk != null;
+				System.out.printf("● pool:%s%n", sk.toString());
+			}
 		});
 	}
 
@@ -75,9 +79,11 @@ public class Test_sensekey_XX_pools
 	{
 		String skStr = "aborigine%1:18:00::";
 		ISenseKey sk = SenseKeyParser.getInstance().parseLine(skStr);
+		assert sk != null;
 		assertEquals(sk.toString(), skStr);
+		System.out.printf("● sensekey %s%n", sk);
 		ISenseEntry[] senseEntries = jwi.getDict().getSenseEntries(sk);
-		System.out.printf("● sensekey%s%n", sk);
+		assert senseEntries != null;
 		for (ISenseEntry se : senseEntries)
 		{
 			System.out.printf(". sense entry %d %d %d%n", se.getOffset(), se.getSenseNumber(), se.getTagCount());
@@ -99,7 +105,9 @@ public class Test_sensekey_XX_pools
 		ISenseEntry[] ses = { singleParser.parseLine(line), singleParser.parseLine(line + " "), singleParser.parseLine(line2), singleParser.parseLine(line3), };
 		for (ISenseEntry se : ses)
 		{
-			assertEquals(skStr, se.getSenseKey().toString());
+			ISenseKey sk = se.getSenseKey();
+			assertNotNull(sk);
+			assertEquals(skStr, sk.toString());
 			assertEquals(9628141, se.getOffset());
 			assertEquals(0, se.getSenseNumber());
 			assertEquals(1, se.getTagCount());
@@ -110,6 +118,11 @@ public class Test_sensekey_XX_pools
 		ISenseEntry[] ses100 = multipleParser.parseLine(line + "    ");
 		ISenseEntry[] ses2 = multipleParser.parseLine(line2);
 		ISenseEntry[] ses3 = multipleParser.parseLine(line3);
+		assertNotNull(ses1);
+		assertNotNull(ses10);
+		assertNotNull(ses100);
+		assertNotNull(ses2);
+		assertNotNull(ses3);
 		assertEquals(1, ses1.length);
 		assertEquals(1, ses10.length);
 		assertEquals(1, ses100.length);
@@ -118,7 +131,10 @@ public class Test_sensekey_XX_pools
 
 		for (ISenseEntry[] pool : new ISenseEntry[][] { ses1, ses10, ses100, ses2, ses3 })
 		{
-			assertEquals(skStr, pool[0].getSenseKey().toString());
+			assertNotNull(pool[0]);
+			ISenseKey sk = pool[0].getSenseKey();
+			assertNotNull(sk);
+			assertEquals(skStr, sk.toString());
 			assertEquals(9628141, pool[0].getOffset());
 			assertEquals(0, pool[0].getSenseNumber());
 			assertEquals(1, pool[0].getTagCount());
@@ -126,7 +142,10 @@ public class Test_sensekey_XX_pools
 
 		for (ISenseEntry[] pool : new ISenseEntry[][] { ses2, ses3 })
 		{
-			assertEquals(skStr, pool[1].getSenseKey().toString());
+			assertNotNull(pool[1]);
+			ISenseKey sk = pool[1].getSenseKey();
+			assertNotNull(sk);
+			assertEquals(skStr, sk.toString());
 			assertEquals(9680125, pool[1].getOffset());
 			assertEquals(1, pool[1].getSenseNumber());
 			assertEquals(0, pool[1].getTagCount());
@@ -134,7 +153,10 @@ public class Test_sensekey_XX_pools
 
 		for (ISenseEntry[] pool : new ISenseEntry[][] { ses3 })
 		{
-			assertEquals(skStr, pool[2].getSenseKey().toString());
+			assertNotNull(pool[2]);
+			ISenseKey sk = pool[2].getSenseKey();
+			assertNotNull(sk);
+			assertEquals(skStr, sk.toString());
 			assertEquals(77777777, pool[2].getOffset());
 			assertEquals(8, pool[2].getSenseNumber());
 			assertEquals(9, pool[2].getTagCount());
