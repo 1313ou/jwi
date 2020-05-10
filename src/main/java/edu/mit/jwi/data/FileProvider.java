@@ -357,12 +357,12 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 					// if we get a null charset, reset to the prototype value but preserve line comparator
 					IContentType<?> defaultContentType = getDefault(key);
 					assert defaultContentType != null;
-					e.setValue(new ContentType(key, value.getLineComparator(), defaultContentType.getCharset()));
+					e.setValue(new ContentType<>(key, value.getLineComparator(), defaultContentType.getCharset()));
 				}
 				else
 				{
 					// if we get a non-null charset, generate new  type using the new charset but preserve line comparator
-					e.setValue(new ContentType(key, value.getLineComparator(), charset));
+					e.setValue(new ContentType<>(key, value.getLineComparator(), charset));
 				}
 			}
 			this.charset = charset;
@@ -399,13 +399,13 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 				IContentType<?> defaultContentType = getDefault(key);
 				assert defaultContentType != null;
 				assert value != null;
-				prototypeMap.put(key, new ContentType(key, defaultContentType.getLineComparator(), value.getCharset()));
+				prototypeMap.put(key, new ContentType<>(key, defaultContentType.getLineComparator(), value.getCharset()));
 			}
 			else
 			{
 				// if we get a non-null comparator, generate a new type using the new comparator but preserve charset
 				assert value != null;
-				prototypeMap.put(key, new ContentType(key, comparator, value.getCharset()));
+				prototypeMap.put(key, new ContentType<>(key, comparator, value.getCharset()));
 			}
 		}
 		finally
