@@ -138,9 +138,9 @@ public class SenseKey implements ISenseKey
 			throw new NullPointerException();
 		}
 
-		// all sense key lemmas are in lower case
+		// all sense key lemmas need not be in lower case
 		// also checks for null
-		this.lemma = lemma.toLowerCase();
+		this.lemma = lemma; //.toLowerCase();
 		this.lexID = lexID;
 		this.pos = pos;
 		this.isAdjSat = isAdjSat;
@@ -449,8 +449,6 @@ public class SenseKey implements ISenseKey
 	 */
 	@NonNull public static String toString(@NonNull ISenseKey key)
 	{
-		String hw = key.getHeadWord();
-		assert hw != null;
 		ILexFile lf = key.getLexicalFile();
 		assert lf != null;
 
@@ -458,6 +456,8 @@ public class SenseKey implements ISenseKey
 		int size = key.getLemma().length() + 10;
 		if (key.isAdjectiveSatellite())
 		{
+			String hw = key.getHeadWord();
+			assert hw != null;
 			size += hw.length() + 2;
 		}
 
@@ -465,7 +465,7 @@ public class SenseKey implements ISenseKey
 		StringBuilder sb = new StringBuilder(size);
 
 		// make string
-		sb.append(key.getLemma().toLowerCase());
+		sb.append(key.getLemma()); //.toLowerCase());
 		sb.append('%');
 		sb.append(key.getSynsetType());
 		sb.append(':');
