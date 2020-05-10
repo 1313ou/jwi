@@ -10,9 +10,6 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Default implementation of the {@code IWord} interface.
@@ -146,7 +146,8 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IItem#getID()
 	 */
-	@Nullable public IWordID getID()
+	@Nullable
+	public IWordID getID()
 	{
 		return id;
 	}
@@ -156,7 +157,8 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getLemma()
 	 */
-	@Nullable public String getLemma()
+	@Nullable
+	public String getLemma()
 	{
 		assert id != null;
 		return id.getLemma();
@@ -180,7 +182,8 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getSynset()
 	 */
-	@Nullable public ISynset getSynset()
+	@Nullable
+	public ISynset getSynset()
 	{
 		return synset;
 	}
@@ -200,7 +203,8 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getAdjectiveMarker()
 	 */
-	@Nullable public AdjMarker getAdjectiveMarker()
+	@Nullable
+	public AdjMarker getAdjectiveMarker()
 	{
 		return adjMarker;
 	}
@@ -210,7 +214,8 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getSenseKey()
 	 */
-	@NonNull public ISenseKey getSenseKey()
+	@NonNull
+	public ISenseKey getSenseKey()
 	{
 		return senseKey;
 	}
@@ -220,7 +225,8 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getRelatedMap()
 	 */
-	@NonNull public Map<IPointer, List<IWordID>> getRelatedMap()
+	@NonNull
+	public Map<IPointer, List<IWordID>> getRelatedMap()
 	{
 		return wordMap;
 	}
@@ -230,7 +236,8 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getRelatedWords(edu.mit.jwi.item.IPointer)
 	 */
-	@Nullable public List<IWordID> getRelatedWords(IPointer ptrType)
+	@Nullable
+	public List<IWordID> getRelatedWords(IPointer ptrType)
 	{
 		List<IWordID> result = wordMap.get(ptrType);
 		return (result == null) ? Collections.emptyList() : result;
@@ -241,7 +248,8 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getRelatedWords()
 	 */
-	@NonNull public List<IWordID> getRelatedWords()
+	@NonNull
+	public List<IWordID> getRelatedWords()
 	{
 		return allWords;
 	}
@@ -251,7 +259,8 @@ public class Word implements IWord
 	 *
 	 * @see edu.mit.jwi.item.IWord#getVerbFrames()
 	 */
-	@NonNull public List<IVerbFrame> getVerbFrames()
+	@NonNull
+	public List<IVerbFrame> getVerbFrames()
 	{
 		return frames;
 	}
@@ -261,7 +270,9 @@ public class Word implements IWord
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull @Override public String toString()
+	@NonNull
+	@Override
+	public String toString()
 	{
 		assert id != null;
 		ISynsetID sid = id.getSynsetID();
@@ -281,7 +292,8 @@ public class Word implements IWord
 	 *
 	 * @see java.lang.Object#hashCode()
 	 */
-	@Override public int hashCode()
+	@Override
+	public int hashCode()
 	{
 		final int PRIME = 31;
 		int result;
@@ -299,7 +311,8 @@ public class Word implements IWord
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(@Nullable Object obj)
+	@Override
+	public boolean equals(@Nullable Object obj)
 	{
 		// check nulls
 		if (this == obj)
@@ -457,7 +470,8 @@ public class Word implements IWord
 	 * @throws IllegalArgumentException if the specified integer is not a valid lexical id.
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static String getLexicalIDForDataFile(int lexID)
+	@NonNull
+	public static String getLexicalIDForDataFile(int lexID)
 	{
 		checkLexicalID(lexID);
 		return Integer.toHexString(lexID);
@@ -476,7 +490,8 @@ public class Word implements IWord
 	 * @throws IllegalArgumentException if the specified integer is not a valid lexical id.
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static String getLexicalIDForSenseKey(int lexID)
+	@NonNull
+	public static String getLexicalIDForSenseKey(int lexID)
 	{
 		checkLexicalID(lexID);
 		return (lexID < 10) ? lexIDNumStrs[lexID] : Integer.toString(lexID);
@@ -493,7 +508,8 @@ public class Word implements IWord
 	 * @throws IllegalArgumentException if the specified number is not a legal word number
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static String zeroFillWordNumber(int num)
+	@NonNull
+	public static String zeroFillWordNumber(int num)
 	{
 		checkWordNumber(num);
 		StringBuilder sb = new StringBuilder(2);

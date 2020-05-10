@@ -10,13 +10,13 @@
 
 package edu.mit.jwi.data.parse;
 
+import java.util.StringTokenizer;
+
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.ISenseEntry;
 import edu.mit.jwi.item.ISenseKey;
 import edu.mit.jwi.item.SenseEntry;
-
-import java.util.StringTokenizer;
 
 /**
  * Parser for Wordnet sense index files (e.g., <code>index.sense</code> or
@@ -91,7 +91,8 @@ public class SenseLineParser implements ILineParser<ISenseEntry>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	@NonNull public ISenseEntry parseLine(@Nullable String line)
+	@NonNull
+	public ISenseEntry parseLine(@Nullable String line)
 	{
 		if (line == null)
 		{
@@ -117,7 +118,8 @@ public class SenseLineParser implements ILineParser<ISenseEntry>
 		}
 	}
 
-	@NonNull protected static SenseEntry parseSenseEntry(@NonNull StringTokenizer tokenizer, ISenseKey senseKey)
+	@NonNull
+	protected static SenseEntry parseSenseEntry(@NonNull StringTokenizer tokenizer, ISenseKey senseKey)
 	{
 		// get offset
 		int synsetOffset = Integer.parseInt(tokenizer.nextToken());

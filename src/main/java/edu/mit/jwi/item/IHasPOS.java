@@ -29,5 +29,6 @@ public interface IHasPOS
 	 * @return The associated part of speech, or <code>null</code> if none.
 	 * @since JWI 2.0.0
 	 */
-	@Nullable POS getPOS();
+	@Nullable
+	POS getPOS();
 }

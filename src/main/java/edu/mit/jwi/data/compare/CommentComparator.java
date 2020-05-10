@@ -10,9 +10,9 @@
 
 package edu.mit.jwi.data.compare;
 
-import edu.mit.jwi.NonNull;
-
 import java.util.Comparator;
+
+import edu.mit.jwi.NonNull;
 
 /**
  * <p>

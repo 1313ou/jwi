@@ -168,7 +168,8 @@ public class WordID implements IWordID
 	 *
 	 * @see edu.mit.jwi.item.IWordID#getSynsetID()
 	 */
-	@Nullable public ISynsetID getSynsetID()
+	@Nullable
+	public ISynsetID getSynsetID()
 	{
 		return id;
 	}
@@ -188,7 +189,8 @@ public class WordID implements IWordID
 	 *
 	 * @see edu.mit.jwi.item.IWordID#getLemma()
 	 */
-	@Nullable public String getLemma()
+	@Nullable
+	public String getLemma()
 	{
 		return lemma;
 	}
@@ -209,7 +211,8 @@ public class WordID implements IWordID
 	 *
 	 * @see java.lang.Object#hashCode()
 	 */
-	@Override public int hashCode()
+	@Override
+	public int hashCode()
 	{
 		assert id != null;
 		return 31 * id.hashCode();
@@ -227,7 +230,8 @@ public class WordID implements IWordID
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(@Nullable Object obj)
+	@Override
+	public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
 		{
@@ -263,7 +267,9 @@ public class WordID implements IWordID
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull @Override public String toString()
+	@NonNull
+	@Override
+	public String toString()
 	{
 		assert id != null;
 		POS pos = id.getPOS();
@@ -292,7 +298,8 @@ public class WordID implements IWordID
 	 * @throws NullPointerException     if the specified string is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	@NonNull public static IWordID parseWordID(@Nullable String value)
+	@NonNull
+	public static IWordID parseWordID(@Nullable String value)
 	{
 		if (value == null)
 		{

@@ -10,12 +10,12 @@
 
 package edu.mit.jwi;
 
+import java.io.File;
+import java.net.URL;
+
 import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.FileProvider;
 import edu.mit.jwi.item.Word;
-
-import java.io.File;
-import java.net.URL;
 
 /**
  * Basic {@code IDictionary} implementation that mounts files on disk and has

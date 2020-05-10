@@ -10,12 +10,12 @@
 
 package edu.mit.jwi.data.parse;
 
+import java.util.regex.Pattern;
+
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.ExceptionEntryProxy;
 import edu.mit.jwi.item.IExceptionEntryProxy;
-
-import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -77,7 +77,8 @@ public class ExceptionLineParser implements ILineParser<IExceptionEntryProxy>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	@NonNull public IExceptionEntryProxy parseLine(@Nullable String line)
+	@NonNull
+	public IExceptionEntryProxy parseLine(@Nullable String line)
 	{
 		if (line == null)
 		{

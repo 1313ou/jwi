@@ -10,11 +10,11 @@
 
 package edu.mit.jwi.item;
 
+import java.io.Serializable;
+
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.data.parse.SenseKeyParser;
-
-import java.io.Serializable;
 
 /**
  * A sense key is a unique string that identifies a Wordnet word (an
@@ -38,7 +38,8 @@ public interface ISenseKey extends IHasPOS, Comparable<ISenseKey>, Serializable
 	 * @return the lemma for this key
 	 * @since JWI 2.1.0
 	 */
-	@NonNull String getLemma();
+	@NonNull
+	String getLemma();
 
 	/**
 	 * Returns the synset type for the key. The synset type is a one digit
@@ -75,7 +76,8 @@ public interface ISenseKey extends IHasPOS, Comparable<ISenseKey>, Serializable
 	 * @return the lexical file associated with this sense key
 	 * @since JWI 2.1.0
 	 */
-	@Nullable ILexFile getLexicalFile();
+	@Nullable
+	ILexFile getLexicalFile();
 
 	/**
 	 * Returns the lexical id for this sense key, which is a non-negative
@@ -99,7 +101,8 @@ public interface ISenseKey extends IHasPOS, Comparable<ISenseKey>, Serializable
 	 * satellite
 	 * @since JWI 2.1.0
 	 */
-	@Nullable String getHeadWord();
+	@Nullable
+	String getHeadWord();
 
 	/**
 	 * Returns the head id for this sense key. The head id is only present if

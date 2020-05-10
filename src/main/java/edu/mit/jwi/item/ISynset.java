@@ -10,11 +10,11 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.util.List;
 import java.util.Map;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Represents a synset.
@@ -42,7 +42,8 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * this synset is stored
 	 * @since JWI 2.1.0
 	 */
-	@Nullable ILexFile getLexicalFile();
+	@Nullable
+	ILexFile getLexicalFile();
 
 	/**
 	 * Returns the type of the synset, encoded as follows: 1=Noun, 2=Verb,
@@ -59,7 +60,8 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * @return String Returns the non-<code>null</code>, non-empty gloss.
 	 * @since JWI 1.0
 	 */
-	@Nullable String getGloss();
+	@Nullable
+	String getGloss();
 
 	/**
 	 * Returns an immutable list of the word objects (synset, index word pairs)
@@ -68,7 +70,8 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * @return a non-<code>null</code>, immutable list of words for this synset
 	 * @since JWI 2.0.0
 	 */
-	@NonNull List<IWord> getWords();
+	@NonNull
+	List<IWord> getWords();
 
 	/**
 	 * Returns the word with the specified word number. Words are numbered
@@ -112,7 +115,8 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * synsets
 	 * @since JWI 2.0.0
 	 */
-	@NonNull Map<IPointer, List<ISynsetID>> getRelatedMap();
+	@NonNull
+	Map<IPointer, List<ISynsetID>> getRelatedMap();
 
 	/**
 	 * Returns an immutable list of the ids of all synsets that are related to
@@ -128,7 +132,8 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * are no such synsets, returns the empty list
 	 * @since JWI 2.0.0
 	 */
-	@Nullable List<ISynsetID> getRelatedSynsets(IPointer ptr);
+	@Nullable
+	List<ISynsetID> getRelatedSynsets(IPointer ptr);
 
 	/**
 	 * Returns an immutable list of synset ids for all synsets that are
@@ -140,5 +145,6 @@ public interface ISynset extends IHasPOS, IItem<ISynsetID>
 	 * @return a list of all synsets semantically related to the current synset
 	 * @since JWI 2.0.0
 	 */
-	@NonNull List<ISynsetID> getRelatedSynsets();
+	@NonNull
+	List<ISynsetID> getRelatedSynsets();
 }

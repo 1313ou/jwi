@@ -10,13 +10,13 @@
 
 package edu.mit.jwi.data.parse;
 
-import edu.mit.jwi.Nullable;
-import edu.mit.jwi.item.ISenseEntry;
-import edu.mit.jwi.item.ISenseKey;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import edu.mit.jwi.Nullable;
+import edu.mit.jwi.item.ISenseEntry;
+import edu.mit.jwi.item.ISenseKey;
 
 /**
  * Parser for Wordnet sense index files (e.g., <code>index.sense</code> or

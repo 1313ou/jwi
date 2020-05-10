@@ -10,9 +10,9 @@
 
 package edu.mit.jwi.morph;
 
-import edu.mit.jwi.item.POS;
-
 import java.util.List;
+
+import edu.mit.jwi.item.POS;
 
 /**
  * A stemmer is an object that can transform surface forms of words into a stem,

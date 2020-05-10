@@ -78,7 +78,8 @@ public class SynsetID implements ISynsetID
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	@Nullable public POS getPOS()
+	@Nullable
+	public POS getPOS()
 	{
 		return pos;
 	}
@@ -131,7 +132,8 @@ public class SynsetID implements ISynsetID
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		assert pos != null;
 		return synsetIDPrefix + Synset.zeroFillOffset(offset) + '-' + Character.toUpperCase(pos.getTag());
@@ -152,7 +154,8 @@ public class SynsetID implements ISynsetID
 	 * @throws IllegalArgumentException if the specified string is not a properly formatted synset id
 	 * @since JWI 1.0
 	 */
-	@NonNull public static SynsetID parseSynsetID(@Nullable String value)
+	@NonNull
+	public static SynsetID parseSynsetID(@Nullable String value)
 	{
 		if (value == null)
 		{

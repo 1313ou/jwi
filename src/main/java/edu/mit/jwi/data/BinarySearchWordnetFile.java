@@ -10,12 +10,12 @@
 
 package edu.mit.jwi.data;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.Comparator;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Concrete implementation of a wordnet file data source. This particular
@@ -59,7 +59,8 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataSource#getLine(java.lang.String)
 	 */
-	@Nullable public String getLine(String key)
+	@Nullable
+	public String getLine(String key)
 	{
 		ByteBuffer buffer = getBuffer();
 
@@ -113,7 +114,8 @@ public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 	 *
 	 * @see edu.mit.jwi.data.WordnetFile#makeIterator(java.nio.ByteBuffer, java.lang.String)
 	 */
-	@NonNull public LineIterator makeIterator(@NonNull ByteBuffer buffer, String key)
+	@NonNull
+	public LineIterator makeIterator(@NonNull ByteBuffer buffer, String key)
 	{
 		return new BinarySearchLineIterator(buffer, key);
 	}

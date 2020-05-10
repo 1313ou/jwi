@@ -10,9 +10,9 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-
 import java.io.Serializable;
+
+import edu.mit.jwi.NonNull;
 
 /**
  * A Wordnet version.
@@ -108,7 +108,8 @@ public interface IVersion extends Serializable
 		 *
 		 * @see edu.mit.jwi.item.IVersion#getQualifier()
 		 */
-		@NonNull public String getQualifier()
+		@NonNull
+		public String getQualifier()
 		{
 			throw new UnsupportedOperationException();
 		}
@@ -120,7 +121,9 @@ public interface IVersion extends Serializable
 		 * @return the singleton dummy version object.
 		 * @since JWI 2.4.0
 		 */
-		@NonNull @SuppressWarnings("SameReturnValue") protected Object readResolve()
+		@NonNull
+		@SuppressWarnings("SameReturnValue")
+		protected Object readResolve()
 		{
 			return IVersion.NO_VERSION;
 		}

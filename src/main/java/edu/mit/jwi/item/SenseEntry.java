@@ -75,7 +75,8 @@ public class SenseEntry implements ISenseEntry
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	@Nullable public POS getPOS()
+	@Nullable
+	public POS getPOS()
 	{
 		assert key != null;
 		return key.getPOS();
@@ -96,7 +97,8 @@ public class SenseEntry implements ISenseEntry
 	 *
 	 * @see edu.mit.jwi.item.ISenseEntry#getSenseKey()
 	 */
-	@Nullable public ISenseKey getSenseKey()
+	@Nullable
+	public ISenseKey getSenseKey()
 	{
 		return key;
 	}
@@ -116,7 +118,8 @@ public class SenseEntry implements ISenseEntry
 	 *
 	 * @see java.lang.Object#hashCode()
 	 */
-	@Override public int hashCode()
+	@Override
+	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
@@ -133,7 +136,8 @@ public class SenseEntry implements ISenseEntry
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(@Nullable Object obj)
+	@Override
+	public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
 		{

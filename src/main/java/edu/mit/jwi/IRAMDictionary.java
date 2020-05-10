@@ -10,15 +10,15 @@
 
 package edu.mit.jwi;
 
-import edu.mit.jwi.data.ILoadPolicy;
-import edu.mit.jwi.data.ILoadable;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+
+import edu.mit.jwi.data.ILoadPolicy;
+import edu.mit.jwi.data.ILoadable;
 
 /**
  * Interface that governs dictionaries that can be completely loaded into memory.
@@ -104,7 +104,8 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 		 *
 		 * @see edu.mit.jwi.IRAMDictionary.IInputStreamFactory#makeInputStream()
 		 */
-		@NonNull public InputStream makeInputStream() throws IOException
+		@NonNull
+		public InputStream makeInputStream() throws IOException
 		{
 			assert file != null;
 			return new FileInputStream(file);

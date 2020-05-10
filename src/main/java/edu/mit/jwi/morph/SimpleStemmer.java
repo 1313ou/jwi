@@ -10,10 +10,6 @@
 
 package edu.mit.jwi.morph;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-import edu.mit.jwi.item.POS;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,6 +19,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
+import edu.mit.jwi.item.POS;
 
 /**
  * Provides simple a simple pattern-based stemming facility based on the "Rules
@@ -159,7 +159,9 @@ public class SimpleStemmer implements IStemmer
 	 * @return the rule map for this stemmer
 	 * @since JWI 3.5.1
 	 */
-	@NonNull @SuppressWarnings("SameReturnValue") public Map<POS, List<StemmingRule>> getRuleMap()
+	@NonNull
+	@SuppressWarnings("SameReturnValue")
+	public Map<POS, List<StemmingRule>> getRuleMap()
 	{
 		return ruleMap;
 	}
@@ -248,7 +250,8 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	@NonNull protected List<String> stripNounSuffix(@NonNull final String noun)
+	@NonNull
+	protected List<String> stripNounSuffix(@NonNull final String noun)
 	{
 		if (noun.length() <= 2)
 		{
@@ -291,7 +294,8 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.1.1
 	 */
-	@NonNull protected List<String> getNounCollocationRoots(@NonNull String composite)
+	@NonNull
+	protected List<String> getNounCollocationRoots(@NonNull String composite)
 	{
 		// split into parts
 		String[] parts = composite.split(underscore);
@@ -385,7 +389,8 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	@NonNull protected List<String> stripVerbSuffix(@NonNull final String verb)
+	@NonNull
+	protected List<String> stripVerbSuffix(@NonNull final String verb)
 	{
 		if (verb.length() <= 2)
 		{
@@ -419,7 +424,8 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.1.1
 	 */
-	@NonNull protected List<String> getVerbCollocationRoots(@NonNull String composite)
+	@NonNull
+	protected List<String> getVerbCollocationRoots(@NonNull String composite)
 	{
 		// split into parts
 		String[] parts = composite.split(underscore);
@@ -482,7 +488,8 @@ public class SimpleStemmer implements IStemmer
 	 * @throws NullPointerException if the specified word is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	@NonNull protected List<String> stripAdjectiveSuffix(@NonNull final String adj)
+	@NonNull
+	protected List<String> stripAdjectiveSuffix(@NonNull final String adj)
 	{
 		// we will return this to the caller
 		Set<String> result = new LinkedHashSet<>();

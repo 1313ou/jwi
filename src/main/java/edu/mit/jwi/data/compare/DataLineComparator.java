@@ -138,7 +138,8 @@ public class DataLineComparator implements ILineComparator
 	 *
 	 * @see edu.mit.jwi.data.compare.ILineComparator#getCommentDetector()
 	 */
-	@Nullable public ICommentDetector getCommentDetector()
+	@Nullable
+	public ICommentDetector getCommentDetector()
 	{
 		return detector;
 	}

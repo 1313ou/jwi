@@ -10,10 +10,10 @@
 
 package edu.mit.jwi.morph;
 
+import java.util.Set;
+
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.IHasPOS;
-
-import java.util.Set;
 
 /**
  * A rule for deriving a stem (a.k.a., root or lemma) from a word.
@@ -31,7 +31,8 @@ public interface IStemmingRule extends IHasPOS
 	 * @return the suffix for this rule.
 	 * @since JWI 2.3.1
 	 */
-	@Nullable String getSuffix();
+	@Nullable
+	String getSuffix();
 
 	/**
 	 * Returns the ending for this rule. Will never return <code>null</code> ,
@@ -40,7 +41,8 @@ public interface IStemmingRule extends IHasPOS
 	 * @return the ending for this rule.
 	 * @since JWI 2.3.1
 	 */
-	@Nullable String getEnding();
+	@Nullable
+	String getEnding();
 
 	/**
 	 * Returns the set of suffixes that should be ignored when applying this
@@ -66,7 +68,8 @@ public interface IStemmingRule extends IHasPOS
 	 * applied to this word
 	 * @since JWI 2.3.1
 	 */
-	@Nullable String apply(String word);
+	@Nullable
+	String apply(String word);
 
 	/**
 	 * Applies this rule to the given word, adding the specified suffix to the
@@ -80,5 +83,6 @@ public interface IStemmingRule extends IHasPOS
 	 * applied to this word
 	 * @since JWI 2.3.1
 	 */
-	@Nullable String apply(String word, String suffix);
+	@Nullable
+	String apply(String word, String suffix);
 }

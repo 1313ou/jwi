@@ -10,6 +10,14 @@
 
 package edu.mit.jwi;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.item.ExceptionEntryID;
@@ -29,14 +37,6 @@ import edu.mit.jwi.item.IWordID;
 import edu.mit.jwi.item.IndexWordID;
 import edu.mit.jwi.item.POS;
 import edu.mit.jwi.item.Synset;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A dictionary that caches the results of another dictionary
@@ -77,7 +77,8 @@ public class CachingDictionary implements ICachingDictionary
 	 * @return the dictionary that is wrapped by this dictionary
 	 * @since JWI 2.2.0
 	 */
-	@Nullable public IDictionary getBackingDictionary()
+	@Nullable
+	public IDictionary getBackingDictionary()
 	{
 		return backing;
 	}
@@ -91,7 +92,9 @@ public class CachingDictionary implements ICachingDictionary
 	 * @return the item cache to be used by this dictionary
 	 * @since JWI 2.2.0
 	 */
-	@NonNull @SuppressWarnings("WeakerAccess") protected IItemCache createCache()
+	@NonNull
+	@SuppressWarnings("WeakerAccess")
+	protected IItemCache createCache()
 	{
 		return new ItemCache();
 	}
@@ -104,7 +107,8 @@ public class CachingDictionary implements ICachingDictionary
 	 * @throws ObjectClosedException if the dictionary is closed.
 	 * @since JWI 2.2.0
 	 */
-	@SuppressWarnings("WeakerAccess") protected void checkOpen()
+	@SuppressWarnings("WeakerAccess")
+	protected void checkOpen()
 	{
 		if (isOpen())
 		{
@@ -135,7 +139,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.ICachingDictionary#getCache()
 	 */
-	@NonNull public IItemCache getCache()
+	@NonNull
+	public IItemCache getCache()
 	{
 		return cache;
 	}
@@ -156,7 +161,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.data.IHasCharset#getCharset()
 	 */
-	@Nullable public Charset getCharset()
+	@Nullable
+	public Charset getCharset()
 	{
 		assert backing != null;
 		return backing.getCharset();
@@ -232,7 +238,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.item.IHasVersion#getVersion()
 	 */
-	@Nullable public IVersion getVersion()
+	@Nullable
+	public IVersion getVersion()
 	{
 		assert backing != null;
 		return backing.getVersion();
@@ -243,7 +250,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getIndexWord(java.lang.String, edu.mit.jwi.item.POS)
 	 */
-	@Nullable public IIndexWord getIndexWord(String lemma, POS pos)
+	@Nullable
+	public IIndexWord getIndexWord(String lemma, POS pos)
 	{
 		checkOpen();
 		IIndexWordID id = new IndexWordID(lemma, pos);
@@ -265,7 +273,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getIndexWord(edu.mit.jwi.item.IIndexWordID)
 	 */
-	@Nullable public IIndexWord getIndexWord(IIndexWordID id)
+	@Nullable
+	public IIndexWord getIndexWord(IIndexWordID id)
 	{
 		checkOpen();
 		IIndexWord item = getCache().retrieveItem(id);
@@ -297,7 +306,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getWord(edu.mit.jwi.item.IWordID)
 	 */
-	@Nullable public IWord getWord(IWordID id)
+	@Nullable
+	public IWord getWord(IWordID id)
 	{
 		checkOpen();
 		IWord item = getCache().retrieveItem(id);
@@ -320,7 +330,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getWord(edu.mit.jwi.item.ISenseKey)
 	 */
-	@Nullable public IWord getWord(ISenseKey key)
+	@Nullable
+	public IWord getWord(ISenseKey key)
 	{
 		checkOpen();
 		IWord item = getCache().retrieveWord(key);
@@ -343,7 +354,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSynset(edu.mit.jwi.item.ISynsetID)
 	 */
-	@Nullable public ISynset getSynset(ISynsetID id)
+	@Nullable
+	public ISynset getSynset(ISynsetID id)
 	{
 		checkOpen();
 		ISynset item = getCache().retrieveItem(id);
@@ -366,7 +378,8 @@ public class CachingDictionary implements ICachingDictionary
 	 * @throws NullPointerException if the specified synset is <code>null</code>
 	 * @since JWI 2.2.0
 	 */
-	@SuppressWarnings("WeakerAccess") protected void cacheSynset(@NonNull ISynset synset)
+	@SuppressWarnings("WeakerAccess")
+	protected void cacheSynset(@NonNull ISynset synset)
 	{
 		IItemCache cache = getCache();
 		cache.cacheItem(synset);
@@ -393,7 +406,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntry(edu.mit.jwi.item.ISenseKey)
 	 */
-	@Nullable public ISenseEntry getSenseEntry(ISenseKey key)
+	@Nullable
+	public ISenseEntry getSenseEntry(ISenseKey key)
 	{
 		checkOpen();
 		ISenseEntry entry = getCache().retrieveSenseEntry(key);
@@ -414,7 +428,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntries(edu.mit.jwi.item.ISenseKey)
 	 */
-	@Nullable public ISenseEntry[] getSenseEntries(ISenseKey key)
+	@Nullable
+	public ISenseEntry[] getSenseEntries(ISenseKey key)
 	{
 		checkOpen();
 		ISenseEntry[] entries = getCache().retrieveSenseEntries(key);
@@ -457,7 +472,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntry(java.lang.String, edu.mit.jwi.item.POS)
 	 */
-	@Nullable public IExceptionEntry getExceptionEntry(String surfaceForm, POS pos)
+	@Nullable
+	public IExceptionEntry getExceptionEntry(String surfaceForm, POS pos)
 	{
 		checkOpen();
 		IExceptionEntryID id = new ExceptionEntryID(surfaceForm, pos);
@@ -479,7 +495,8 @@ public class CachingDictionary implements ICachingDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntry(edu.mit.jwi.item.IExceptionEntryID)
 	 */
-	@Nullable public IExceptionEntry getExceptionEntry(IExceptionEntryID id)
+	@Nullable
+	public IExceptionEntry getExceptionEntry(IExceptionEntryID id)
 	{
 		checkOpen();
 		IExceptionEntry item = getCache().retrieveItem(id);
@@ -612,7 +629,8 @@ public class CachingDictionary implements ICachingDictionary
 		 * @return the new map
 		 * @since JWI 2.2.0
 		 */
-		@NonNull protected <K, V> Map<K, V> makeCache(int initialCapacity)
+		@NonNull
+		protected <K, V> Map<K, V> makeCache(int initialCapacity)
 		{
 			return new LinkedHashMap<>(initialCapacity, DEFAULT_LOAD_FACTOR, true);
 		}
@@ -893,7 +911,8 @@ public class CachingDictionary implements ICachingDictionary
 		 *
 		 * @see edu.mit.jwi.ICachingDictionary.IItemCache#retrieveItem(edu.mit.jwi.item.IItemID)
 		 */
-		@Nullable public <T extends IItem<D>, D extends IItemID<T>> T retrieveItem(D id)
+		@Nullable
+		public <T extends IItem<D>, D extends IItemID<T>> T retrieveItem(D id)
 		{
 			checkOpen();
 			assert itemCache != null;
@@ -906,7 +925,8 @@ public class CachingDictionary implements ICachingDictionary
 		 *
 		 * @see edu.mit.jwi.ICachingDictionary.IItemCache#retrieveWord(edu.mit.jwi.item.ISenseKey)
 		 */
-		@Nullable public IWord retrieveWord(ISenseKey key)
+		@Nullable
+		public IWord retrieveWord(ISenseKey key)
 		{
 			checkOpen();
 			assert keyCache != null;
@@ -918,7 +938,8 @@ public class CachingDictionary implements ICachingDictionary
 		 *
 		 * @see edu.mit.jwi.ICachingDictionary.IItemCache#retrieveSenseEntry(edu.mit.jwi.item.ISenseKey)
 		 */
-		@Nullable public ISenseEntry retrieveSenseEntry(ISenseKey key)
+		@Nullable
+		public ISenseEntry retrieveSenseEntry(ISenseKey key)
 		{
 			checkOpen();
 			assert senseCache != null;
@@ -930,7 +951,8 @@ public class CachingDictionary implements ICachingDictionary
 		 *
 		 * @see edu.mit.jwi.ICachingDictionary.IItemCache#retrieveSenseEntries(edu.mit.jwi.item.ISenseKey)
 		 */
-		@Nullable public ISenseEntry[] retrieveSenseEntries(ISenseKey key)
+		@Nullable
+		public ISenseEntry[] retrieveSenseEntries(ISenseKey key)
 		{
 			checkOpen();
 			assert sensesCache != null;

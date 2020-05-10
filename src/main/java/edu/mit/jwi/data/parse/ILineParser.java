@@ -32,7 +32,8 @@ public interface ILineParser<T>
 	 * @throws MisformattedLineException if the line is malformed in some way
 	 * @since JWI 1.0
 	 */
-	@Nullable T parseLine(String line);
+	@Nullable
+	T parseLine(String line);
 
 	/**
 	 * Thrown when a line from a data resource does not match expected formatting

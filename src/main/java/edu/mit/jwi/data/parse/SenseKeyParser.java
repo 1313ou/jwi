@@ -71,7 +71,8 @@ public class SenseKeyParser implements ILineParser<ISenseKey>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	@Nullable public ISenseKey parseLine(@Nullable String key)
+	@Nullable
+	public ISenseKey parseLine(@Nullable String key)
 	{
 		if (key == null)
 		{
@@ -141,7 +142,8 @@ public class SenseKeyParser implements ILineParser<ISenseKey>
 	 * @return the lexical file corresponding to the specified frame number
 	 * @since JWI 2.1.0
 	 */
-	@Nullable protected ILexFile resolveLexicalFile(int lexFileNum)
+	@Nullable
+	protected ILexFile resolveLexicalFile(int lexFileNum)
 	{
 		ILexFile lexFile = LexFile.getLexicalFile(lexFileNum);
 		if (lexFile == null)

@@ -32,5 +32,6 @@ public interface IExceptionEntryID extends IHasPOS, IItemID<IExceptionEntry>
 	 * this id object
 	 * @since JWI 1.0
 	 */
-	@NonNull String getSurfaceForm();
+	@NonNull
+	String getSurfaceForm();
 }

@@ -10,13 +10,6 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-import edu.mit.jwi.data.IContentType;
-import edu.mit.jwi.data.IDataType;
-import edu.mit.jwi.data.WordnetFile;
-import edu.mit.jwi.data.compare.ICommentDetector;
-
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -26,6 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
+import edu.mit.jwi.data.IContentType;
+import edu.mit.jwi.data.IDataType;
+import edu.mit.jwi.data.WordnetFile;
+import edu.mit.jwi.data.compare.ICommentDetector;
 
 /**
  * Default, concrete implementation of the {@link IVersion} interface. This
@@ -177,7 +177,8 @@ public class Version implements IVersion
 	 *
 	 * @see java.lang.Object#hashCode()
 	 */
-	@Override public int hashCode()
+	@Override
+	public int hashCode()
 	{
 		return hashCode(major, minor, bugfix, qualifier);
 	}
@@ -187,7 +188,8 @@ public class Version implements IVersion
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(@Nullable Object obj)
+	@Override
+	public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
 		{
@@ -222,7 +224,8 @@ public class Version implements IVersion
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		if (toString == null)
 		{
@@ -238,7 +241,8 @@ public class Version implements IVersion
 	 * @return the appropriate deserialized object.
 	 * @since JWI 2.4.0
 	 */
-	@NonNull protected Object readResolve()
+	@NonNull
+	protected Object readResolve()
 	{
 		return getVersion(major, minor, bugfix, qualifier);
 	}
@@ -255,7 +259,8 @@ public class Version implements IVersion
 	 * @throws IllegalArgumentException if the supplied arguments do not identify a legal version
 	 * @since JWI 2.2.0
 	 */
-	@NonNull public static String checkVersion(int major, int minor, int bugfix, String qualifier)
+	@NonNull
+	public static String checkVersion(int major, int minor, int bugfix, String qualifier)
 	{
 		checkVersionNumber(major, minor, bugfix);
 		return checkQualifier(qualifier);
@@ -289,7 +294,8 @@ public class Version implements IVersion
 	 * @see #isIllegalQualifier(String)
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static String checkQualifier(@Nullable String qualifier)
+	@NonNull
+	public static String checkQualifier(@Nullable String qualifier)
 	{
 		if (qualifier == null)
 		{
@@ -387,7 +393,8 @@ public class Version implements IVersion
 	 * @return the cached version object corresponding to these numbers
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static Version getVersion(int major, int minor, int bugfix)
+	@NonNull
+	public static Version getVersion(int major, int minor, int bugfix)
 	{
 		return getVersion(major, minor, bugfix, null);
 	}
@@ -404,7 +411,8 @@ public class Version implements IVersion
 	 * @throws IllegalArgumentException if the version numbers and qualifier are not legal
 	 * @since JWI 2.2.0
 	 */
-	@NonNull public static Version getVersion(int major, int minor, int bugfix, String qualifier)
+	@NonNull
+	public static Version getVersion(int major, int minor, int bugfix, String qualifier)
 	{
 		qualifier = checkVersion(major, minor, bugfix, qualifier);
 		int hash = hashCode(major, minor, bugfix, qualifier);
@@ -436,7 +444,8 @@ public class Version implements IVersion
 	 * @throws IllegalArgumentException if illegal argument
 	 * @since JWI 2.2.0
 	 */
-	@NonNull public static String makeVersionString(int major, int minor, int bugfix, String qualifier)
+	@NonNull
+	public static String makeVersionString(int major, int minor, int bugfix, String qualifier)
 	{
 		qualifier = checkQualifier(qualifier);
 		boolean hasQualifier = qualifier.length() > 0;
@@ -490,7 +499,8 @@ public class Version implements IVersion
 	 * @return the Version that was extracted, or <code>null</code> if none
 	 * @since JWI 2.1.0
 	 */
-	@Nullable public static Version extractVersion(@NonNull IContentType<?> contentType, @NonNull ByteBuffer buffer)
+	@Nullable
+	public static Version extractVersion(@NonNull IContentType<?> contentType, @NonNull ByteBuffer buffer)
 	{
 		IDataType<?> dataType = contentType.getDataType();
 		if (!dataType.hasVersion())
@@ -559,7 +569,8 @@ public class Version implements IVersion
 	 * not a valid version
 	 * @since JWI 2.1.0
 	 */
-	@Nullable public static Version parseVersionProtected(@Nullable CharSequence verStr)
+	@Nullable
+	public static Version parseVersionProtected(@Nullable CharSequence verStr)
 	{
 		if (verStr == null)
 		{
@@ -625,7 +636,8 @@ public class Version implements IVersion
 	 *                                  version
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static Version parseVersion(@Nullable CharSequence verStr)
+	@NonNull
+	public static Version parseVersion(@Nullable CharSequence verStr)
 	{
 		if (verStr == null)
 		{

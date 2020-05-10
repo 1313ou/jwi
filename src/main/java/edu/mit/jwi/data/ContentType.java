@@ -10,6 +10,15 @@
 
 package edu.mit.jwi.data;
 
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.data.compare.DataLineComparator;
@@ -22,15 +31,6 @@ import edu.mit.jwi.item.IIndexWord;
 import edu.mit.jwi.item.ISenseEntry;
 import edu.mit.jwi.item.ISynset;
 import edu.mit.jwi.item.POS;
-
-import java.lang.reflect.Field;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * A concrete implementation of the {@code IContentType} interface. This class
@@ -124,7 +124,8 @@ public class ContentType<T> implements IContentType<T>
 	 *
 	 * @see edu.mit.jwi.data.IContentType#getKey()
 	 */
-	@NonNull public ContentTypeKey getKey()
+	@NonNull
+	public ContentTypeKey getKey()
 	{
 		assert fKey != null;
 		return fKey;
@@ -135,7 +136,8 @@ public class ContentType<T> implements IContentType<T>
 	 *
 	 * @see edu.mit.jwi.data.IContentType#getDataType()
 	 */
-	@NonNull public IDataType<T> getDataType()
+	@NonNull
+	public IDataType<T> getDataType()
 	{
 		assert fKey != null;
 		return fKey.getDataType();
@@ -146,7 +148,8 @@ public class ContentType<T> implements IContentType<T>
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	@Nullable public POS getPOS()
+	@Nullable
+	public POS getPOS()
 	{
 		assert fKey != null;
 		return fKey.getPOS();
@@ -177,7 +180,8 @@ public class ContentType<T> implements IContentType<T>
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		return fString;
 	}
@@ -233,7 +237,8 @@ public class ContentType<T> implements IContentType<T>
 	 * order they are declared.
 	 * @since JWI 2.0.0
 	 */
-	@NonNull public static Collection<ContentType<?>> values()
+	@NonNull
+	public static Collection<ContentType<?>> values()
 	{
 		return contentTypes;
 	}
@@ -248,7 +253,8 @@ public class ContentType<T> implements IContentType<T>
 	 * @throws NullPointerException if the specified part of speech is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	@NonNull public static IContentType<IIndexWord> getIndexContentType(@Nullable POS pos)
+	@NonNull
+	public static IContentType<IIndexWord> getIndexContentType(@Nullable POS pos)
 	{
 		if (pos == null)
 		{
@@ -278,7 +284,8 @@ public class ContentType<T> implements IContentType<T>
 	 * @throws NullPointerException if the specified part of speech is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	@NonNull public static IContentType<ISynset> getDataContentType(@Nullable POS pos)
+	@NonNull
+	public static IContentType<ISynset> getDataContentType(@Nullable POS pos)
 	{
 		if (pos == null)
 		{
@@ -308,7 +315,8 @@ public class ContentType<T> implements IContentType<T>
 	 * @throws NullPointerException if the specified part of speech is <code>null</code>
 	 * @since JWI 2.0.0
 	 */
-	@NonNull public static IContentType<IExceptionEntryProxy> getExceptionContentType(@Nullable POS pos)
+	@NonNull
+	public static IContentType<IExceptionEntryProxy> getExceptionContentType(@Nullable POS pos)
 	{
 		if (pos == null)
 		{

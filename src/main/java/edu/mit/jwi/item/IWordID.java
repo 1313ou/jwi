@@ -28,7 +28,8 @@ public interface IWordID extends IHasPOS, IItemID<IWord>
 	 * @return the synset id for this word; never <code>null</code>
 	 * @since JWI 1.0
 	 */
-	@Nullable ISynsetID getSynsetID();
+	@Nullable
+	ISynsetID getSynsetID();
 
 	/**
 	 * Returns the word number, which is a number from 1 to 255 that indicates
@@ -53,5 +54,6 @@ public interface IWordID extends IHasPOS, IItemID<IWord>
 	 * <code>null</code> if the lemma has not been specified.
 	 * @since JWI 1.0
 	 */
-	@Nullable String getLemma();
+	@Nullable
+	String getLemma();
 }

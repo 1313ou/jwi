@@ -10,9 +10,6 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,6 +17,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Concrete implementation of the <code>ILexFile</code> interface. This class
@@ -165,7 +165,8 @@ public class LexFile implements ILexFile
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		return name;
 	}
@@ -175,7 +176,8 @@ public class LexFile implements ILexFile
 	 *
 	 * @see java.lang.Object#hashCode()
 	 */
-	@Override public int hashCode()
+	@Override
+	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
@@ -187,7 +189,8 @@ public class LexFile implements ILexFile
 	}
 
 	/* (non-Javadoc) @see java.lang.Object#equals(java.lang.Object) */
-	@Override public boolean equals(@Nullable Object obj)
+	@Override
+	public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
 		{
@@ -245,7 +248,8 @@ public class LexFile implements ILexFile
 	 * @return the appropriate deserialized object.
 	 * @since JWI 2.4.0
 	 */
-	@NonNull protected Object readResolve()
+	@NonNull
+	protected Object readResolve()
 	{
 		LexFile lexFile = getLexicalFile(num);
 		return this.equals(lexFile) ? lexFile : this;
@@ -376,7 +380,8 @@ public class LexFile implements ILexFile
 	 * description declared in this class
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static Collection<LexFile> values()
+	@NonNull
+	public static Collection<LexFile> values()
 	{
 		return lexFileMap.values();
 	}
@@ -391,7 +396,8 @@ public class LexFile implements ILexFile
 	 * null if none is found
 	 * @since JWI 2.1.0
 	 */
-	@Nullable public static LexFile getLexicalFile(int num)
+	@Nullable
+	public static LexFile getLexicalFile(int num)
 	{
 		return lexFileMap.get(num);
 	}

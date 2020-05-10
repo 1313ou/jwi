@@ -10,9 +10,6 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +19,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Concrete implementation of the <code>IPointer</code> interface. This class
@@ -107,7 +107,8 @@ public class Pointer implements IPointer
 	 *
 	 * @see edu.mit.jwi.item.IPointer#getSymbol()
 	 */
-	@NonNull public String getSymbol()
+	@NonNull
+	public String getSymbol()
 	{
 		return symbol;
 	}
@@ -117,7 +118,8 @@ public class Pointer implements IPointer
 	 *
 	 * @see edu.mit.jwi.item.IPointer#getName()
 	 */
-	@NonNull public String getName()
+	@NonNull
+	public String getName()
 	{
 		return name;
 	}
@@ -127,7 +129,8 @@ public class Pointer implements IPointer
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		return toString;
 	}
@@ -139,7 +142,8 @@ public class Pointer implements IPointer
 	 * @return the appropriate deserialized object.
 	 * @since JWI 2.4.0
 	 */
-	@Nullable protected Object readResolve()
+	@Nullable
+	protected Object readResolve()
 	{
 		// check and see if this symbol matches DERIVED_FROM_ADJ (which is
 		// excluded from the pointer map because it is ambiguous)
@@ -238,7 +242,8 @@ public class Pointer implements IPointer
 	 * this class
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static Collection<Pointer> values()
+	@NonNull
+	public static Collection<Pointer> values()
 	{
 		return pointerSet;
 	}
@@ -256,7 +261,8 @@ public class Pointer implements IPointer
 	 * @throws IllegalArgumentException if the symbol does not correspond to a known pointer.
 	 * @since JWI 2.1.0
 	 */
-	@Nullable public static Pointer getPointerType(@NonNull String symbol, POS pos)
+	@Nullable
+	public static Pointer getPointerType(@NonNull String symbol, POS pos)
 	{
 		if (pos == POS.ADVERB && symbol.equals(ambiguousSymbol))
 		{

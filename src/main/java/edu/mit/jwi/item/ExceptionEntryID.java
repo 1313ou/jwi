@@ -70,7 +70,8 @@ public class ExceptionEntryID implements IExceptionEntryID
 	 *
 	 * @see edu.mit.jwi.item.IExceptionEntryID#getSurfaceForm()
 	 */
-	@NonNull public String getSurfaceForm()
+	@NonNull
+	public String getSurfaceForm()
 	{
 		return surfaceForm;
 	}
@@ -80,7 +81,8 @@ public class ExceptionEntryID implements IExceptionEntryID
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	@Nullable public POS getPOS()
+	@Nullable
+	public POS getPOS()
 	{
 		return pos;
 	}
@@ -90,7 +92,8 @@ public class ExceptionEntryID implements IExceptionEntryID
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		assert pos != null;
 		return "EID-" + surfaceForm + "-" + pos.getTag();
@@ -150,7 +153,8 @@ public class ExceptionEntryID implements IExceptionEntryID
 	 *                                  entry id
 	 * @since JWI 2.2.0
 	 */
-	@NonNull public static ExceptionEntryID parseExceptionEntryID(@Nullable String value)
+	@NonNull
+	public static ExceptionEntryID parseExceptionEntryID(@Nullable String value)
 	{
 		if (value == null)
 		{

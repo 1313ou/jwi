@@ -10,10 +10,10 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import edu.mit.jwi.NonNull;
 
 /**
  * Represents 'unknown' lexical files. This class implements internal caching,
@@ -62,7 +62,8 @@ public class UnknownLexFile extends LexFile
 	 * @throws IllegalArgumentException if the specified integer is not a valid lexical file number
 	 * @since JWI 2.1.4
 	 */
-	@NonNull public static UnknownLexFile getUnknownLexicalFile(int num)
+	@NonNull
+	public static UnknownLexFile getUnknownLexicalFile(int num)
 	{
 		checkLexicalFileNumber(num);
 		UnknownLexFile result = lexFileMap.get(num);

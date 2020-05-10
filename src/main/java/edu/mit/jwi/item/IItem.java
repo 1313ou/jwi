@@ -10,9 +10,9 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.Nullable;
-
 import java.io.Serializable;
+
+import edu.mit.jwi.Nullable;
 
 /**
  * An item is an object with an ID.
@@ -30,5 +30,6 @@ public interface IItem<T extends IItemID<?>> extends Serializable
 	 * @return the non-<code>null</code> ID for this item
 	 * @since JWI 2.0.0
 	 */
-	@Nullable T getID();
+	@Nullable
+	T getID();
 }

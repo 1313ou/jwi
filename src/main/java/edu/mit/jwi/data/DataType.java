@@ -10,6 +10,17 @@
 
 package edu.mit.jwi.data;
 
+import java.io.File;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.data.parse.DataLineParser;
@@ -23,17 +34,6 @@ import edu.mit.jwi.item.IIndexWord;
 import edu.mit.jwi.item.ISenseEntry;
 import edu.mit.jwi.item.ISynset;
 import edu.mit.jwi.item.POS;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * A concrete implementation of the {@code IDataType} interface. This class
@@ -145,7 +145,8 @@ public class DataType<T> implements IDataType<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataType#getParser()
 	 */
-	@Nullable public ILineParser<T> getParser()
+	@Nullable
+	public ILineParser<T> getParser()
 	{
 		return parser;
 	}
@@ -155,7 +156,8 @@ public class DataType<T> implements IDataType<T>
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		return name;
 	}
@@ -171,7 +173,8 @@ public class DataType<T> implements IDataType<T>
 	 * order they are declared.
 	 * @since JWI 2.0.0
 	 */
-	@NonNull public static Collection<DataType<?>> values()
+	@NonNull
+	public static Collection<DataType<?>> values()
 	{
 		if (dataTypes == null)
 		{
@@ -227,7 +230,8 @@ public class DataType<T> implements IDataType<T>
 	 * @throws NullPointerException if the data type or file collection is <code>null</code>
 	 * @since JWI 2.2.0
 	 */
-	@Nullable public static File find(@NonNull IDataType<?> dataType, @Nullable POS pos, @NonNull Collection<? extends File> files)
+	@Nullable
+	public static File find(@NonNull IDataType<?> dataType, @Nullable POS pos, @NonNull Collection<? extends File> files)
 	{
 		Set<String> typePatterns = dataType.getResourceNameHints();
 		Set<String> posPatterns = (pos == null) ? Collections.emptySet() : pos.getResourceNameHints();

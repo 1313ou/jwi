@@ -10,15 +10,15 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Default implementation of {@code IIndexWord}.
@@ -191,7 +191,8 @@ public class IndexWord implements IIndexWord
 	 *
 	 * @see edu.mit.jwi.item.IIndexWord#getWordIDs()
 	 */
-	@NonNull public List<IWordID> getWordIDs()
+	@NonNull
+	public List<IWordID> getWordIDs()
 	{
 		return wordIDs;
 	}
@@ -211,7 +212,8 @@ public class IndexWord implements IIndexWord
 	 *
 	 * @see edu.mit.jwi.item.IItem#getID()
 	 */
-	@Nullable public IIndexWordID getID()
+	@Nullable
+	public IIndexWordID getID()
 	{
 		return id;
 	}
@@ -221,7 +223,8 @@ public class IndexWord implements IIndexWord
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	@Nullable public POS getPOS()
+	@Nullable
+	public POS getPOS()
 	{
 		assert id != null;
 		return id.getPOS();
@@ -232,7 +235,8 @@ public class IndexWord implements IIndexWord
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append('[');

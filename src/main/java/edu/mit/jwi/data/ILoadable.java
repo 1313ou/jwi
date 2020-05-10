@@ -58,5 +58,6 @@ public interface ILoadable
 	 * <code>false</code> otherwise
 	 * @since JWI 2.2.0
 	 */
-	@SuppressWarnings("BooleanMethodIsAlwaysInverted") boolean isLoaded();
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+	boolean isLoaded();
 }

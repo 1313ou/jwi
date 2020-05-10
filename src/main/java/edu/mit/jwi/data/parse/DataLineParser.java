@@ -10,6 +10,14 @@
 
 package edu.mit.jwi.data.parse;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.AdjMarker;
@@ -29,14 +37,6 @@ import edu.mit.jwi.item.SynsetID;
 import edu.mit.jwi.item.UnknownLexFile;
 import edu.mit.jwi.item.VerbFrame;
 import edu.mit.jwi.item.WordID;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 /**
  * <p>
@@ -91,7 +91,8 @@ public class DataLineParser implements ILineParser<ISynset>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	@NonNull public ISynset parseLine(@Nullable String line)
+	@NonNull
+	public ISynset parseLine(@Nullable String line)
 	{
 		if (line == null)
 		{
@@ -286,7 +287,8 @@ public class DataLineParser implements ILineParser<ISynset>
 	 * <code>null</code> if there is none
 	 * @since JWI 2.1.0
 	 */
-	@Nullable protected IVerbFrame resolveVerbFrame(int frameNum)
+	@Nullable
+	protected IVerbFrame resolveVerbFrame(int frameNum)
 	{
 		return VerbFrame.getFrame(frameNum);
 	}
@@ -306,7 +308,8 @@ public class DataLineParser implements ILineParser<ISynset>
 	 * @return the lexical file corresponding to the specified frame number
 	 * @since JWI 2.1.0
 	 */
-	@Nullable protected ILexFile resolveLexicalFile(int lexFileNum)
+	@Nullable
+	protected ILexFile resolveLexicalFile(int lexFileNum)
 	{
 		ILexFile lexFile = LexFile.getLexicalFile(lexFileNum);
 		if (lexFile == null)
@@ -334,7 +337,8 @@ public class DataLineParser implements ILineParser<ISynset>
 	 *                                  correspond to a known pointer
 	 * @since JWI 2.1.0
 	 */
-	@Nullable protected IPointer resolvePointer(@NonNull String symbol, POS pos)
+	@Nullable
+	protected IPointer resolvePointer(@NonNull String symbol, POS pos)
 	{
 		return Pointer.getPointerType(symbol, pos);
 	}

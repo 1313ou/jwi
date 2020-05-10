@@ -10,11 +10,11 @@
 
 package edu.mit.jwi.data;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.io.File;
 import java.nio.ByteBuffer;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Concrete implementation of a wordnet file data source. This particular
@@ -52,7 +52,8 @@ public class DirectAccessWordnetFile<T> extends WordnetFile<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataSource#getLine(java.lang.String)
 	 */
-	@Nullable public String getLine(@NonNull String key)
+	@Nullable
+	public String getLine(@NonNull String key)
 	{
 		ByteBuffer buffer = getBuffer();
 		synchronized (bufferLock)
@@ -82,7 +83,8 @@ public class DirectAccessWordnetFile<T> extends WordnetFile<T>
 	 *
 	 * @see edu.mit.jwi.data.WordnetFile#makeIterator(java.nio.ByteBuffer, java.lang.String)
 	 */
-	@NonNull public LineIterator makeIterator(@NonNull ByteBuffer buffer, String key)
+	@NonNull
+	public LineIterator makeIterator(@NonNull ByteBuffer buffer, String key)
 	{
 		return new DirectLineIterator(buffer, key);
 	}

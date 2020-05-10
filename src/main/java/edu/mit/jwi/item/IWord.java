@@ -10,11 +10,11 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.util.List;
 import java.util.Map;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * A word, which in Wordnet is an index word paired with a synset.
@@ -31,7 +31,8 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return the non-<code>null</code>, non-empty root form of this word
 	 * @since JWI 1.0
 	 */
-	@Nullable String getLemma();
+	@Nullable
+	String getLemma();
 
 	/**
 	 * Returns the synset uniquely identified by this word. The returned synset
@@ -40,7 +41,8 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return the non-<code>null</code> synset identified by this word.
 	 * @since JWI 2.1.0
 	 */
-	@Nullable ISynset getSynset();
+	@Nullable
+	ISynset getSynset();
 
 	/**
 	 * Returns the sense key for this word. Will never return <code>null</code>;
@@ -53,7 +55,8 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @see ISenseKey#setHead(String, int)
 	 * @since JWI 2.1.0
 	 */
-	@NonNull ISenseKey getSenseKey();
+	@NonNull
+	ISenseKey getSenseKey();
 
 	/**
 	 * A integer in the closed range [0,15] that, when appended onto lemma,
@@ -80,7 +83,8 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return an immutable map from lexical pointers to words
 	 * @since JWI 2.0.0
 	 */
-	@NonNull Map<IPointer, List<IWordID>> getRelatedMap();
+	@NonNull
+	Map<IPointer, List<IWordID>> getRelatedMap();
 
 	/**
 	 * Returns an immutable list of all word ids related to this word by the
@@ -95,7 +99,8 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * list if none.
 	 * @since JWI 2.0.0
 	 */
-	@Nullable List<IWordID> getRelatedWords(IPointer ptr);
+	@Nullable
+	List<IWordID> getRelatedWords(IPointer ptr);
 
 	/**
 	 * Returns an immutable list of all word ids related to this word by
@@ -108,7 +113,8 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return an immutable list of all lexically-related words
 	 * @since JWI 2.0.0
 	 */
-	@NonNull List<IWordID> getRelatedWords();
+	@NonNull
+	List<IWordID> getRelatedWords();
 
 	/**
 	 * Returns an immutable list of all verb frames associated with this word.
@@ -118,7 +124,8 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * word, or the empty list if none.
 	 * @since JWI 2.0.0
 	 */
-	@NonNull List<IVerbFrame> getVerbFrames();
+	@NonNull
+	List<IVerbFrame> getVerbFrames();
 
 	/**
 	 * Returns the adjective marker of this word. If this word has no adjective
@@ -127,5 +134,6 @@ public interface IWord extends IHasPOS, IItem<IWordID>
 	 * @return the adjective marker for this word, or <code>null</code> if none.
 	 * @since JWI 2.1.0
 	 */
-	@Nullable AdjMarker getAdjectiveMarker();
+	@Nullable
+	AdjMarker getAdjectiveMarker();
 }

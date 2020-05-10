@@ -40,7 +40,8 @@ public interface IContentType<T> extends IHasPOS, IHasCharset
 	 * content type
 	 * @since JWI 2.4.1
 	 */
-	@NonNull ContentTypeKey getKey();
+	@NonNull
+	ContentTypeKey getKey();
 
 	/**
 	 * Returns the assigned resource type of this object. This method may not
@@ -50,7 +51,8 @@ public interface IContentType<T> extends IHasPOS, IHasCharset
 	 * content type
 	 * @since JWI 1.0
 	 */
-	@NonNull IDataType<T> getDataType();
+	@NonNull
+	IDataType<T> getDataType();
 
 	/**
 	 * Returns a comparator that can be used to determine ordering between

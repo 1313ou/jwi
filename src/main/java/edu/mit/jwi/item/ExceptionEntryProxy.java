@@ -10,13 +10,13 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Default implementation {@code IExceptionEntryProxy}l
@@ -93,7 +93,8 @@ public class ExceptionEntryProxy implements IExceptionEntryProxy
 	 *
 	 * @see edu.mit.jwi.item.IExceptionEntryProxy#getSurfaceForm()
 	 */
-	@Nullable public String getSurfaceForm()
+	@Nullable
+	public String getSurfaceForm()
 	{
 		return surfaceForm;
 	}
@@ -113,7 +114,8 @@ public class ExceptionEntryProxy implements IExceptionEntryProxy
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("EXC-");

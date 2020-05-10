@@ -10,9 +10,9 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-
 import java.io.Serializable;
+
+import edu.mit.jwi.NonNull;
 
 /**
  * A verb frame as specified from the verb frames data file in the Wordnet
@@ -52,5 +52,6 @@ public interface IVerbFrame extends Serializable
 	 * @throws NullPointerException if the specified string is <code>null</code>
 	 * @since JWI 1.0
 	 */
-	@NonNull String instantiateTemplate(String verb);
+	@NonNull
+	String instantiateTemplate(String verb);
 }

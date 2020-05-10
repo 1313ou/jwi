@@ -10,10 +10,10 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-
 import java.util.List;
 import java.util.Set;
+
+import edu.mit.jwi.NonNull;
 
 /**
  * A Wordnet index word object, represented in the Wordnet files as a line in an
@@ -43,7 +43,8 @@ public interface IIndexWord extends IHasPOS, IItem<IIndexWordID>
 	 * this root form and part of speech combination.
 	 * @since JWI 2.0
 	 */
-	@NonNull List<IWordID> getWordIDs();
+	@NonNull
+	List<IWordID> getWordIDs();
 
 	/**
 	 * Returns the number of senses of lemma that are ranked according to their

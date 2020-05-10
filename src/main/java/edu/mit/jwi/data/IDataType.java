@@ -10,11 +10,11 @@
 
 package edu.mit.jwi.data;
 
+import java.util.Set;
+
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.data.parse.ILineParser;
-
-import java.util.Set;
 
 /**
  * <p>
@@ -48,7 +48,8 @@ public interface IDataType<T>
 	 * retrieved from an {@code IDataSource} file with this type.
 	 * @since JWI 2.0.0
 	 */
-	@Nullable ILineParser<T> getParser();
+	@Nullable
+	ILineParser<T> getParser();
 
 	/**
 	 * Indicates whether this content type usually has wordnet version

@@ -10,9 +10,9 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.Nullable;
-
 import java.io.Serializable;
+
+import edu.mit.jwi.Nullable;
 
 /**
  * A Wordnet sense entry object, represented in the Wordnet files as a line in the
@@ -30,7 +30,8 @@ public interface ISenseEntry extends IHasPOS, Serializable
 	 * @return The non-<code>null</code> sense key for this sense entry.
 	 * @since JWI 2.1.0
 	 */
-	@Nullable ISenseKey getSenseKey();
+	@Nullable
+	ISenseKey getSenseKey();
 
 	/**
 	 * Returns the synset offset for this sense entry, a non-negative integer.

@@ -10,10 +10,10 @@
 
 package edu.mit.jwi.item;
 
+import java.util.regex.Pattern;
+
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
-
-import java.util.regex.Pattern;
 
 /**
  * Default implementation of {@code IIndexWordID}.
@@ -84,7 +84,8 @@ public class IndexWordID implements IIndexWordID
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	@Nullable public POS getPOS()
+	@Nullable
+	public POS getPOS()
 	{
 		return pos;
 	}
@@ -137,7 +138,8 @@ public class IndexWordID implements IIndexWordID
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		assert pos != null;
 		return "XID-" + lemma + "-" + pos.getTag();
@@ -154,7 +156,8 @@ public class IndexWordID implements IIndexWordID
 	 *                                  string
 	 * @since JWI 1.0
 	 */
-	@NonNull public static IndexWordID parseIndexWordID(@Nullable String value)
+	@NonNull
+	public static IndexWordID parseIndexWordID(@Nullable String value)
 	{
 		if (value == null)
 		{

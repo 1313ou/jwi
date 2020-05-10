@@ -11,7 +11,8 @@ public class Comparators
 	{
 		private static final CaseSensitiveIndexLineComparator INSTANCE = new CaseSensitiveIndexLineComparator();
 
-		@NonNull public static CaseSensitiveIndexLineComparator getInstance()
+		@NonNull
+		public static CaseSensitiveIndexLineComparator getInstance()
 		{
 			return INSTANCE;
 		}
@@ -21,7 +22,8 @@ public class Comparators
 			super(CommentComparator.getInstance());
 		}
 
-		@Override protected int compareLemmas(@NonNull String lemma1, @NonNull String lemma2)
+		@Override
+		protected int compareLemmas(@NonNull String lemma1, @NonNull String lemma2)
 		{
 			return lemma1.compareTo(lemma2);
 		}
@@ -31,7 +33,8 @@ public class Comparators
 	{
 		private static final CaseSensitiveSenseKeyLineComparator INSTANCE = new CaseSensitiveSenseKeyLineComparator();
 
-		@NonNull public static CaseSensitiveSenseKeyLineComparator getInstance()
+		@NonNull
+		public static CaseSensitiveSenseKeyLineComparator getInstance()
 		{
 			return INSTANCE;
 		}
@@ -41,7 +44,8 @@ public class Comparators
 			super();
 		}
 
-		@Override protected int compareSenseKeys(@NonNull String senseKey1, @NonNull String senseKey2)
+		@Override
+		protected int compareSenseKeys(@NonNull String senseKey1, @NonNull String senseKey2)
 		{
 			return senseKey1.compareTo(senseKey2);
 		}
@@ -55,7 +59,8 @@ public class Comparators
 	{
 		private static final LexicographicOrderSenseKeyLineComparator INSTANCE = new LexicographicOrderSenseKeyLineComparator();
 
-		@NonNull public static LexicographicOrderSenseKeyLineComparator getInstance()
+		@NonNull
+		public static LexicographicOrderSenseKeyLineComparator getInstance()
 		{
 			return INSTANCE;
 		}
@@ -65,7 +70,8 @@ public class Comparators
 			super();
 		}
 
-		@Override protected int compareSenseKeys(@NonNull String senseKey1, @NonNull String senseKey2)
+		@Override
+		protected int compareSenseKeys(@NonNull String senseKey1, @NonNull String senseKey2)
 		{
 			int c = senseKey1.compareToIgnoreCase(senseKey2);
 			if (c != 0)

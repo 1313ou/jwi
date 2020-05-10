@@ -29,5 +29,6 @@ public interface IDataSourceDictionary extends IDictionary
 	 * @return the data provider for this dictionary
 	 * @since JWI 2.0.0
 	 */
-	@Nullable IDataProvider getDataProvider();
+	@Nullable
+	IDataProvider getDataProvider();
 }

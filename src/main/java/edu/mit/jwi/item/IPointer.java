@@ -10,9 +10,9 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-
 import java.io.Serializable;
+
+import edu.mit.jwi.NonNull;
 
 /**
  * A pointer is a marker object that represents different types of relationships
@@ -31,7 +31,8 @@ public interface IPointer extends Serializable
 	 * @return the symbol for this pointer
 	 * @since JWI 2.0.0
 	 */
-	@NonNull String getSymbol();
+	@NonNull
+	String getSymbol();
 
 	/**
 	 * Returns a user-friendly name of this pointer type for identification
@@ -40,5 +41,6 @@ public interface IPointer extends Serializable
 	 * @return the user-friendly name of this pointer
 	 * @since JWI 2.0.0
 	 */
-	@NonNull String getName();
+	@NonNull
+	String getName();
 }

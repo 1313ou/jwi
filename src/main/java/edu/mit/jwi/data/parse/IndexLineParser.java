@@ -10,6 +10,8 @@
 
 package edu.mit.jwi.data.parse;
 
+import java.util.StringTokenizer;
+
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.IIndexWord;
@@ -20,8 +22,6 @@ import edu.mit.jwi.item.POS;
 import edu.mit.jwi.item.Pointer;
 import edu.mit.jwi.item.SynsetID;
 import edu.mit.jwi.item.WordID;
-
-import java.util.StringTokenizer;
 
 /**
  * <p>
@@ -75,7 +75,8 @@ public class IndexLineParser implements ILineParser<IIndexWord>
 	 *
 	 * @see edu.mit.jwi.data.parse.ILineParser#parseLine(java.lang.String)
 	 */
-	@NonNull public IIndexWord parseLine(@Nullable String line)
+	@NonNull
+	public IIndexWord parseLine(@Nullable String line)
 	{
 		if (line == null)
 		{
@@ -146,7 +147,8 @@ public class IndexLineParser implements ILineParser<IIndexWord>
 	 *                                  correspond to a known pointer
 	 * @since JWI 2.3.0
 	 */
-	@Nullable protected IPointer resolvePointer(@NonNull String symbol, POS pos)
+	@Nullable
+	protected IPointer resolvePointer(@NonNull String symbol, POS pos)
 	{
 		return Pointer.getPointerType(symbol, pos);
 	}

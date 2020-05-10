@@ -10,9 +10,6 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Default implementation of the {@code ISynset} interface.
@@ -150,7 +150,8 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.IItem#getID()
 	 */
-	@Nullable public ISynsetID getID()
+	@Nullable
+	public ISynsetID getID()
 	{
 		return id;
 	}
@@ -193,7 +194,8 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getGloss()
 	 */
-	@Nullable public String getGloss()
+	@Nullable
+	public String getGloss()
 	{
 		return gloss;
 	}
@@ -203,7 +205,8 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getWords()
 	 */
-	@NonNull public List<IWord> getWords()
+	@NonNull
+	public List<IWord> getWords()
 	{
 		return words;
 	}
@@ -223,7 +226,8 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getLexicalFile()
 	 */
-	@Nullable public ILexFile getLexicalFile()
+	@Nullable
+	public ILexFile getLexicalFile()
 	{
 		return lexFile;
 	}
@@ -233,7 +237,8 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getRelatedMap()
 	 */
-	@NonNull public Map<IPointer, List<ISynsetID>> getRelatedMap()
+	@NonNull
+	public Map<IPointer, List<ISynsetID>> getRelatedMap()
 	{
 		return relatedMap;
 	}
@@ -243,7 +248,8 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getRelatedSynsets(edu.mit.jwi.item.IPointer)
 	 */
-	@Nullable public List<ISynsetID> getRelatedSynsets(IPointer ptrType)
+	@Nullable
+	public List<ISynsetID> getRelatedSynsets(IPointer ptrType)
 	{
 		List<ISynsetID> result = relatedMap.get(ptrType);
 		return result != null ? result : Collections.emptyList();
@@ -254,7 +260,8 @@ public class Synset implements ISynset
 	 *
 	 * @see edu.mit.jwi.item.ISynset#getRelatedSynsets()
 	 */
-	@NonNull public List<ISynsetID> getRelatedSynsets()
+	@NonNull
+	public List<ISynsetID> getRelatedSynsets()
 	{
 		return related;
 	}
@@ -344,7 +351,8 @@ public class Synset implements ISynset
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("SYNSET{");
@@ -372,7 +380,8 @@ public class Synset implements ISynset
 	 *                                  [0,99999999]
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static String zeroFillOffset(int offset)
+	@NonNull
+	public static String zeroFillOffset(int offset)
 	{
 		checkOffset(offset);
 		StringBuilder sb = new StringBuilder(8);
@@ -396,7 +405,8 @@ public class Synset implements ISynset
 	 *                                  [0,99999999]
 	 * @since JWI 2.1.0
 	 */
-	@SuppressWarnings("UnusedReturnValue") public static int checkOffset(int offset)
+	@SuppressWarnings("UnusedReturnValue")
+	public static int checkOffset(int offset)
 	{
 		if (!isLegalOffset(offset))
 		{
@@ -442,7 +452,8 @@ public class Synset implements ISynset
 		 * @return the created word
 		 * @since JWI 2.2.0
 		 */
-		@NonNull IWord toWord(ISynset synset);
+		@NonNull
+		IWord toWord(ISynset synset);
 
 		/**
 		 * Adds the specified verb frame to this word.
@@ -537,7 +548,8 @@ public class Synset implements ISynset
 		 *
 		 * @see edu.mit.jwi.item.Synset.IWordBuilder#toWord(edu.mit.jwi.item.ISynset)
 		 */
-		@NonNull public IWord toWord(@NonNull ISynset synset)
+		@NonNull
+		public IWord toWord(@NonNull ISynset synset)
 		{
 			return new Word(synset, num, lemma, lexID, marker, verbFrames, relatedWords);
 		}

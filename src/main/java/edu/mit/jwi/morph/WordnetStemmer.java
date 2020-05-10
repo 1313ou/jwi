@@ -10,16 +10,16 @@
 
 package edu.mit.jwi.morph;
 
-import edu.mit.jwi.IDictionary;
-import edu.mit.jwi.Nullable;
-import edu.mit.jwi.item.IExceptionEntry;
-import edu.mit.jwi.item.POS;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import edu.mit.jwi.IDictionary;
+import edu.mit.jwi.Nullable;
+import edu.mit.jwi.item.IExceptionEntry;
+import edu.mit.jwi.item.POS;
 
 /**
  * This stemmer adds functionality to the simple pattern-based stemmer
@@ -60,7 +60,8 @@ public class WordnetStemmer extends SimpleStemmer
 	 * @return the dictionary in use by this stemmer
 	 * @since JWI 2.2.0
 	 */
-	@Nullable public IDictionary getDictionary()
+	@Nullable
+	public IDictionary getDictionary()
 	{
 		return dict;
 	}

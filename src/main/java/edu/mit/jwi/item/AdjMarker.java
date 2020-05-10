@@ -71,7 +71,8 @@ public enum AdjMarker
 	 * @return the symbol for this adjective marker
 	 * @since JWI 2.1.0
 	 */
-	@Nullable public String getSymbol()
+	@Nullable
+	public String getSymbol()
 	{
 		return symbol;
 	}
@@ -83,7 +84,8 @@ public enum AdjMarker
 	 * @return a user-readable description of the marker
 	 * @since JWI 2.1.0
 	 */
-	@Nullable public String getDescription()
+	@Nullable
+	public String getDescription()
 	{
 		return description;
 	}

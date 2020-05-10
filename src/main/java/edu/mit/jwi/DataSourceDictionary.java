@@ -10,6 +10,12 @@
 
 package edu.mit.jwi;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.DataType;
 import edu.mit.jwi.data.IContentType;
@@ -39,12 +45,6 @@ import edu.mit.jwi.item.Pointer;
 import edu.mit.jwi.item.Synset;
 import edu.mit.jwi.item.SynsetID;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * Basic implementation of the {@code IDictionary} interface. A path to the
  * Wordnet dictionary files must be provided. If no {@code IDataProvider} is
@@ -56,7 +56,8 @@ import java.util.List;
  */
 public class DataSourceDictionary implements IDataSourceDictionary
 {
-	@NonNull private static <T> T requireNonNull(@Nullable T t)
+	@NonNull
+	private static <T> T requireNonNull(@Nullable T t)
 	{
 		if (t == null)
 			throw new NullPointerException();
@@ -86,7 +87,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDataSourceDictionary#getDataProvider()
 	 */
-	@Nullable public IDataProvider getDataProvider()
+	@Nullable
+	public IDataProvider getDataProvider()
 	{
 		return provider;
 	}
@@ -96,7 +98,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.item.IHasVersion#getVersion()
 	 */
-	@Nullable public IVersion getVersion()
+	@Nullable
+	public IVersion getVersion()
 	{
 		checkOpen();
 		assert provider != null;
@@ -156,7 +159,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.data.IHasCharset#getCharset()
 	 */
-	@Nullable public Charset getCharset()
+	@Nullable
+	public Charset getCharset()
 	{
 		assert provider != null;
 		return provider.getCharset();
@@ -201,7 +205,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 * @see edu.mit.jwi.IDictionary#getIndexWord(java.lang.String,
 	 *      edu.mit.jwi.item.POS)
 	 */
-	@Nullable public IIndexWord getIndexWord(String lemma, POS pos)
+	@Nullable
+	public IIndexWord getIndexWord(String lemma, POS pos)
 	{
 		checkOpen();
 		return getIndexWord(new IndexWordID(lemma, pos));
@@ -212,7 +217,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getIndexWord(edu.mit.jwi.item.IIndexWordID)
 	 */
-	@Nullable public IIndexWord getIndexWord(@NonNull IIndexWordID id)
+	@Nullable
+	public IIndexWord getIndexWord(@NonNull IIndexWordID id)
 	{
 		checkOpen();
 		assert provider != null;
@@ -236,7 +242,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getWord(edu.mit.jwi.item.IWordID)
 	 */
-	@Nullable public IWord getWord(@NonNull IWordID id)
+	@Nullable
+	public IWord getWord(@NonNull IWordID id)
 	{
 		checkOpen();
 		ISynsetID sid = id.getSynsetID();
@@ -278,7 +285,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getWord(edu.mit.jwi.item.ISenseKey)
 	 */
-	@Nullable public IWord getWord(@NonNull ISenseKey key)
+	@Nullable
+	public IWord getWord(@NonNull ISenseKey key)
 	{
 		checkOpen();
 
@@ -344,7 +352,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntry(edu.mit.jwi.item.ISenseKey)
 	 */
-	@Nullable public ISenseEntry getSenseEntry(@NonNull ISenseKey key)
+	@Nullable
+	public ISenseEntry getSenseEntry(@NonNull ISenseKey key)
 	{
 		checkOpen();
 		assert provider != null;
@@ -368,7 +377,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntries(edu.mit.jwi.item.ISenseKey)
 	 */
-	@Nullable public ISenseEntry[] getSenseEntries(@NonNull ISenseKey key)
+	@Nullable
+	public ISenseEntry[] getSenseEntries(@NonNull ISenseKey key)
 	{
 		checkOpen();
 		assert provider != null;
@@ -392,7 +402,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.wordnet.core.dict.IDictionary#getSynset(edu.mit.wordnet.core.data.ISynsetID)
 	 */
-	@Nullable public ISynset getSynset(@NonNull ISynsetID id)
+	@Nullable
+	public ISynset getSynset(@NonNull ISynsetID id)
 	{
 		checkOpen();
 		assert provider != null;
@@ -482,7 +493,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntry(java.lang.String,
 	 *      edu.mit.jwi.item.POS)
 	 */
-	@Nullable public IExceptionEntry getExceptionEntry(String surfaceForm, POS pos)
+	@Nullable
+	public IExceptionEntry getExceptionEntry(String surfaceForm, POS pos)
 	{
 		return getExceptionEntry(new ExceptionEntryID(surfaceForm, pos));
 	}
@@ -492,7 +504,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntry(edu.mit.jwi.item.IExceptionEntryID)
 	 */
-	@Nullable public IExceptionEntry getExceptionEntry(@NonNull IExceptionEntryID id)
+	@Nullable
+	public IExceptionEntry getExceptionEntry(@NonNull IExceptionEntryID id)
 	{
 		checkOpen();
 		assert provider != null;
@@ -525,7 +538,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getIndexWordIterator(edu.mit.jwi.item.POS)
 	 */
-	@NonNull public Iterator<IIndexWord> getIndexWordIterator(POS pos)
+	@NonNull
+	public Iterator<IIndexWord> getIndexWordIterator(POS pos)
 	{
 		checkOpen();
 		return new IndexFileIterator(pos);
@@ -536,7 +550,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSynsetIterator(edu.mit.jwi.item.POS)
 	 */
-	@NonNull public Iterator<ISynset> getSynsetIterator(POS pos)
+	@NonNull
+	public Iterator<ISynset> getSynsetIterator(POS pos)
 	{
 		checkOpen();
 		return new DataFileIterator(pos);
@@ -547,7 +562,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getExceptionEntryIterator(edu.mit.jwi.item.POS)
 	 */
-	@NonNull public Iterator<IExceptionEntry> getExceptionEntryIterator(POS pos)
+	@NonNull
+	public Iterator<IExceptionEntry> getExceptionEntryIterator(POS pos)
 	{
 		checkOpen();
 		return new ExceptionFileIterator(pos);
@@ -558,7 +574,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntryIterator()
 	 */
-	@NonNull public Iterator<ISenseEntry> getSenseEntryIterator()
+	@NonNull
+	public Iterator<ISenseEntry> getSenseEntryIterator()
 	{
 		checkOpen();
 		return new SenseEntryFileIterator();
@@ -569,7 +586,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 *
 	 * @see edu.mit.jwi.IDictionary#getSenseEntriesIterator()
 	 */
-	@NonNull public Iterator<ISenseEntry[]> getSenseEntriesIterator()
+	@NonNull
+	public Iterator<ISenseEntry[]> getSenseEntriesIterator()
 	{
 		checkOpen();
 		return new SenseEntriesFileIterator();
@@ -626,7 +644,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 *
 		 * @see edu.mit.wordnet.data.IHasPartOfSpeech#getPartOfSpeech()
 		 */
-		@Nullable public POS getPOS()
+		@Nullable
+		public POS getPOS()
 		{
 			assert fFile != null;
 			IContentType<T> contentType = fFile.getContentType();
@@ -649,7 +668,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 *
 		 * @see java.util.Iterator#next()
 		 */
-		@Nullable public N next()
+		@Nullable
+		public N next()
 		{
 			currentLine = iterator.next();
 			return parseLine(currentLine);
@@ -671,7 +691,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 * @param line line
 		 * @return parsed object
 		 */
-		@Nullable public abstract N parseLine(String line);
+		@Nullable
+		public abstract N parseLine(String line);
 	}
 
 	/**
@@ -826,7 +847,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		 *
 		 * @see edu.mit.wordnet.dict.Dictionary.FileIterator#parseLine(java.lang.String)
 		 */
-		@Nullable public IExceptionEntry parseLine(String line)
+		@Nullable
+		public IExceptionEntry parseLine(String line)
 		{
 			assert fParser != null;
 			IExceptionEntryProxy proxy = fParser.parseLine(line);

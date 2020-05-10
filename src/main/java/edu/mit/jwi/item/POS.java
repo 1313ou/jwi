@@ -10,13 +10,13 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Represents part of speech objects.
@@ -92,7 +92,8 @@ public enum POS
 	 * @return an immutable set of resource name hints
 	 * @since JWI 2.2
 	 */
-	@NonNull public Set<String> getResourceNameHints()
+	@NonNull
+	public Set<String> getResourceNameHints()
 	{
 		return filenameHints;
 	}
@@ -125,7 +126,8 @@ public enum POS
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		return name;
 	}
@@ -168,7 +170,8 @@ public enum POS
 	 * or <code>null</code> if none is found
 	 * @since JWI 2.0.0
 	 */
-	@Nullable public static POS getPartOfSpeech(int num)
+	@Nullable
+	public static POS getPartOfSpeech(int num)
 	{
 		switch (num)
 		{
@@ -194,7 +197,8 @@ public enum POS
 	 * or null if none is found
 	 * @since JWI 2.0.0
 	 */
-	@Nullable public static POS getPartOfSpeech(char tag)
+	@Nullable
+	public static POS getPartOfSpeech(char tag)
 	{
 		switch (tag)
 		{

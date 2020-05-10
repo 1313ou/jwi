@@ -1,8 +1,8 @@
 package edu.mit.jwi;
 
-import edu.mit.jwi.data.compare.ILineComparator;
-
 import java.nio.charset.Charset;
+
+import edu.mit.jwi.data.compare.ILineComparator;
 
 public class Config
 {

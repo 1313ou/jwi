@@ -10,9 +10,9 @@
 
 package edu.mit.jwi.data.compare;
 
-import edu.mit.jwi.Nullable;
-
 import java.util.Comparator;
+
+import edu.mit.jwi.Nullable;
 
 /**
  * A string comparator that may have an associated comment detector. The
@@ -34,5 +34,6 @@ public interface ILineComparator extends Comparator<String>
 	 * <code>null</code> if there is none
 	 * @since JWI 2.0.0
 	 */
-	@Nullable ICommentDetector getCommentDetector();
+	@Nullable
+	ICommentDetector getCommentDetector();
 }

@@ -29,5 +29,6 @@ public interface IHasVersion
 	 * @return The associated version, or <code>null</code> if none.
 	 * @since JWI 2.1.0
 	 */
-	@Nullable IVersion getVersion();
+	@Nullable
+	IVersion getVersion();
 }

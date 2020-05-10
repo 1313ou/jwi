@@ -10,13 +10,13 @@
 
 package edu.mit.jwi.morph;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-import edu.mit.jwi.item.POS;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
+import edu.mit.jwi.item.POS;
 
 /**
  * Default implementation of the {@link IStemmingRule} interface.
@@ -117,7 +117,8 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.morph.IStemmingRule#getSuffix()
 	 */
-	@Nullable public String getSuffix()
+	@Nullable
+	public String getSuffix()
 	{
 		return suffix;
 	}
@@ -127,7 +128,8 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.morph.IStemmingRule#getEnding()
 	 */
-	@Nullable public String getEnding()
+	@Nullable
+	public String getEnding()
 	{
 		return ending;
 	}
@@ -147,7 +149,8 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	@Nullable public POS getPOS()
+	@Nullable
+	public POS getPOS()
 	{
 		return pos;
 	}
@@ -157,7 +160,8 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.morph.IStemmingRule#apply(java.lang.String)
 	 */
-	@Nullable public String apply(@NonNull String word)
+	@Nullable
+	public String apply(@NonNull String word)
 	{
 		return apply(word, null);
 	}
@@ -167,7 +171,8 @@ public class StemmingRule implements IStemmingRule
 	 *
 	 * @see edu.mit.jwi.morph.IStemmingRule#apply(java.lang.String, java.lang.String)
 	 */
-	@Nullable public String apply(@NonNull String word, @Nullable String suffix)
+	@Nullable
+	public String apply(@NonNull String word, @Nullable String suffix)
 	{
 		// see if the suffix is present
 		assert getSuffix() != null;

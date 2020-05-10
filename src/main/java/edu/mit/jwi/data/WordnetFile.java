@@ -10,12 +10,6 @@
 
 package edu.mit.jwi.data;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-import edu.mit.jwi.data.compare.ICommentDetector;
-import edu.mit.jwi.item.IVersion;
-import edu.mit.jwi.item.Version;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -26,6 +20,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
+import edu.mit.jwi.data.compare.ICommentDetector;
+import edu.mit.jwi.item.IVersion;
+import edu.mit.jwi.item.Version;
 
 /**
  * <p>
@@ -104,7 +104,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataSource#getName()
 	 */
-	@NonNull public String getName()
+	@NonNull
+	public String getName()
 	{
 		return name;
 	}
@@ -116,7 +117,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 * <code>null</code>
 	 * @since JWI 2.2.0
 	 */
-	@NonNull public File getFile()
+	@NonNull
+	public File getFile()
 	{
 		return file;
 	}
@@ -128,7 +130,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 * @throws ObjectClosedException if the object is closed
 	 * @since JWI 2.2.0
 	 */
-	@Nullable public ByteBuffer getBuffer()
+	@Nullable
+	public ByteBuffer getBuffer()
 	{
 		if (!isOpen())
 		{
@@ -142,7 +145,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataSource#getContentType()
 	 */
-	@Nullable public IContentType<T> getContentType()
+	@Nullable
+	public IContentType<T> getContentType()
 	{
 		return contentType;
 	}
@@ -161,7 +165,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 			{
 				return true;
 			}
-			@SuppressWarnings("resource") RandomAccessFile raFile = new RandomAccessFile(file, "r");
+			@SuppressWarnings("resource")
+			RandomAccessFile raFile = new RandomAccessFile(file, "r");
 			channel = raFile.getChannel();
 			buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
 			return true;
@@ -300,7 +305,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 * @throws ObjectClosedException if the object is closed when this method is called
 	 * @see edu.mit.jwi.item.IHasVersion#getVersion()
 	 */
-	@Nullable public IVersion getVersion()
+	@Nullable
+	public IVersion getVersion()
 	{
 		if (!isOpen())
 		{
@@ -324,7 +330,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 *
 	 * @see java.lang.Iterable#iterator()
 	 */
-	@NonNull public LineIterator iterator()
+	@NonNull
+	public LineIterator iterator()
 	{
 		if (!isOpen())
 		{
@@ -338,7 +345,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 *
 	 * @see edu.mit.jwi.data.IDataSource#iterator(java.lang.String)
 	 */
-	@NonNull public LineIterator iterator(String key)
+	@NonNull
+	public LineIterator iterator(String key)
 	{
 		if (!isOpen())
 		{
@@ -359,7 +367,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 * {@link ByteBuffer}
 	 * @since JWI 2.2.0
 	 */
-	@NonNull public abstract LineIterator makeIterator(ByteBuffer buffer, String key);
+	@NonNull
+	public abstract LineIterator makeIterator(ByteBuffer buffer, String key);
 
 	/*
 	 * (non-Javadoc)
@@ -418,7 +427,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 * @throws NullPointerException if the specified buffer is <code>null</code>
 	 * @since JWI 2.1.0
 	 */
-	@Nullable public static String getLine(@NonNull ByteBuffer buf)
+	@Nullable
+	public static String getLine(@NonNull ByteBuffer buf)
 	{
 		// we are at end of buffer, return null
 		int limit = buf.limit();
@@ -470,7 +480,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	 * @throws NullPointerException if the specified buffer is <code>null</code>
 	 * @since JWI 2.3.4
 	 */
-	@Nullable public static String getLine(@NonNull ByteBuffer buf, @Nullable Charset cs)
+	@Nullable
+	public static String getLine(@NonNull ByteBuffer buf, @Nullable Charset cs)
 	{
 		// redirect to old method if no charset specified
 		if (cs == null)
@@ -624,7 +635,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 		 * iterator, or <code>null</code> if none
 		 * @since JWI 2.2.0
 		 */
-		@Nullable public String getNextLine()
+		@Nullable
+		public String getNextLine()
 		{
 			return next;
 		}
@@ -704,7 +716,8 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 		 *
 		 * @see java.util.Iterator#next()
 		 */
-		@Nullable public String next()
+		@Nullable
+		public String next()
 		{
 			if (next == null)
 			{

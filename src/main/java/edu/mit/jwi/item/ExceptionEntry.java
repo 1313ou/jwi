@@ -83,7 +83,8 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	@Nullable public POS getPOS()
+	@Nullable
+	public POS getPOS()
 	{
 		return pos;
 	}
@@ -93,7 +94,8 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	 *
 	 * @see edu.mit.jwi.item.IItem#getID()
 	 */
-	@NonNull public IExceptionEntryID getID()
+	@NonNull
+	public IExceptionEntryID getID()
 	{
 		return id;
 	}
@@ -103,7 +105,8 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	 *
 	 * @see edu.mit.jwi.item.ExceptionEntryProxy#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		assert pos != null;
 		return super.toString() + "-" + pos.toString();

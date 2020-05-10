@@ -158,7 +158,8 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see edu.mit.jwi.item.ISenseKey#getLemma()
 	 */
-	@NonNull public String getLemma()
+	@NonNull
+	public String getLemma()
 	{
 		return lemma;
 	}
@@ -178,7 +179,8 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see edu.mit.jwi.item.IHasPOS#getPOS()
 	 */
-	@Nullable public POS getPOS()
+	@Nullable
+	public POS getPOS()
 	{
 		return pos;
 	}
@@ -209,7 +211,8 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see edu.mit.jwi.item.ISenseKey#getLexicalFile()
 	 */
-	@Nullable public ILexFile getLexicalFile()
+	@Nullable
+	public ILexFile getLexicalFile()
 	{
 		return lexFile;
 	}
@@ -240,7 +243,8 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see edu.mit.jwi.item.ISenseKey#getHeadWord()
 	 */
-	@Nullable public String getHeadWord()
+	@Nullable
+	public String getHeadWord()
 	{
 		checkHeadSet();
 		return headLemma;
@@ -341,7 +345,8 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		checkHeadSet();
 		if (toString == null)
@@ -371,7 +376,8 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see java.lang.Object#hashCode()
 	 */
-	@Override public int hashCode()
+	@Override
+	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
@@ -395,7 +401,8 @@ public class SenseKey implements ISenseKey
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(@Nullable Object obj)
+	@Override
+	public boolean equals(@Nullable Object obj)
 	{
 		if (this == obj)
 		{
@@ -452,7 +459,8 @@ public class SenseKey implements ISenseKey
 	 * @throws NullPointerException if the specified key is <code>null</code>
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static String toString(@NonNull ISenseKey key)
+	@NonNull
+	public static String toString(@NonNull ISenseKey key)
 	{
 		ILexFile lf = key.getLexicalFile();
 		assert lf != null;

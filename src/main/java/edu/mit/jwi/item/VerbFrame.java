@@ -10,9 +10,6 @@
 
 package edu.mit.jwi.item;
 
-import edu.mit.jwi.NonNull;
-import edu.mit.jwi.Nullable;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,6 +17,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Default, hard-coded, implementation of {@code IVerbFrame} that does not read
@@ -119,7 +119,8 @@ public class VerbFrame implements IVerbFrame
 	 *
 	 * @see edu.mit.jwi.item.IVerbFrame#instantiateTemplate(java.lang.String)
 	 */
-	@NonNull public String instantiateTemplate(@Nullable String verb)
+	@NonNull
+	public String instantiateTemplate(@Nullable String verb)
 	{
 		if (verb == null)
 		{
@@ -138,7 +139,8 @@ public class VerbFrame implements IVerbFrame
 	 *
 	 * @see java.lang.Object#toString()
 	 */
-	@NonNull public String toString()
+	@NonNull
+	public String toString()
 	{
 		return "[" + num + " : " + template + " ]";
 	}
@@ -150,7 +152,8 @@ public class VerbFrame implements IVerbFrame
 	 * @return the appropriate deserialized object.
 	 * @since JWI 2.4.0
 	 */
-	@NonNull protected Object readResolve()
+	@NonNull
+	protected Object readResolve()
 	{
 		VerbFrame staticFrame = getFrame(num);
 		return (staticFrame == null) ? this : staticFrame;
@@ -206,7 +209,8 @@ public class VerbFrame implements IVerbFrame
 	 * @return an unmodifiable collection of verb frames defined in this class
 	 * @since JWI 2.1.0
 	 */
-	@NonNull public static Collection<VerbFrame> values()
+	@NonNull
+	public static Collection<VerbFrame> values()
 	{
 		return verbFrameMap.values();
 	}
@@ -220,7 +224,8 @@ public class VerbFrame implements IVerbFrame
 	 * none
 	 * @since JWI 2.1.0
 	 */
-	@Nullable public static VerbFrame getFrame(int number)
+	@Nullable
+	public static VerbFrame getFrame(int number)
 	{
 		return verbFrameMap.get(number);
 	}

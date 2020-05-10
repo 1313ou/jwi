@@ -10,15 +10,15 @@
 
 package edu.mit.jwi.data;
 
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.Set;
+
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.item.IHasVersion;
 import edu.mit.jwi.item.POS;
-
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.Set;
 
 /**
  * Objects that implement this interface manage access to data source objects.
@@ -54,7 +54,8 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * not be <code>null</code>
 	 * @since JWI 1.0
 	 */
-	@Nullable URL getSource();
+	@Nullable
+	URL getSource();
 
 	/**
 	 * Sets the character set associated with this dictionary. The character set
@@ -104,7 +105,8 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * provider
 	 * @since JWI 2.2.0
 	 */
-	@NonNull Set<? extends IContentType<?>> getTypes();
+	@NonNull
+	Set<? extends IContentType<?>> getTypes();
 
 	/**
 	 * Returns the first content type, if any, that matches the specified data
@@ -119,7 +121,8 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * part of speech.
 	 * @since JWI 2.3.4
 	 */
-	@Nullable <T> IContentType<T> resolveContentType(IDataType<T> dt, POS pos);
+	@Nullable
+	<T> IContentType<T> resolveContentType(IDataType<T> dt, POS pos);
 
 	/**
 	 * Returns a data source object for the specified content type, if one is
@@ -133,5 +136,6 @@ public interface IDataProvider extends IHasVersion, IHasLifecycle, IHasCharset
 	 * @throws ObjectClosedException if the provider is not open when this call is made
 	 * @since JWI 2.0.0
 	 */
-	@Nullable <T> IDataSource<T> getSource(IContentType<T> contentType);
+	@Nullable
+	<T> IDataSource<T> getSource(IContentType<T> contentType);
 }

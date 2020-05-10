@@ -10,10 +10,10 @@
 
 package edu.mit.jwi.data.compare;
 
+import java.util.regex.Pattern;
+
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.data.parse.ILineParser.MisformattedLineException;
-
-import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -93,7 +93,8 @@ public class ExceptionLineComparator implements ILineComparator
 	 *
 	 * @see edu.mit.jwi.data.compare.ILineComparator#getCommentDetector()
 	 */
-	@Nullable public ICommentDetector getCommentDetector()
+	@Nullable
+	public ICommentDetector getCommentDetector()
 	{
 		return null;
 	}
