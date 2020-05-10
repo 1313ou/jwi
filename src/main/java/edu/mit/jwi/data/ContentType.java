@@ -12,12 +12,25 @@ package edu.mit.jwi.data;
 
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
-import edu.mit.jwi.data.compare.*;
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.data.compare.DataLineComparator;
+import edu.mit.jwi.data.compare.ExceptionLineComparator;
+import edu.mit.jwi.data.compare.ILineComparator;
+import edu.mit.jwi.data.compare.IndexLineComparator;
+import edu.mit.jwi.data.compare.SenseKeyLineComparator;
+import edu.mit.jwi.item.IExceptionEntryProxy;
+import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.ISenseEntry;
+import edu.mit.jwi.item.ISynset;
+import edu.mit.jwi.item.POS;
 
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A concrete implementation of the {@code IContentType} interface. This class
@@ -55,9 +68,11 @@ public class ContentType<T> implements IContentType<T>
 	public static final ContentType<ISenseEntry[]> SENSES = new ContentType<>(ContentTypeKey.SENSES, SenseKeyLineComparator.getInstance());
 
 	// fields set on construction
-	@Nullable private final ContentTypeKey fKey;
+	@Nullable
+	private final ContentTypeKey fKey;
 	private final ILineComparator fComparator;
-	@NonNull private final String fString;
+	@NonNull
+	private final String fString;
 	private final Charset fCharset;
 
 	/**
@@ -168,7 +183,8 @@ public class ContentType<T> implements IContentType<T>
 	}
 
 	// set of all content types implemented in this class
-	@NonNull private static final Set<ContentType<?>> contentTypes;
+	@NonNull
+	private static final Set<ContentType<?>> contentTypes;
 
 	// initialization for static content type set
 	static

@@ -11,7 +11,11 @@
 package edu.mit.jwi;
 
 import edu.mit.jwi.data.IHasLifecycle;
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.item.IItem;
+import edu.mit.jwi.item.IItemID;
+import edu.mit.jwi.item.ISenseEntry;
+import edu.mit.jwi.item.ISenseKey;
+import edu.mit.jwi.item.IWord;
 
 /**
  * Provides a governing interface for dictionaries that cache their results.

@@ -31,7 +31,8 @@ import java.util.Comparator;
 public class BinarySearchWordnetFile<T> extends WordnetFile<T>
 {
 	// the comparator
-	@SuppressWarnings("WeakerAccess") protected final Comparator<String> fComparator;
+	@SuppressWarnings("WeakerAccess")
+	protected final Comparator<String> fComparator;
 
 	/**
 	 * Constructs a new binary search wordnet file, on the specified file with

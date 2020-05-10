@@ -22,12 +22,13 @@ import edu.mit.jwi.Nullable;
  */
 public enum AdjMarker
 {
-
 	PREDICATE("(p)", "predicate position"), PRENOMINAL("(a)", "prenominal (attributive) position"), POSTNOMINAL("(ip)", "immediately postnominal position");
 
 	// unmodifiable fields
-	@Nullable private final String symbol;
-	@Nullable private final String description;
+	@Nullable
+	private final String symbol;
+	@Nullable
+	private final String description;
 
 	/**
 	 * Constructs a new adjective marker with the specified symbol and

@@ -14,7 +14,14 @@ import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.POS;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 /**
@@ -96,7 +103,8 @@ public class SimpleStemmer implements IStemmer
 	public static final String ENDING_y = "y";
 	public static final String ENDING_z = "z";
 
-	@NonNull public static final Map<POS, List<StemmingRule>> ruleMap;
+	@NonNull
+	public static final Map<POS, List<StemmingRule>> ruleMap;
 
 	static
 	{

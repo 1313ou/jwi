@@ -13,7 +13,11 @@ package edu.mit.jwi;
 import edu.mit.jwi.data.ILoadPolicy;
 import edu.mit.jwi.data.ILoadable;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 /**
@@ -75,7 +79,8 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 	class FileInputStreamFactory implements IInputStreamFactory
 	{
 		// instance fields
-		@Nullable protected final File file;
+		@Nullable
+		protected final File file;
 
 		/**
 		 * Creates a FileInputStreamFactory that uses the specified file.
@@ -117,7 +122,8 @@ public interface IRAMDictionary extends IDictionary, ILoadPolicy, ILoadable
 	class URLInputStreamFactory implements IInputStreamFactory
 	{
 		// instance fields
-		@Nullable protected final URL url;
+		@Nullable
+		protected final URL url;
 
 		/**
 		 * Creates a URLInputStreamFactory that uses the specified url.

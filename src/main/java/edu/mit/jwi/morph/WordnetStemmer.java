@@ -15,7 +15,11 @@ import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.IExceptionEntry;
 import edu.mit.jwi.item.POS;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This stemmer adds functionality to the simple pattern-based stemmer
@@ -30,7 +34,8 @@ import java.util.*;
  */
 public class WordnetStemmer extends SimpleStemmer
 {
-	@Nullable private final IDictionary dict;
+	@Nullable
+	private final IDictionary dict;
 
 	/**
 	 * Constructs a WordnetStemmer that, naturally, requires a Wordnet

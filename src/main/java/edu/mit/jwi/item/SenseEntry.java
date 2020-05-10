@@ -34,7 +34,8 @@ public class SenseEntry implements ISenseEntry
 	private final int offset;
 	private final int num;
 	private final int count;
-	@Nullable private final ISenseKey key;
+	@Nullable
+	private final ISenseKey key;
 
 	/**
 	 * Constructs a new sense entry object.

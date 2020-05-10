@@ -50,10 +50,14 @@ import java.util.concurrent.locks.ReentrantLock;
 public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 {
 	// fields set on construction
-	@NonNull private final String name;
-	@Nullable private final IContentType<T> contentType;
-	@Nullable private final ICommentDetector detector;
-	@NonNull private final File file;
+	@NonNull
+	private final String name;
+	@Nullable
+	private final IContentType<T> contentType;
+	@Nullable
+	private final ICommentDetector detector;
+	@NonNull
+	private final File file;
 
 	// loading locks and status flag
 	// the flag is marked transient to avoid different values in different threads 
@@ -62,9 +66,12 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	private final Lock loadingLock = new ReentrantLock();
 
 	// fields generated dynamically on demand
-	@Nullable private FileChannel channel;
-	@Nullable private ByteBuffer buffer;
-	@Nullable private IVersion version;
+	@Nullable
+	private FileChannel channel;
+	@Nullable
+	private ByteBuffer buffer;
+	@Nullable
+	private IVersion version;
 
 	/**
 	 * Constructs an instance of this class backed by the specified java
@@ -577,9 +584,11 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 	protected abstract class LineIterator implements Iterator<String>
 	{
 		// fields set on construction
-		@NonNull protected final ByteBuffer parentBuffer;
+		@NonNull
+		protected final ByteBuffer parentBuffer;
 		protected ByteBuffer itrBuffer;
-		@Nullable protected String next;
+		@Nullable
+		protected String next;
 
 		/**
 		 * Constructs a new line iterator over this buffer, starting at the

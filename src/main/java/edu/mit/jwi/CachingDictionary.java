@@ -12,7 +12,23 @@ package edu.mit.jwi;
 
 import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.compare.ILineComparator;
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.item.ExceptionEntryID;
+import edu.mit.jwi.item.IExceptionEntry;
+import edu.mit.jwi.item.IExceptionEntryID;
+import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.IIndexWordID;
+import edu.mit.jwi.item.IItem;
+import edu.mit.jwi.item.IItemID;
+import edu.mit.jwi.item.ISenseEntry;
+import edu.mit.jwi.item.ISenseKey;
+import edu.mit.jwi.item.ISynset;
+import edu.mit.jwi.item.ISynsetID;
+import edu.mit.jwi.item.IVersion;
+import edu.mit.jwi.item.IWord;
+import edu.mit.jwi.item.IWordID;
+import edu.mit.jwi.item.IndexWordID;
+import edu.mit.jwi.item.POS;
+import edu.mit.jwi.item.Synset;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -32,8 +48,10 @@ import java.util.concurrent.locks.ReentrantLock;
 public class CachingDictionary implements ICachingDictionary
 {
 	// final instance fields 
-	@Nullable private final IDictionary backing;
-	@NonNull private final IItemCache cache;
+	@Nullable
+	private final IDictionary backing;
+	@NonNull
+	private final IItemCache cache;
 
 	/**
 	 * Constructs a new caching dictionary that caches the results of the
@@ -523,10 +541,14 @@ public class CachingDictionary implements ICachingDictionary
 		private int maximumCapacity;
 
 		// The caches themselves
-		@Nullable protected Map<IItemID<?>, IItem<?>> itemCache;
-		@Nullable protected Map<ISenseKey, IWord> keyCache;
-		@Nullable protected Map<ISenseKey, ISenseEntry> senseCache;
-		@Nullable protected Map<ISenseKey, ISenseEntry[]> sensesCache;
+		@Nullable
+		protected Map<IItemID<?>, IItem<?>> itemCache;
+		@Nullable
+		protected Map<ISenseKey, IWord> keyCache;
+		@Nullable
+		protected Map<ISenseKey, ISenseEntry> senseCache;
+		@Nullable
+		protected Map<ISenseKey, ISenseEntry[]> sensesCache;
 
 		/**
 		 * Default constructor that initializes the dictionary with caching enabled.

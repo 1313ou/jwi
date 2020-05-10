@@ -27,9 +27,12 @@ import java.util.Set;
  */
 public class StemmingRule implements IStemmingRule
 {
-	@Nullable private final POS pos;
-	@Nullable private final String suffix;
-	@Nullable private final String ending;
+	@Nullable
+	private final POS pos;
+	@Nullable
+	private final String suffix;
+	@Nullable
+	private final String ending;
 	private final Set<String> ignoreSet;
 
 	/**

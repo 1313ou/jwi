@@ -19,7 +19,11 @@ import edu.mit.jwi.data.compare.ICommentDetector;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,12 +63,18 @@ public class Version implements IVersion
 	public static final Version ver31 = getVersion(3, 1, 0);
 
 	// Stanford Augmented Wordnet versions
-	@Nullable public static final Version ver21swn_10k = getVersion(2, 1, 0, "swn_10k");
-	@Nullable public static final Version ver21swn_20k = getVersion(2, 1, 0, "swn_20k");
-	@Nullable public static final Version ver21swn_30k = getVersion(2, 1, 0, "swn_30k");
-	@Nullable public static final Version ver21swn_40k = getVersion(2, 1, 0, "swn_40k");
-	@Nullable public static final Version ver21swn_400k_cropped = getVersion(2, 1, 0, "swn_400k_cropped");
-	@Nullable public static final Version ver21swn_400k_full = getVersion(2, 1, 0, "swn_400k_full");
+	@Nullable
+	public static final Version ver21swn_10k = getVersion(2, 1, 0, "swn_10k");
+	@Nullable
+	public static final Version ver21swn_20k = getVersion(2, 1, 0, "swn_20k");
+	@Nullable
+	public static final Version ver21swn_30k = getVersion(2, 1, 0, "swn_30k");
+	@Nullable
+	public static final Version ver21swn_40k = getVersion(2, 1, 0, "swn_40k");
+	@Nullable
+	public static final Version ver21swn_400k_cropped = getVersion(2, 1, 0, "swn_400k_cropped");
+	@Nullable
+	public static final Version ver21swn_400k_full = getVersion(2, 1, 0, "swn_400k_full");
 
 	/**
 	 * The byte offset of the version indicator in the standard Wordnet file headers.

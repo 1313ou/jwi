@@ -32,17 +32,22 @@ public class SenseKey implements ISenseKey
 	private static final long serialVersionUID = 240;
 
 	// final instance fields
-	@NonNull private final String lemma;
+	@NonNull
+	private final String lemma;
 	private final int lexID;
-	@Nullable private final POS pos;
+	@Nullable
+	private final POS pos;
 	private final boolean isAdjSat;
-	@Nullable private final ILexFile lexFile;
+	@Nullable
+	private final ILexFile lexFile;
 
 	// dynamic fields
 	private boolean isHeadSet;
-	@Nullable private String headLemma = null;
+	@Nullable
+	private String headLemma = null;
 	private int headLexID = -1;
-	@Nullable private String toString;
+	@Nullable
+	private String toString;
 
 	/**
 	 * Constructs a new sense key.

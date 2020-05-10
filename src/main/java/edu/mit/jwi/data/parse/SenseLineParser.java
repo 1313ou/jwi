@@ -53,7 +53,8 @@ public class SenseLineParser implements ILineParser<ISenseEntry>
 	}
 
 	// instance fields
-	@Nullable protected final ILineParser<ISenseKey> keyParser;
+	@Nullable
+	protected final ILineParser<ISenseKey> keyParser;
 
 	/**
 	 * This constructor is marked protected so that the class may be

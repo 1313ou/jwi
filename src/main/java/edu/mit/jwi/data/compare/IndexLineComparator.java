@@ -52,7 +52,8 @@ public class IndexLineComparator implements ILineComparator
 	}
 
 	// instance fields
-	@Nullable private final CommentComparator detector;
+	@Nullable
+	private final CommentComparator detector;
 
 	/**
 	 * This constructor is marked protected so that the class may be

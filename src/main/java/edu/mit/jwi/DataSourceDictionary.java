@@ -10,10 +10,34 @@
 
 package edu.mit.jwi;
 
-import edu.mit.jwi.data.*;
+import edu.mit.jwi.data.ContentTypeKey;
+import edu.mit.jwi.data.DataType;
+import edu.mit.jwi.data.IContentType;
+import edu.mit.jwi.data.IDataProvider;
+import edu.mit.jwi.data.IDataSource;
+import edu.mit.jwi.data.IDataType;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.data.parse.ILineParser;
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.item.ExceptionEntry;
+import edu.mit.jwi.item.ExceptionEntryID;
+import edu.mit.jwi.item.IExceptionEntry;
+import edu.mit.jwi.item.IExceptionEntryID;
+import edu.mit.jwi.item.IExceptionEntryProxy;
+import edu.mit.jwi.item.IHasPOS;
+import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.IIndexWordID;
+import edu.mit.jwi.item.ISenseEntry;
+import edu.mit.jwi.item.ISenseKey;
+import edu.mit.jwi.item.ISynset;
+import edu.mit.jwi.item.ISynsetID;
+import edu.mit.jwi.item.IVersion;
+import edu.mit.jwi.item.IWord;
+import edu.mit.jwi.item.IWordID;
+import edu.mit.jwi.item.IndexWordID;
+import edu.mit.jwi.item.POS;
+import edu.mit.jwi.item.Pointer;
+import edu.mit.jwi.item.Synset;
+import edu.mit.jwi.item.SynsetID;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -39,7 +63,8 @@ public class DataSourceDictionary implements IDataSourceDictionary
 		return t;
 	}
 
-	@Nullable private final IDataProvider provider;
+	@Nullable
+	private final IDataProvider provider;
 
 	/**
 	 * Constructs a dictionary with a caller-specified {@code IDataProvider}.
@@ -555,9 +580,12 @@ public class DataSourceDictionary implements IDataSourceDictionary
 	 */
 	public abstract class FileIterator<T, N> implements Iterator<N>, IHasPOS
 	{
-		@Nullable protected final IDataSource<T> fFile;
-		@NonNull protected final Iterator<String> iterator;
-		@Nullable protected final ILineParser<T> fParser;
+		@Nullable
+		protected final IDataSource<T> fFile;
+		@NonNull
+		protected final Iterator<String> iterator;
+		@Nullable
+		protected final ILineParser<T> fParser;
 		protected String currentLine;
 
 		public FileIterator(@NonNull IContentType<T> content)

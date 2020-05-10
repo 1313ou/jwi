@@ -28,8 +28,19 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -65,17 +76,25 @@ public class FileProvider implements IDataProvider, ILoadable, ILoadPolicy
 	// final instance fields
 	private final Lock lifecycleLock = new ReentrantLock();
 	private final Lock loadingLock = new ReentrantLock();
-	@NonNull private final Map<ContentTypeKey, IContentType<?>> prototypeMap;
+	@NonNull
+	private final Map<ContentTypeKey, IContentType<?>> prototypeMap;
 
 	// instance fields 
-	@Nullable private URL url;
-	@Nullable private IVersion version = null;
-	@Nullable private Map<IContentType<?>, ILoadableDataSource<?>> fileMap = null;
+	@Nullable
+	private URL url;
+	@Nullable
+	private IVersion version = null;
+	@Nullable
+	private Map<IContentType<?>, ILoadableDataSource<?>> fileMap = null;
 	private int loadPolicy;
-	@Nullable private transient JWIBackgroundLoader loader = null;
-	@NonNull private final Collection<? extends IContentType<?>> defaultContentTypes;
-	@Nullable private Charset charset = null;
-	@NonNull private final Map<ContentTypeKey, String> sourceMatcher = new HashMap<>();
+	@Nullable
+	private transient JWIBackgroundLoader loader = null;
+	@NonNull
+	private final Collection<? extends IContentType<?>> defaultContentTypes;
+	@Nullable
+	private Charset charset = null;
+	@NonNull
+	private final Map<ContentTypeKey, String> sourceMatcher = new HashMap<>();
 
 	/**
 	 * Constructs the file provider pointing to the resource indicated by the

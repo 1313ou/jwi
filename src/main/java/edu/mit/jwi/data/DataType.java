@@ -12,12 +12,28 @@ package edu.mit.jwi.data;
 
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
-import edu.mit.jwi.data.parse.*;
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.data.parse.DataLineParser;
+import edu.mit.jwi.data.parse.ExceptionLineParser;
+import edu.mit.jwi.data.parse.ILineParser;
+import edu.mit.jwi.data.parse.IndexLineParser;
+import edu.mit.jwi.data.parse.SenseLineParser;
+import edu.mit.jwi.data.parse.SensesLineParser;
+import edu.mit.jwi.item.IExceptionEntryProxy;
+import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.ISenseEntry;
+import edu.mit.jwi.item.ISynset;
+import edu.mit.jwi.item.POS;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A concrete implementation of the {@code IDataType} interface. This class
@@ -42,7 +58,8 @@ public class DataType<T> implements IDataType<T>
 	private final String name;
 	private Set<String> hints;
 	private final boolean hasVersion;
-	@Nullable private final ILineParser<T> parser;
+	@Nullable
+	private final ILineParser<T> parser;
 
 	/**
 	 * Constructs a new data type. This constructor takes the hints as an
@@ -144,7 +161,8 @@ public class DataType<T> implements IDataType<T>
 	}
 
 	// set of all data types implemented in this class
-	@Nullable private static Set<DataType<?>> dataTypes = null;
+	@Nullable
+	private static Set<DataType<?>> dataTypes = null;
 
 	/**
 	 * Emulates the Enum.values() function.

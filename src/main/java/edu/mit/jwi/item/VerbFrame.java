@@ -14,7 +14,12 @@ import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Default, hard-coded, implementation of {@code IVerbFrame} that does not read
@@ -152,7 +157,8 @@ public class VerbFrame implements IVerbFrame
 	}
 
 	// verb frame cache
-	@NonNull private static final Map<Integer, VerbFrame> verbFrameMap;
+	@NonNull
+	private static final Map<Integer, VerbFrame> verbFrameMap;
 
 	static
 	{

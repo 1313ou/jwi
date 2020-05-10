@@ -11,7 +11,12 @@
 package edu.mit.jwi.data.parse;
 
 import edu.mit.jwi.Nullable;
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.item.ILexFile;
+import edu.mit.jwi.item.ISenseKey;
+import edu.mit.jwi.item.LexFile;
+import edu.mit.jwi.item.POS;
+import edu.mit.jwi.item.SenseKey;
+import edu.mit.jwi.item.UnknownLexFile;
 
 /**
  * <p>

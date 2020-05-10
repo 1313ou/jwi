@@ -13,7 +13,12 @@ package edu.mit.jwi.item;
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Default implementation of {@code IIndexWord}.
@@ -34,10 +39,12 @@ public class IndexWord implements IIndexWord
 	private static final long serialVersionUID = 240;
 
 	// immutable instance fields
-	@Nullable private final IIndexWordID id;
+	@Nullable
+	private final IIndexWordID id;
 	private final int tagSenseCount;
 	private final Set<IPointer> pointers;
-	@NonNull private final List<IWordID> wordIDs;
+	@NonNull
+	private final List<IWordID> wordIDs;
 
 	/**
 	 * Constructs a new index word.

@@ -13,8 +13,14 @@ package edu.mit.jwi.item;
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Default implementation of the {@code ISynset} interface.
@@ -34,14 +40,20 @@ public class Synset implements ISynset
 	 */
 	private static final long serialVersionUID = 240;
 
-	@Nullable private final ISynsetID id;
-	@Nullable private final String gloss;
-	@Nullable private final ILexFile lexFile;
-	@NonNull private final List<IWord> words;
+	@Nullable
+	private final ISynsetID id;
+	@Nullable
+	private final String gloss;
+	@Nullable
+	private final ILexFile lexFile;
+	@NonNull
+	private final List<IWord> words;
 	private final boolean isAdjSat;
 	private final boolean isAdjHead;
-	@NonNull private final List<ISynsetID> related;
-	@NonNull private final Map<IPointer, List<ISynsetID>> relatedMap;
+	@NonNull
+	private final List<ISynsetID> related;
+	@NonNull
+	private final Map<IPointer, List<ISynsetID>> relatedMap;
 
 	/**
 	 * Constructs a new synset object with the specified parameters.

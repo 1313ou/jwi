@@ -40,7 +40,8 @@ public class IndexWordID implements IIndexWordID
 
 	// immutable instance fields
 	private final String lemma;
-	@Nullable private final POS pos;
+	@Nullable
+	private final POS pos;
 
 	/**
 	 * Constructs an index word id object with the specified lemma and part of

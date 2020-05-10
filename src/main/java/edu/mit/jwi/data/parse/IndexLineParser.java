@@ -12,7 +12,14 @@ package edu.mit.jwi.data.parse;
 
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.IPointer;
+import edu.mit.jwi.item.IWordID;
+import edu.mit.jwi.item.IndexWord;
+import edu.mit.jwi.item.POS;
+import edu.mit.jwi.item.Pointer;
+import edu.mit.jwi.item.SynsetID;
+import edu.mit.jwi.item.WordID;
 
 import java.util.StringTokenizer;
 

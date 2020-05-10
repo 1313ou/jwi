@@ -30,8 +30,10 @@ public class ExceptionEntryID implements IExceptionEntryID
 	private static final long serialVersionUID = -8891377527593261453L;
 
 	// immutable instance fields
-	@NonNull private final String surfaceForm;
-	@Nullable private final POS pos;
+	@NonNull
+	private final String surfaceForm;
+	@Nullable
+	private final POS pos;
 
 	/**
 	 * Creates a new exception entry id with the specified information.

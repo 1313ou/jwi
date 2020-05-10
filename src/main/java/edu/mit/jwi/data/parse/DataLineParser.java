@@ -12,11 +12,31 @@ package edu.mit.jwi.data.parse;
 
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.item.AdjMarker;
+import edu.mit.jwi.item.ILexFile;
+import edu.mit.jwi.item.IPointer;
+import edu.mit.jwi.item.ISynset;
+import edu.mit.jwi.item.ISynsetID;
+import edu.mit.jwi.item.IVerbFrame;
+import edu.mit.jwi.item.IWordID;
+import edu.mit.jwi.item.LexFile;
+import edu.mit.jwi.item.POS;
+import edu.mit.jwi.item.Pointer;
+import edu.mit.jwi.item.Synset;
 import edu.mit.jwi.item.Synset.IWordBuilder;
 import edu.mit.jwi.item.Synset.WordBuilder;
+import edu.mit.jwi.item.SynsetID;
+import edu.mit.jwi.item.UnknownLexFile;
+import edu.mit.jwi.item.VerbFrame;
+import edu.mit.jwi.item.WordID;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
 /**
  * <p>

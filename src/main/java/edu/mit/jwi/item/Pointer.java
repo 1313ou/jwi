@@ -14,7 +14,14 @@ import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Concrete implementation of the <code>IPointer</code> interface. This class
@@ -72,9 +79,12 @@ public class Pointer implements IPointer
 	public static final Pointer IS_ENTAILED = new Pointer("*^", "Is entailed by");
 
 	// final instance fields
-	@NonNull private final String symbol;
-	@NonNull private final String name;
-	@NonNull private final String toString;
+	@NonNull
+	private final String symbol;
+	@NonNull
+	private final String name;
+	@NonNull
+	private final String toString;
 
 	/**
 	 * Constructs a new pointer object with the specified symbol and name.
@@ -169,8 +179,10 @@ public class Pointer implements IPointer
 		return str;
 	}
 
-	@NonNull private static final Map<String, Pointer> pointerMap;
-	@NonNull private static final Set<Pointer> pointerSet;
+	@NonNull
+	private static final Map<String, Pointer> pointerMap;
+	@NonNull
+	private static final Set<Pointer> pointerSet;
 
 	// class initialization code
 	static

@@ -39,7 +39,8 @@ public class SynsetID implements ISynsetID
 
 	// final instance fields
 	private final int offset;
-	@Nullable private final POS pos;
+	@Nullable
+	private final POS pos;
 
 	/**
 	 * Constructs a new synset id with the specified offset and part of speech.

@@ -13,8 +13,14 @@ package edu.mit.jwi.item;
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Default implementation of the {@code IWord} interface.
@@ -35,14 +41,21 @@ public class Word implements IWord
 	private static final long serialVersionUID = 240;
 
 	// final instance fields
-	@Nullable private final IWordID id;
-	@Nullable private final ISynset synset;
-	@NonNull private final ISenseKey senseKey;
-	@Nullable private final AdjMarker adjMarker;
+	@Nullable
+	private final IWordID id;
+	@Nullable
+	private final ISynset synset;
+	@NonNull
+	private final ISenseKey senseKey;
+	@Nullable
+	private final AdjMarker adjMarker;
 	private final int lexID;
-	@NonNull private final List<IVerbFrame> frames;
-	@NonNull private final List<IWordID> allWords;
-	@NonNull private final Map<IPointer, List<IWordID>> wordMap;
+	@NonNull
+	private final List<IVerbFrame> frames;
+	@NonNull
+	private final List<IWordID> allWords;
+	@NonNull
+	private final Map<IPointer, List<IWordID>> wordMap;
 
 	/**
 	 * Constructs a new word object.

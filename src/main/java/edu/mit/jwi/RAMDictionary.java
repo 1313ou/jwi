@@ -14,13 +14,45 @@ import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.FileProvider;
 import edu.mit.jwi.data.ILoadPolicy;
 import edu.mit.jwi.data.compare.ILineComparator;
-import edu.mit.jwi.item.*;
+import edu.mit.jwi.item.ExceptionEntryID;
+import edu.mit.jwi.item.IExceptionEntry;
+import edu.mit.jwi.item.IExceptionEntryID;
+import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.IIndexWordID;
+import edu.mit.jwi.item.IPointer;
+import edu.mit.jwi.item.ISenseEntry;
+import edu.mit.jwi.item.ISenseKey;
+import edu.mit.jwi.item.ISynset;
+import edu.mit.jwi.item.ISynsetID;
+import edu.mit.jwi.item.IVerbFrame;
+import edu.mit.jwi.item.IVersion;
+import edu.mit.jwi.item.IWord;
+import edu.mit.jwi.item.IWordID;
+import edu.mit.jwi.item.IndexWord;
+import edu.mit.jwi.item.IndexWordID;
+import edu.mit.jwi.item.POS;
+import edu.mit.jwi.item.SenseEntry;
+import edu.mit.jwi.item.Synset;
 import edu.mit.jwi.item.Synset.IWordBuilder;
+import edu.mit.jwi.item.Word;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.Lock;
@@ -63,16 +95,21 @@ public class RAMDictionary implements IRAMDictionary
 	public static final int defaultLoadPolicy = ILoadPolicy.BACKGROUND_LOAD;
 
 	// immutable fields
-	@Nullable protected final IDictionary backing;
-	@Nullable protected final IInputStreamFactory factory;
+	@Nullable
+	protected final IDictionary backing;
+	@Nullable
+	protected final IInputStreamFactory factory;
 	protected final Lock lifecycleLock = new ReentrantLock();
 	protected final Lock loadLock = new ReentrantLock();
 
 	// instance fields
-	@NonNull protected volatile LifecycleState state = LifecycleState.CLOSED;
-	@Nullable protected transient Thread loader;
+	@NonNull
+	protected volatile LifecycleState state = LifecycleState.CLOSED;
+	@Nullable
+	protected transient Thread loader;
 	protected int loadPolicy;
-	@Nullable protected DictionaryData data;
+	@Nullable
+	protected DictionaryData data;
 
 	/**
 	 * Constructs a new wrapper RAM dictionary that will load the contents the
@@ -858,9 +895,11 @@ public class RAMDictionary implements IRAMDictionary
 	 */
 	protected abstract class HotSwappableIterator<E> implements Iterator<E>
 	{
-		@Nullable private Iterator<E> itr;
+		@Nullable
+		private Iterator<E> itr;
 		private boolean checkForLoad;
-		@Nullable private E last = null;
+		@Nullable
+		private E last = null;
 
 		/**
 		 * Constructs a new hot swappable iterator.
@@ -1216,7 +1255,8 @@ public class RAMDictionary implements IRAMDictionary
 		/**
 		 * the source of the dictionary data
 		 */
-		@Nullable private final IDictionary source;
+		@Nullable
+		private final IDictionary source;
 
 		/**
 		 * Constructs a new data loader object, that uses the specified
@@ -1376,10 +1416,14 @@ public class RAMDictionary implements IRAMDictionary
 		private static final long serialVersionUID = 240;
 
 		// data
-		@Nullable protected IVersion version;
-		@NonNull protected final Map<POS, Map<IIndexWordID, IIndexWord>> idxWords;
-		@NonNull protected final Map<POS, Map<ISynsetID, ISynset>> synsets;
-		@NonNull protected final Map<POS, Map<IExceptionEntryID, IExceptionEntry>> exceptions;
+		@Nullable
+		protected IVersion version;
+		@NonNull
+		protected final Map<POS, Map<IIndexWordID, IIndexWord>> idxWords;
+		@NonNull
+		protected final Map<POS, Map<ISynsetID, ISynset>> synsets;
+		@NonNull
+		protected final Map<POS, Map<IExceptionEntryID, IExceptionEntry>> exceptions;
 		protected Map<ISenseKey, IWord> words;
 		protected Map<ISenseKey, ISenseEntry> senses;
 		protected Map<ISenseKey, ISenseEntry[]> sensePools;
@@ -1664,8 +1708,10 @@ public class RAMDictionary implements IRAMDictionary
 		public class WordBuilder implements IWordBuilder
 		{
 			// final instance fields
-			@Nullable private final ISynset oldSynset;
-			@Nullable private final IWord oldWord;
+			@Nullable
+			private final ISynset oldSynset;
+			@Nullable
+			private final IWord oldWord;
 
 			/**
 			 * Constructs a new word builder object out of the specified old

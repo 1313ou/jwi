@@ -73,7 +73,8 @@ public enum POS
 	private final String name;
 	private final char tag;
 	private final int num;
-	@NonNull private final Set<String> filenameHints;
+	@NonNull
+	private final Set<String> filenameHints;
 
 	// private constructor
 	POS(String name, char tag, int num, String... patterns)

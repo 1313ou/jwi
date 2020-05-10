@@ -51,8 +51,10 @@ public class WordID implements IWordID
 	public static final String unknownWordNumber = "??";
 
 	// final instance fields
-	@Nullable private final ISynsetID id;
-	@Nullable private final String lemma;
+	@Nullable
+	private final ISynsetID id;
+	@Nullable
+	private final String lemma;
 	private final int num;
 
 	/**

@@ -37,7 +37,8 @@ public class ExceptionEntryProxy implements IExceptionEntryProxy
 	private static final long serialVersionUID = 240;
 
 	// immutable instance fields
-	@Nullable private final String surfaceForm;
+	@Nullable
+	private final String surfaceForm;
 	private final List<String> rootForms;
 
 	/**

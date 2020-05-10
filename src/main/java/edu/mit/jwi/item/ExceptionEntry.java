@@ -32,8 +32,10 @@ public class ExceptionEntry extends ExceptionEntryProxy implements IExceptionEnt
 	private static final long serialVersionUID = 240;
 
 	// immutable instance fields
-	@Nullable private final POS pos;
-	@NonNull private final IExceptionEntryID id;
+	@Nullable
+	private final POS pos;
+	@NonNull
+	private final IExceptionEntryID id;
 
 	/**
 	 * Creates a new exception entry for the specified part of speech using the
