@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.item;
 
-import androidx.annotation.Nullable;
+import edu.mit.jwi.Nullable;
 
 /**
  * The three different possible syntactic markers indicating limitations on the

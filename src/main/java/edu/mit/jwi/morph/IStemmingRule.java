@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.morph;
 
-import androidx.annotation.Nullable;
+import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.IHasPOS;
 
 import java.util.Set;

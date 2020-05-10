@@ -10,8 +10,8 @@
 
 package edu.mit.jwi.item;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 import edu.mit.jwi.data.IContentType;
 import edu.mit.jwi.data.IDataType;
 import edu.mit.jwi.data.WordnetFile;

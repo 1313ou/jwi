@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.data;
 
-import androidx.annotation.Nullable;
+import edu.mit.jwi.Nullable;
 import edu.mit.jwi.data.compare.ILineComparator;
 import edu.mit.jwi.data.parse.ILineParser;
 

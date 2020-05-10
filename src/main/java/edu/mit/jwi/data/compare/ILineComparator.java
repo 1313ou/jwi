@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.data.compare;
 
-import androidx.annotation.Nullable;
+import edu.mit.jwi.Nullable;
 
 import java.util.Comparator;
 

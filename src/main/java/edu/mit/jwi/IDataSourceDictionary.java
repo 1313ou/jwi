@@ -10,7 +10,6 @@
 
 package edu.mit.jwi;
 
-import androidx.annotation.Nullable;
 import edu.mit.jwi.data.IDataProvider;
 
 /**

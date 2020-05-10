@@ -10,8 +10,8 @@
 
 package edu.mit.jwi.item;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Default implementation of the {@code IWordID} interface.

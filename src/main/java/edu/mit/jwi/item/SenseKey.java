@@ -10,8 +10,8 @@
 
 package edu.mit.jwi.item;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 /**
  * Concrete, default implementation of the <code>ISenseKey</code> interface.

@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.item;
 
-import androidx.annotation.NonNull;
+import edu.mit.jwi.NonNull;
 
 import java.io.Serializable;
 

@@ -10,8 +10,8 @@
 
 package edu.mit.jwi.morph;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.POS;
 
 import java.util.Collections;

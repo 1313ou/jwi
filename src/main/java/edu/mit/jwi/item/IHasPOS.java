@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.item;
 
-import androidx.annotation.Nullable;
+import edu.mit.jwi.Nullable;
 
 /**
  * An object that potentially has an associated part of speech.

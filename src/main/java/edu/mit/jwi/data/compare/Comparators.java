@@ -1,6 +1,6 @@
 package edu.mit.jwi.data.compare;
 
-import androidx.annotation.NonNull;
+import edu.mit.jwi.NonNull;
 
 public class Comparators
 {

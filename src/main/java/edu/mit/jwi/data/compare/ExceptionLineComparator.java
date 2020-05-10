@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.data.compare;
 
-import androidx.annotation.Nullable;
+import edu.mit.jwi.Nullable;
 import edu.mit.jwi.data.parse.ILineParser.MisformattedLineException;
 
 import java.util.regex.Pattern;

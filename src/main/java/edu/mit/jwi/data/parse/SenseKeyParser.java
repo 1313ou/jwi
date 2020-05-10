@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.data.parse;
 
-import androidx.annotation.Nullable;
+import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.*;
 
 /**

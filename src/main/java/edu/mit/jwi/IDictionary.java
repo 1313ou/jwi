@@ -10,7 +10,6 @@
 
 package edu.mit.jwi;
 
-import androidx.annotation.Nullable;
 import edu.mit.jwi.data.ContentTypeKey;
 import edu.mit.jwi.data.IHasCharset;
 import edu.mit.jwi.data.IHasLifecycle;

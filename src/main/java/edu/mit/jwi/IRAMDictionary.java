@@ -10,8 +10,6 @@
 
 package edu.mit.jwi;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import edu.mit.jwi.data.ILoadPolicy;
 import edu.mit.jwi.data.ILoadable;
 

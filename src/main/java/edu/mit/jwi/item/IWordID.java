@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.item;
 
-import androidx.annotation.Nullable;
+import edu.mit.jwi.Nullable;
 
 /**
  * A unique identifier sufficient to retrieve a particular word from the Wordnet

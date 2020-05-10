@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.item;
 
-import androidx.annotation.Nullable;
+import edu.mit.jwi.Nullable;
 
 /**
  * Concrete implementation of the <code>ISenseEntry</code> interface.

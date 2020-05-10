@@ -10,8 +10,8 @@
 
 package edu.mit.jwi.data.parse;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 import edu.mit.jwi.item.ISenseEntry;
 import edu.mit.jwi.item.ISenseKey;
 import edu.mit.jwi.item.SenseEntry;

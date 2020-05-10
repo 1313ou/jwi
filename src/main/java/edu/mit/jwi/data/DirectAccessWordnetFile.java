@@ -10,8 +10,8 @@
 
 package edu.mit.jwi.data;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 
 import java.io.File;
 import java.nio.ByteBuffer;

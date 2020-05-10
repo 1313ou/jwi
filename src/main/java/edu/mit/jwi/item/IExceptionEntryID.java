@@ -10,7 +10,7 @@
 
 package edu.mit.jwi.item;
 
-import androidx.annotation.NonNull;
+import edu.mit.jwi.NonNull;
 
 /**
  * A unique identifier sufficient to retrieve the specified
