@@ -84,7 +84,15 @@ public class Tests_XX_legacy
 	// sense aka as loretta_young%1:18:00::
 	public void allSensekeysAreLive()
 	{
-		TestLib.allSensekeysAreLive(jwi);
+		try
+		{
+			TestLib.allSensekeysAreLive(jwi);
+		}
+		catch(AssertionError ae)
+		{
+			TestLib.listDeadSensekeys(jwi);
+			throw ae;
+		}
 	}
 
 	@Test public void allSenseEntriesAreLive()

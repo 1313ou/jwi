@@ -18,14 +18,17 @@ public class Test_sensekey_XX
 		jwi = new JWI(wnHome, JWI.Mode.XX);
 	}
 
-	@Test public void listDeadSensekeys()
-	{
-		TestLib.listDeadSensekeys(jwi);
-	}
-
 	@Test public void sensekeysLive()
 	{
-		TestLib.allSenseEntriesAreLive(jwi);
+		try
+		{
+			TestLib.allSensekeysAreLive(jwi);
+		}
+		catch(AssertionError ae)
+		{
+			TestLib.listDeadSensekeys(jwi);
+			throw ae;
+		}
 	}
 
 	@Test public void senseEntriesLive()

@@ -81,8 +81,15 @@ public class Tests_XX
 
 	@Test public void allSensekeysAreLive()
 	{
-		//TestLib.allSensekeysAreLive(jwi);
-		TestLib.listDeadSensekeys(jwi);
+		try
+		{
+			TestLib.allSensekeysAreLive(jwi);
+		}
+		catch(AssertionError ae)
+		{
+			TestLib.listDeadSensekeys(jwi);
+			throw ae;
+		}
 	}
 
 	@Test public void allSenseEntriesAreLive()
