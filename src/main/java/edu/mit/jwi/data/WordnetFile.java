@@ -510,8 +510,12 @@ public abstract class WordnetFile<T> implements ILoadableDataSource<T>
 		}
 
 		// get sub view containing only the bytes of interest
-		// cast is necessary (jdk9 #114)
-		buf = (ByteBuffer) buf.duplicate().position(start).limit(end);
+		// pb with covariant returns if compiled with JSK >=9
+		// unless release option is used
+		ByteBuffer buf2 = buf.duplicate();
+		buf2 = (ByteBuffer)buf2.position(start);
+		buf2 = (ByteBuffer)buf2. limit(end);
+		buf = buf2;
 
 		// decode the buffer using the provided character set
 		return cs.decode(buf).toString();
