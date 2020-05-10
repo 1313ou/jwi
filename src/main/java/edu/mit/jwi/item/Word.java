@@ -230,7 +230,7 @@ public class Word implements IWord
 	 */
 	@NonNull public List<IWordID> getRelatedWords()
 	{
-		return (wordMap == null) ? Collections.emptyList() : allWords;
+		return allWords;
 	}
 
 	/*
