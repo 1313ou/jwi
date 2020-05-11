@@ -16,8 +16,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import edu.mit.jwi.IDictionary;
 import edu.mit.jwi.Nullable;
+import edu.mit.jwi.IDictionary;
 import edu.mit.jwi.item.IExceptionEntry;
 import edu.mit.jwi.item.POS;
 

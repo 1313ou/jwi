@@ -12,9 +12,9 @@ package edu.mit.jwi.data;
 
 import java.util.Iterator;
 
-import edu.mit.jwi.IDataSourceDictionary;
 import edu.mit.jwi.NonNull;
 import edu.mit.jwi.Nullable;
+import edu.mit.jwi.IDataSourceDictionary;
 import edu.mit.jwi.item.IHasVersion;
 
 /**

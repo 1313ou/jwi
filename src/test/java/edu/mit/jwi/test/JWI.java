@@ -1,5 +1,7 @@
 package edu.mit.jwi.test;
 
+import edu.mit.jwi.NonNull;
+import edu.mit.jwi.Nullable;
 import edu.mit.jwi.*;
 import edu.mit.jwi.data.FileProvider;
 import edu.mit.jwi.data.compare.Comparators;
@@ -22,7 +24,8 @@ import java.util.function.Consumer;
  */
 public class JWI
 {
-	@NonNull private final IDictionary dict;
+	@NonNull
+	private final IDictionary dict;
 
 	/**
 	 * Main
