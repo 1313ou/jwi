@@ -1,5 +1,7 @@
 package edu.mit.jwi.test;
 
+import java.io.IOException;
+
 import edu.mit.jwi.data.parse.SenseKeyParser;
 import edu.mit.jwi.data.parse.SenseLineParser;
 import edu.mit.jwi.data.parse.SensesLineParser;
@@ -8,49 +10,56 @@ import edu.mit.jwi.item.ISenseKey;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class Test_sensekey_XX_pools
 {
 	private static JWI jwi;
 
-	@BeforeClass public static void init() throws IOException
+	@BeforeClass
+	public static void init() throws IOException
 	{
 		String wnHome = System.getenv("WNHOMEXX" /* + File.separator + "dict" */);
 		jwi = new JWI(wnHome, JWI.Mode.XX_POOLS);
 	}
 
-	@Test public void sensekeysLive()
+	@Test
+	public void sensekeysLive()
 	{
 		try
 		{
 			TestLib.allSensekeysAreLive(jwi);
 		}
-		catch(AssertionError ae)
+		catch (AssertionError ae)
 		{
 			TestLib.listDeadSensekeys(jwi);
 			throw ae;
 		}
 	}
 
-	@Test public void senseEntriesLive()
+	@Test
+	public void senseEntriesLive()
 	{
 		TestLib.allSenseEntriesAreLive(jwi);
 	}
 
-	@Test public void senseEntryPoolsLive()
+	@Test
+	public void senseEntryPoolsLive()
 	{
 		TestLib.allSenseEntryPoolsAreLive(jwi);
 	}
 
-	@Test public void senseEntriesFromPoolsAreLive()
+	@Test
+	public void senseEntriesFromPoolsAreLive()
 	{
 		TestLib.allSenseEntriesFromPoolsAreLive(jwi);
 	}
 
-	@Test public void sensekey()
+	@Test
+	public void sensekey()
 	{
 		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "galore%5:00:01:abundant:00"));
 		assertTrue(TestLib.sensekeyFromStringIsLive(jwi, "galore%5:00:02:many:00"));
@@ -65,7 +74,8 @@ public class Test_sensekey_XX_pools
 		assertFalse(TestLib.sensekeyFromStringIsLive(jwi, "hot%5:00:03:warm:03"));
 	}
 
-	@Test public void multiplePools()
+	@Test
+	public void multiplePools()
 	{
 		jwi.forAllSenseEntryPools((ses) -> {
 			assertNotNull(ses);
@@ -78,7 +88,50 @@ public class Test_sensekey_XX_pools
 		});
 	}
 
-	@Test public void pool()
+	@Test
+	public void multipleSamePools()
+	{
+		jwi.forAllSenseEntryPools((ses) -> {
+			assertNotNull(ses);
+			if (ses.length > 1)
+			{
+				ISenseKey sk = ses[0].getSenseKey();
+				assert sk != null;
+				int ofs1 = ses[0].getOffset();
+				int ofs2 = ses[1].getOffset();
+				int sn1 = ses[0].getSenseNumber();
+				int sn2 = ses[1].getSenseNumber();
+				int tc1 = ses[0].getTagCount();
+				int tc2 = ses[1].getTagCount();
+				if (ofs1 == ofs2 && sn1 == sn2 && tc1 == tc2)
+					System.out.printf("● pool:%s - %d %d %d - %d %d %d%n", sk.toString(), ofs1, sn1, tc1, ofs2, sn2, tc2);
+			}
+		});
+	}
+
+	@Test
+	public void multipleDiffPools()
+	{
+		jwi.forAllSenseEntryPools((ses) -> {
+			assertNotNull(ses);
+			if (ses.length > 1)
+			{
+				ISenseKey sk = ses[0].getSenseKey();
+				assert sk != null;
+				int ofs1 = ses[0].getOffset();
+				int ofs2 = ses[1].getOffset();
+				int sn1 = ses[0].getSenseNumber();
+				int sn2 = ses[1].getSenseNumber();
+				int tc1 = ses[0].getTagCount();
+				int tc2 = ses[1].getTagCount();
+				if (ofs1 != ofs2 || sn1 != sn2 || tc1 != tc2)
+					System.out.printf("● pool:%s - %d %d %d - %d %d %d%n", sk.toString(), ofs1, sn1, tc1, ofs2, sn2, tc2);
+			}
+		});
+	}
+
+	@Test
+	public void pool()
 	{
 		String skStr = "aborigine%1:18:00::";
 		ISenseKey sk = SenseKeyParser.getInstance().parseLine(skStr);
@@ -93,7 +146,8 @@ public class Test_sensekey_XX_pools
 		}
 	}
 
-	@Test public void parse()
+	@Test
+	public void parse()
 	{
 		SenseLineParser singleParser = SenseLineParser.getInstance();
 		SensesLineParser multipleParser = SensesLineParser.getInstance();
